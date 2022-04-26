@@ -62,7 +62,13 @@
       "semi": [
         0
       ],
-      "no-redeclare": 2
+      "no-redeclare": 2,
+      "prettier/prettier": [
+        "error",
+        {
+          "endOfLine": "auto"
+        }
+      ]
     }
   },
   "browserslist": [
