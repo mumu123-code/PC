@@ -16,9 +16,7 @@
       <el-form-item label="密码" label-width="50px" prop="passWord">
         <el-input v-model="loginForm.passWord"></el-input>
       </el-form-item>
-      <el-form-item>
-        <el-button type="primary" size="medium" @click="login">登录</el-button>
-      </el-form-item>
+      <el-button type="primary" size="medium" @click="login">登录</el-button>
     </el-form>
   </div>
 </template>
@@ -82,9 +80,21 @@ export default {
     left: 50%;
     transform: translate(-50%, -50%);
     padding: 2vw 5vw;
-    width: 380px;
-    height: 280px;
-    background: #e2e1e4;
+    width: 480px;
+    height: 380px;
+    background: #f1f2f0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    // background-image: linear-gradient(
+    //   to bottom right,
+    //   #f3ece6,
+    //   #e5e7eb,
+    //   #e4f0e4,
+    //   #f5f3e2
+    // );
+    box-shadow: 1px 1px 3px 1px #f1f2f0;
     -webkit-backdrop-filter: blur(10px);
     backdrop-filter: blur(10px);
     border-radius: 16px;

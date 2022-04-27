@@ -1,6 +1,34 @@
 <template>
   <div class="home">
-    <img src="../assets/images/homeBg.png" alt="背景图" />
+    <div class="home-content">
+      <img src="../assets/images/homeBg.png" alt="背景图" class="homeBg" />
+      <div class="home-four">
+        <div class="box">
+          <div class="box-show" @click="go">
+            <img src="../assets/images/3.png" alt="气" />
+            <div>气</div>
+          </div>
+        </div>
+        <div class="box">
+          <div class="box-show">
+            <img src="../assets/images/1.png" alt="固" />
+            <div>固</div>
+          </div>
+        </div>
+        <div class="box">
+          <div class="box-show">
+            <img src="../assets/images/4.png" alt="水" />
+            <div>水</div>
+          </div>
+        </div>
+        <div class="box">
+          <div class="box-show">
+            <img src="../assets/images/2.png" alt="环保管家" />
+            <div>环保管家</div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -19,13 +47,18 @@ export default {
     console.log(moment().format("dddd"));
     console.log(_.range(10)); // 生成元素为0到9的数组
   },
+  methods: {
+    go() {
+      this.$router.push({
+        path: "/about",
+      });
+    },
+  },
 };
 </script>
 
 <style lang="less" scoped>
 .home {
-  width: 100vw;
-  height: 100vh;
   background: rgba(255, 255, 255, 0.7);
   background-image: linear-gradient(
     to bottom right,
@@ -36,5 +69,41 @@ export default {
   );
   -webkit-backdrop-filter: blur(10px);
   backdrop-filter: blur(10px);
+  .home-content {
+    margin: 0 auto;
+    width: 80vw;
+    .homeBg {
+      width: 100%;
+      height: 360px; // 加了高度有些许变形
+    }
+    .home-four {
+      display: flex;
+      flex-wrap: wrap;
+      width: 100%;
+      padding-bottom: 28px;
+      .box {
+        margin-top: 14px;
+        width: 48%;
+        text-align: center;
+        font-size: 20px;
+        font-weight: bold;
+        color: #a7a8bd;
+        .box-show {
+          margin: 0 auto;
+          padding: 14px;
+          width: 240px;
+          height: 240px;
+          border-radius: 6px;
+          box-shadow: 1px 2px 6px 2px #a7a8bd;
+          cursor: pointer;
+        }
+      }
+      .box:nth-of-type(2) {
+        .box-show {
+          padding-top: 24px;
+        }
+      }
+    }
+  }
 }
 </style>
