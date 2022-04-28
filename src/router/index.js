@@ -2,19 +2,53 @@ import Vue from "vue";
 import VueRouter from "vue-router";
 import HomeView from "../views/HomeView.vue";
 
+// import Layout from '../views/layout'
+
 Vue.use(VueRouter);
 
 const routes = [
-  {
-    path: "/",
-    name: "login",
-    component: () => import("../views/Login/Login.vue"),
-  },
+  // {
+  //   path: "/",
+  //   name: "login",
+  //   component: () => import("../views/Login/Login.vue"),
+  // },
   {
     path: "/home",
     name: "home",
     component: HomeView,
   },
+  // {
+  //   path: '/',
+  //   component: Layout,
+  //   redirect: '/equipment',
+  //   children: [
+  //     {
+  //       path: '/equipment',
+  //       component: () => import('@/views/equipment/index'),
+  //       name: 'equipment',
+  //       meta: { title: 'Dashboard', icon: 'dashboard', affix: true }
+  //     },
+  //     {
+  //       path: '/historyEquipment',
+  //       component: () => import('@/views/equipment/historyEquipment.vue'),
+  //       name: 'equipment',
+  //       meta: { title: 'Dashboard', icon: 'dashboard', affix: true }
+  //     }
+  //   ]
+  // },
+  // {
+  //   path: '/electronicFile',
+  //   component: Layout,
+  //   redirect: '/electronicFile',
+  //   children: [
+  //     {
+  //       path: '/electronicFile',
+  //       component: () => import('@/views/electronicFile/index'),
+  //       name: 'electronicFile',
+  //       meta: { title: 'Documentation', icon: 'documentation', affix: true }
+  //     }
+  //   ]
+  // },
   {
     path: "/about",
     name: "about",
