@@ -10,9 +10,6 @@
         <template slot="title">
           <span>总设备</span>
         </template>
-        <el-menu-item-group>
-          <el-menu-item index="/historyEquipment">历史数据</el-menu-item>
-        </el-menu-item-group>
       </el-submenu>
       <el-menu-item index="/abnormal">
         <span slot="title">异常行为</span>
