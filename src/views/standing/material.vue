@@ -2,12 +2,12 @@
   <div class="material">
     <div class="materialTitle">原辅材料填报</div>
 
-    <el-button class="boxSubmit" @click="addVocs">添加</el-button>
+    <el-button class="addSubmit" @click="addVocs" type="primary">添加</el-button>
 
     <div class="creationTime">创建时间：{{ time }}</div>
 
     <div class="materialContent" v-for="(item,i) in vocsList" :key="i">
-      <el-table :data="vocsData" stripe style="width: 100%">
+      <el-table :data="vocsData" stripe style="width: 100%" :header-cell-style="{'background':'#F5F3F2'}">
         <el-table-column prop="materialName" label="含VOCs材料名称" width="200">
           <template slot-scope="scope">
             <el-input v-model="scope.row.materialName" placeholder="请输入"></el-input>
@@ -38,13 +38,19 @@
             <el-input v-model="scope.row.recoverType" placeholder="请输入"></el-input>
           </template>
         </el-table-column>
-        <el-table-column prop="recoverAmount" label="回收量" width="180">
+        <el-table-column prop="recoverAmount" label="回收量">
           <template slot-scope="scope">
             <el-input v-model="scope.row.recoverAmount" placeholder="请输入"></el-input>
           </template>
         </el-table-column>
-  </el-table>
+      </el-table>
     </div>
+
+    <div class="btn-box">
+      <el-button class="stagingBtn" type="primary">暂存</el-button>
+      <el-button class="submitBtn" type="success">提交</el-button>
+    </div>
+
   </div>
 </template>
 
@@ -78,16 +84,31 @@ export default {
 .material {
   .materialTitle{
     text-align: center;
+    font-size: 16px;
+    font-weight: bold;
+    letter-spacing:5px;
+
   }
   .materialContent{
     margin-top: 30px;
     box-shadow: 0px 2px 2px 3px rgba(15, 15, 15, 0.08);
   }
-  .boxSubmit{
+  .addSubmit{
     float: right;
   }
   .creationTime{
-    margin-top: 40px;
+    // margin-top: 40px;
+    line-height: 40px;
+  }
+  .btn-box{
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+  }
+  .stagingBtn,
+  .submitBtn{
+    width: 120px;
+    letter-spacing:5px;
   }
 }
 </style>
