@@ -60,6 +60,11 @@ const routes = [
         component: () => import("../views/equipment/index.vue"),
       },
       {
+        path: "/personal", // 单个设备
+        name: "personal",
+        component: () => import("../views/equipment/personal.vue"),
+      },
+      {
         path: "/historyEquipment", // 历史设备
         name: "historyEquipment",
         component: () => import("../views/equipment/historyEquipment.vue"),

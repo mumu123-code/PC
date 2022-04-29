@@ -20,7 +20,7 @@
 
     <!-- 设备table s -->
     <div class="tableTitle">总设备列表</div>
-    <el-table :data="tableData" max-height="250" border style="width: 100%">
+    <el-table :data="tableData" max-height="350" border style="width: 100%">
       <el-table-column prop="deviceNumber" label="设备编号" align="center">
       </el-table-column>
       <el-table-column prop="nvocs" label="Vocs值" align="center">
@@ -60,44 +60,6 @@
       </el-pagination>
     </div> -->
     <!-- 分页 e -->
-
-    <div class="tableTitle">企业生产状态统计图</div>
-    <!-- 颜色提示 s -->
-    <div class="boxColor">
-      <div class="left"></div>
-      <label>离线</label>
-      <div class="left"></div>
-      <label>闲置</label>
-      <div class="left"></div>
-      <label>烤漆</label>
-      <div class="left"></div>
-      <label>喷漆</label>
-    </div>
-    <!-- 颜色提示 e -->
-
-    <div class="charts-box">
-      <div class="line">
-        <div
-          v-for="index in 96"
-          :key="index"
-          :class="['line-item', 'br', 'offline']"
-        ></div>
-        <!-- <div
-          v-for="(item, index) in productionStatusArr"
-          :key="index"
-          :class="[
-            'line-item',
-            'br',
-            {
-              offline: item.operativeStatus == 3,
-              idle: item.operativeStatus == 0,
-              varnish: item.operativeStatus == 1,
-              paint: item.operativeStatus == 2,
-            },
-          ]"
-        ></div> -->
-      </div>
-    </div>
   </div>
 </template>
 
@@ -195,20 +157,6 @@ export default {
         },
       ],
       // tableNum: 5
-      productionStatusArr: [
-        {
-          operativeStatus: 3,
-        },
-        {
-          operativeStatus: 2,
-        },
-        {
-          operativeStatus: 1,
-        },
-        {
-          operativeStatus: 0,
-        },
-      ], // 设备生产状态数据
     };
   },
   mounted() {
@@ -216,7 +164,12 @@ export default {
   },
   methods: {
     handleEdit(index, row) {
-      console.log(index, row);
+      this.$router.push({
+        name: "personal",
+        query: {
+          id: row.id,
+        },
+      });
     },
     workingState(index) {
       const stateArr = ["闲置", "烤漆", "喷漆"];
@@ -254,84 +207,6 @@ export default {
     margin: 24px 0;
     width: 100%;
     text-align: center;
-  }
-  // 颜色
-  .boxColor {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 48px;
-    .left {
-      margin: 0 14px 0 28px;
-      width: 42px;
-      height: 14px;
-      border-radius: 14px;
-      background-color: red;
-    }
-    .left:nth-of-type(2) {
-      // 闲置
-      background-color: #cccccc;
-    }
-    .left:nth-of-type(3) {
-      // 烤漆
-      background-color: #18bc37;
-    }
-    .left:nth-of-type(4) {
-      // 喷漆
-      background-color: #1890ff;
-    }
-    label {
-      font-size: 14px;
-      color: #333333;
-    }
-  }
-  .charts-box {
-    width: 100%;
-    height: 112px;
-    margin: 28px 0;
-    overflow-y: auto;
-    white-space: nowrap;
-    .line {
-      width: 100%;
-      .line-item {
-        display: inline-block;
-        width: 48px;
-        height: 20px;
-      }
-      .br {
-        position: relative;
-        border-right: 1px solid #cccccc;
-      }
-      .br:nth-of-type(1) {
-        margin-left: 40px;
-        border-left: 1px solid #cccccc;
-      }
-      .br:nth-of-type(5n) {
-        border-right: 1px solid #18bc37;
-      }
-      .mr {
-        margin-left: -20px;
-      }
-      .mr:nth-of-type(n) {
-        color: #18bc37;
-      }
-      .offline {
-        // 离线
-        background-color: red;
-      }
-      .idle {
-        // 闲置
-        background-color: #cccccc;
-      }
-      .varnish {
-        // 烤漆
-        background-color: #18bc37;
-      }
-      .paint {
-        // 喷漆
-        background-color: #1890ff;
-      }
-    }
   }
 }
 </style>
