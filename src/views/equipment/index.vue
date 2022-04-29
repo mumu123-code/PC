@@ -20,7 +20,7 @@
 
     <!-- 设备table s -->
     <div class="tableTitle">总设备列表</div>
-    <el-table :data="tableData" max-height="250" border style="width: 100%">
+    <el-table :data="tableData" max-height="350" border style="width: 100%">
       <el-table-column prop="deviceNumber" label="设备编号" align="center">
       </el-table-column>
       <el-table-column prop="nvocs" label="Vocs值" align="center">
@@ -216,7 +216,12 @@ export default {
   },
   methods: {
     handleEdit(index, row) {
-      console.log(index, row);
+      this.$router.push({
+        name: "personal",
+        query: {
+          id: row.id,
+        },
+      });
     },
     workingState(index) {
       const stateArr = ["闲置", "烤漆", "喷漆"];
