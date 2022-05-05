@@ -56,3 +56,11 @@ export default {
   },
 };
 </script>
+<style lang="less" scoped>
+.navMenu{
+  height: 100%;
+}
+/deep/.el-menu{
+  height: 100%;
+}
+</style>
