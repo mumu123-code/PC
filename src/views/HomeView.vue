@@ -111,7 +111,7 @@ export default {
         }
       }
       .box:nth-of-type(3), .box:nth-of-type(4) {
-        margin-top: 10vw;
+        margin-top: 28px;
       }
     }
   }
