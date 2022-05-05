@@ -1,5 +1,5 @@
 <template>
-  <div class="report">诊断报告页面</div>
+  <div class="report">诊断qwqe报告页面</div>
 </template>
 
 <script>
