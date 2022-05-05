@@ -6,11 +6,11 @@
       @select="handleSelect"
       @open="handleOpen"
     >
-      <el-submenu index="/equipment">
+      <el-menu-item index="/equipment">
         <template slot="title">
           <span>总设备</span>
         </template>
-      </el-submenu>
+      </el-menu-item>
       <el-menu-item index="/abnormal">
         <span slot="title">异常行为</span>
       </el-menu-item>
