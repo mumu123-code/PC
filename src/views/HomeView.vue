@@ -101,7 +101,7 @@ export default {
           box-shadow: 1px 2px 6px 2px #a7a8bd;
           cursor: pointer;
           div {
-            line-height: 42px;
+            line-height: 68px;
           }
         }
       }
