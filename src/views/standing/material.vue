@@ -6,34 +6,34 @@
 
     <div class="creationTime">创建时间：{{ time }}</div>
 
-    <div class="materialContent" v-for="(item,i) in vocsList" :key="i">
-      <el-table :data="vocsData" stripe style="width: 100%" :header-cell-style="{'background':'#F5F3F2'}">
+    <div class="materialContent">
+      <el-table :data="vocsData" style="width: 100%" :header-cell-style="{'background':'#F5F3F2'}">
         <el-table-column prop="materialName" label="含VOCs材料名称" width="200">
           <template slot-scope="scope">
             <el-input v-model="scope.row.materialName" placeholder="请输入"></el-input>
           </template>
         </el-table-column>
-        <el-table-column prop="purchaseQuantity" label="采购量(kg)" width="180">
+        <el-table-column prop="purchaseQuantity" label="采购量(kg)" width="200">
           <template slot-scope="scope">
             <el-input v-model="scope.row.purchaseQuantity" placeholder="请输入"></el-input>
           </template>
         </el-table-column>
-        <el-table-column prop="usageThisWeek" label="本周使用量(kg)" width="180">
+        <el-table-column prop="usageThisWeek" label="本周使用量(kg)" width="200">
           <template slot-scope="scope">
             <el-input v-model="scope.row.usageThisWeek" placeholder="请输入"></el-input>
           </template>
         </el-table-column>
-        <el-table-column prop="inventoryThisWeek" label="剩余库存量(kg)" width="180">
+        <el-table-column prop="inventoryThisWeek" label="剩余库存量(kg)" width="200">
           <template slot-scope="scope">
             <el-input v-model="scope.row.inventoryThisWeek" placeholder="请输入"></el-input>
           </template>
         </el-table-column>
-        <el-table-column prop="vocsContent" label="VOCs含量(%)" width="180">
+        <el-table-column prop="vocsContent" label="VOCs含量(%)" width="200">
           <template slot-scope="scope">
             <el-input v-model="scope.row.vocsContent" placeholder="请输入"></el-input>
           </template>
         </el-table-column>
-        <el-table-column prop="recoverType" label="回收方式" width="180">
+        <el-table-column prop="recoverType" label="回收方式" width="200">
           <template slot-scope="scope">
             <el-input v-model="scope.row.recoverType" placeholder="请输入"></el-input>
           </template>
@@ -60,9 +60,6 @@ export default {
   data() {
     return {
       time:'2022/04/29',
-      vocsList: [{
-        key:0,ledgerType:1,materialName: '',purchaseQuantity: '',usageThisWeek: '',
-        inventoryThisWeek:'', vocsContent:'',recoverType:'',recoverAmount:''}],
       vocsData: [{
         key:0,ledgerType:1,materialName: '',purchaseQuantity: '',usageThisWeek: '',
         inventoryThisWeek:'', vocsContent:'',recoverType:'',recoverAmount:''}],
@@ -71,10 +68,12 @@ export default {
   },
   methods:{
     addVocs(){
-      this.add++
-      this.vocsList.unshift({
-        key:this.add,ledgerType:1,materialName: '',purchaseQuantity: '',usageThisWeek: '',
-        inventoryThisWeek:'', vocsContent:'',recoverType:'',recoverAmount:''})
+      if(this.vocsData == undefined){
+        this.vocsData = new Array();
+      }
+        let obj = { key:0,ledgerType:1,materialName: '',purchaseQuantity: '',usageThisWeek: '',
+        inventoryThisWeek:'', vocsContent:'',recoverType:'',recoverAmount:''};
+        this.vocsData.push(obj)
     }
   }
 };
@@ -84,7 +83,7 @@ export default {
 .material {
   .materialTitle{
     text-align: center;
-    font-size: 16px;
+    font-size: 18px;
     font-weight: bold;
     letter-spacing:5px;
 
