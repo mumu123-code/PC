@@ -94,17 +94,20 @@ export default {
         color: #a7a8bd;
         .box-show {
           margin: 0 auto;
-          padding: 14px;
-          width: 240px;
-          height: 240px;
+          padding: 56px;
+          width: 340px;
+          height: 340px;
           border-radius: 6px;
           box-shadow: 1px 2px 6px 2px #a7a8bd;
           cursor: pointer;
+          div {
+            line-height: 42px;
+          }
         }
       }
       .box:nth-of-type(2) {
         .box-show {
-          padding-top: 24px;
+          padding-top: 65px;
         }
       }
       .box:nth-of-type(3), .box:nth-of-type(4) {
