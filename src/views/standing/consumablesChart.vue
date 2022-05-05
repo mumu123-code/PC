@@ -8,32 +8,32 @@
       <div class="creatTime">创建时间：{{ time }}</div>
 
       <el-table :data="consumablesData" style="width: 100%,margon-top:20px" :header-cell-style="{'background':'#F5F3F2'}">
-          <el-table-column prop="consumablesType" label="耗材种类" width="200">
-            <template slot-scope="scope">
-              <el-input v-model="scope.row.consumablesType" placeholder="请输入"></el-input>
-            </template>
-          </el-table-column>
-          <el-table-column prop="replacementAmount" label="更换量(kg)" width="220">
-            <template slot-scope="scope">
-              <el-input v-model="scope.row.replacementAmount" placeholder="请输入"></el-input>
-            </template>
-          </el-table-column>
-          <el-table-column prop="replacementTime" label="更换时间" width="260">
-            <template slot-scope="scope">
-              <el-date-picker v-model="scope.row.replacementTime" type="date" placeholder="选择日期"></el-date-picker>
-            </template>
-          </el-table-column>
-          <el-table-column prop="handleType" label="处置情况" width="200">
-            <template slot-scope="scope">
-              <el-radio label="1" v-model="radio" @change.native="getCurrentRow(scope.row)">危废间暂存</el-radio>
-              <el-radio label="2" v-model="radio" @change.native="getCurrentRow(scope.row)">委外处置</el-radio>
-            </template>
-          </el-table-column>
-          <el-table-column prop="handleTime" label="处置时间">
-            <template slot-scope="scope">
-              <el-date-picker v-model="scope.row.handleTime" type="date" placeholder="选择日期"></el-date-picker>
-            </template>
-          </el-table-column>
+        <el-table-column prop="consumablesType" label="耗材种类" width="200">
+          <template slot-scope="scope">
+            <el-input v-model="scope.row.consumablesType" placeholder="请输入"></el-input>
+          </template>
+        </el-table-column>
+        <el-table-column prop="replacementAmount" label="更换量(kg)" width="220">
+          <template slot-scope="scope">
+            <el-input v-model="scope.row.replacementAmount" placeholder="请输入"></el-input>
+          </template>
+        </el-table-column>
+        <el-table-column prop="replacementTime" label="更换时间" width="260">
+          <template slot-scope="scope">
+            <el-date-picker v-model="scope.row.replacementTime" type="date" placeholder="选择日期"></el-date-picker>
+          </template>
+        </el-table-column>
+        <el-table-column prop="handleType" label="处置情况" width="200">
+          <template slot-scope="scope">
+            <el-radio label="1" v-model="radio" @change.native="getCurrentRow(scope.row)">危废间暂存</el-radio>
+            <el-radio label="2" v-model="radio" @change.native="getCurrentRow(scope.row)">委外处置</el-radio>
+          </template>
+        </el-table-column>
+        <el-table-column prop="handleTime" label="处置时间">
+          <template slot-scope="scope">
+            <el-date-picker v-model="scope.row.handleTime" type="date" placeholder="选择日期"></el-date-picker>
+          </template>
+        </el-table-column>
       </el-table>
     </div>
 
