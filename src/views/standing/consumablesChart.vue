@@ -7,13 +7,13 @@
 
       <div class="creatTime">创建时间：{{ time }}</div>
 
-      <el-table :data="consumablesData" stripe style="width: 100%,margon-top:20px" :header-cell-style="{'background':'#F5F3F2'}">
+      <el-table :data="consumablesData" style="width: 100%,margon-top:20px" :header-cell-style="{'background':'#F5F3F2'}">
           <el-table-column prop="consumablesType" label="耗材种类" width="200">
             <template slot-scope="scope">
               <el-input v-model="scope.row.consumablesType" placeholder="请输入"></el-input>
             </template>
           </el-table-column>
-          <el-table-column prop="replacementAmount" label="更换量(kg)" width="200">
+          <el-table-column prop="replacementAmount" label="更换量(kg)" width="220">
             <template slot-scope="scope">
               <el-input v-model="scope.row.replacementAmount" placeholder="请输入"></el-input>
             </template>
@@ -77,7 +77,7 @@ export default {
 .consumablesChart {
   .consumablesTitle{
     text-align: center;
-    font-size: 16px;
+    font-size: 18px;
     font-weight: bold;
     letter-spacing: 5px;
   }
@@ -92,6 +92,7 @@ export default {
     }
     .el-table{
       margin-top: 20px;
+      box-shadow: 0px 2px 2px 3px rgba(15, 15, 15, 0.08);
     }
   }
   .btn-box{

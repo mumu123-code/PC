@@ -1,7 +1,7 @@
 <template>
   <div class="home">
     <div class="home-content">
-      <img src="../assets/images/homeBg.png" alt="背景图" class="homeBg" />
+      <!-- <img src="../assets/images/homeBg.png" alt="背景图" class="homeBg" /> -->
       <div class="home-four">
         <div class="box">
           <div class="box-show" @click="go">
@@ -59,6 +59,11 @@ export default {
 
 <style lang="less" scoped>
 .home {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  width: 100vw;
+  height: 100vh;
   background: rgba(255, 255, 255, 0.7);
   background-image: linear-gradient(
     to bottom right,
@@ -70,19 +75,18 @@ export default {
   -webkit-backdrop-filter: blur(10px);
   backdrop-filter: blur(10px);
   .home-content {
-    margin: 0 auto;
-    width: 80vw;
-    .homeBg {
-      width: 100%;
-      height: 360px; // 加了高度有些许变形
-    }
+    // margin: 0 auto;
+    // width: 60vw;
+    // .homeBg {
+    //   // width: 100%;
+    //   height: 360px; // 加了高度有些许变形
+    // }
     .home-four {
       display: flex;
       flex-wrap: wrap;
       width: 100%;
       padding-bottom: 28px;
       .box {
-        margin-top: 14px;
         width: 48%;
         text-align: center;
         font-size: 20px;
@@ -90,18 +94,24 @@ export default {
         color: #a7a8bd;
         .box-show {
           margin: 0 auto;
-          padding: 14px;
-          width: 240px;
-          height: 240px;
+          padding: 56px;
+          width: 340px;
+          height: 340px;
           border-radius: 6px;
           box-shadow: 1px 2px 6px 2px #a7a8bd;
           cursor: pointer;
+          div {
+            line-height: 68px;
+          }
         }
       }
       .box:nth-of-type(2) {
         .box-show {
-          padding-top: 24px;
+          padding-top: 65px;
         }
+      }
+      .box:nth-of-type(3), .box:nth-of-type(4) {
+        margin-top: 28px;
       }
     }
   }

@@ -1,11 +1,5 @@
 <template>
-  <div class="report">
-      <div class="reportTitle">诊断报告</div>
-      <div class="select-row">
-       日期选择： <el-date-picker v-model="selectTime" type="date" size="small" placeholder="选择日期">
-    </el-date-picker>
-      </div>
-  </div>
+  <div class="report">诊断qwqe报告页面</div>
 </template>
 
 <script>
