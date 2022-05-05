@@ -18,7 +18,7 @@
               </el-form-item>
             </el-col>
             <el-col :span="5">
-              <el-button>查询</el-button>
+              <el-button type="primary" @click="queryForm">查询</el-button>
             </el-col>
           </el-row>
        </el-form>
@@ -80,13 +80,18 @@ export default {
     this.getMaterial();
   },
   methods: {
+    queryForm(){
+
+    },
+
+
+    //获取原辅材料
     async getMaterial(){
       const res = await getHistoryMaterial(this.vocsInfo);
       if(res.code == '1'){
         if(res.data.list.length != 0){
           this.vocsData = res.data.list
         }
-        
       }
     }
   },

@@ -24,7 +24,7 @@
             </template>
           </el-table-column>
           <el-table-column prop="handleType" label="处置情况" width="200">
-            <template scope="scope">
+            <template slot-scope="scope">
               <el-radio label="1" v-model="radio" @change.native="getCurrentRow(scope.row)">危废间暂存</el-radio>
               <el-radio label="2" v-model="radio" @change.native="getCurrentRow(scope.row)">委外处置</el-radio>
             </template>
