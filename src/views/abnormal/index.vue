@@ -81,7 +81,6 @@ export default {
     this.typeData.unshift({value:"",name:"请选择"});
     this.roomData = isType.roomData();
     this.roomData.unshift({value:"",name:"请选择"});
-    console.log(this.typeData);
     this.selectFunc();
   },
   methods:{
