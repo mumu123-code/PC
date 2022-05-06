@@ -5,7 +5,7 @@
      <div class="historyType">
        <el-form :inline="true">
           <el-row type="flex">
-            <el-col :span="6" :offset="9">
+            <el-col :span="6" :offset="8">
               <el-form-item label="台账类型：">
                 <el-radio-group v-model="listInfo.ledgerType" @change="selectType()">
                   <el-radio :label="1">原辅料台账</el-radio>
@@ -20,10 +20,30 @@
             </el-col>
             <el-col :span="1" style="padding-top:3px;">
               <el-button type="primary" @click="queryForm" size="small">查询</el-button>
+                
             </el-col>
+             <el-col :span="2" style="padding-top:3px;padding-left:20px;">
+               <div class="out" v-if="listInfo.ledgerType == 1">
+                      <template>
+                          <download-excel class="export-excel-wrapper" :data="vocsData" :fields="material" name="原辅料台账.xls" >
+                              <!-- 上面可以自定义自己的样式，还可以引用其他组件button -->
+                              <el-button type="success" size="small">导出台账</el-button>
+                          </download-excel>
+                      </template>
+                </div>
+                <div class="out" v-if="listInfo.ledgerType != 1">
+                      <template>
+                          <download-excel class="export-excel-wrapper" :data="vocsData" :fields="consumption" name="耗材台账.xls" >
+                              <!-- 上面可以自定义自己的样式，还可以引用其他组件button -->
+                              <el-button type="success" size="small">导出台账</el-button>
+                          </download-excel>
+                      </template>
+                </div>
+             </el-col>
           </el-row>
        </el-form>
-
+      
+        
         <div class="materialType">
           <div class="typeContent">
             <!-- 原辅料台账 -->
@@ -70,6 +90,22 @@ export default {
           startDate: "",
           endDate: ""
       },
+      material: {
+        "含VOCs材料名称":'materialName',
+        "采购量(kg)":'purchaseQuantity',
+        "本周使用量(kg)":'usageThisWeek',
+        "剩余库存量(kg)":'inventoryThisWeek',
+        "VOCs含量(%)":'vocsContent',
+        "回收方式":'recoverType',
+        "回收量":'recoverAmount', 
+      },
+      consumption:{
+        "耗材种类":'consumablesType',
+        "更换量(kg)":'replacementAmount',
+        "更换时间":'replacementTime',
+        "处置情况":'handleType',
+        "处置时间":'handleTime', 
+      },
       total:0,
     };
   },
@@ -114,6 +150,7 @@ export default {
             })
           });
         }
+        console.log(this.vocsData);
       }
     },
 
@@ -130,7 +167,7 @@ export default {
     letter-spacing:5px;
   }
   .historyType{
-    width: 80vw;
+    // width: 80vw;
     margin: 0 auto;
     .el-form{
       margin-top: 20px;
