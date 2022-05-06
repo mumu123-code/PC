@@ -5,7 +5,7 @@
      <div class="historyType">
        <el-form :inline="true">
           <el-row type="flex">
-            <el-col :span="5" :offset="11">
+            <el-col :span="6" :offset="9">
               <el-form-item label="台账类型：">
                 <el-radio-group v-model="listInfo.ledgerType" @change="selectType()">
                   <el-radio :label="1">原辅料台账</el-radio>
@@ -13,7 +13,7 @@
                 </el-radio-group>
               </el-form-item>
             </el-col>
-            <el-col :span="7">
+            <el-col :span="8">
               <el-form-item label="时间段：">
                 <el-date-picker v-model="val" type="daterange" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期" value-format="yyyy-MM-dd" size="small"></el-date-picker>
               </el-form-item>
@@ -25,8 +25,6 @@
        </el-form>
 
         <div class="materialType">
-          <div class="typeTitle" v-if="listInfo.ledgerType == 1">原辅料台账</div>
-          <div class="typeTitles" v-if="listInfo.ledgerType != 1">耗材台账</div>
           <div class="typeContent">
             <!-- 原辅料台账 -->
             <el-table v-if="listInfo.ledgerType == 1" :data="vocsData" style="width: 100%" :header-cell-style="{'background':'#F5F3F2'}">
@@ -132,12 +130,6 @@ export default {
     margin: 0 auto;
     .el-form{
       margin-top: 20px;
-    }
-    .typeTitle,.typeTitles{
-      text-align: center;
-      font-size: 15px;
-      font-weight: bold;
-      letter-spacing:5px;
     }
     .el-table{
       margin-top: 20px;
