@@ -5,22 +5,20 @@
      <div class="historyType">
        <el-form :inline="true">
           <el-row type="flex">
-            <el-col :span="4"></el-col>
-            <el-col :span="7">
+            <el-col :span="5" :offset="11">
               <el-form-item label="台账类型：">
                 <el-radio-group v-model="listInfo.ledgerType" @change="selectType()">
                   <el-radio :label="1">原辅料台账</el-radio>
                   <el-radio :label="2">耗材台账</el-radio>
                 </el-radio-group>
-                
               </el-form-item>
             </el-col>
-            <el-col :span="8">
+            <el-col :span="7">
               <el-form-item label="时间段：">
                 <el-date-picker v-model="val" type="daterange" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期" value-format="yyyy-MM-dd" size="small"></el-date-picker>
               </el-form-item>
             </el-col>
-            <el-col :span="5">
+            <el-col :span="1" style="padding-top:3px;">
               <el-button type="primary" @click="queryForm" size="small">查询</el-button>
             </el-col>
           </el-row>
