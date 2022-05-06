@@ -18,6 +18,17 @@
         </el-col>
       </el-row>
     </div>
+    <div class="reportContent">
+      <el-table :data="reportData" style="width: 100%,margon-top:20px" :header-cell-style="{'background':'#F5F3F2'}">
+        <el-table-column prop="reportData.createTime" label="创建时间" width="200"></el-table-column>
+        <el-table-column prop="reportData.rectificationMan" label="整改人" width="200"></el-table-column>
+        <el-table-column prop="reportData.phone" label="联系电话" width="200"></el-table-column>
+        <el-table-column prop="reportData.rectificationStatus" label="整改状态" width="200"></el-table-column>
+        <el-table-column prop="reportData.noticeTime" label="通知时间" width="200"></el-table-column>
+        <el-table-column prop="reportData.roomName" label="房间号" width="200"></el-table-column>
+        <el-table-column prop="reportData.detail" label="查看详情"></el-table-column>
+      </el-table>
+    </div>
    
   </div>
 </template>
@@ -43,6 +54,7 @@ export default {
           {value:1,name:"整改中"},
           {value:2,name:"整改完成"},
         ],
+        reportData:[]
     };
   },
   created(){
@@ -76,5 +88,11 @@ export default {
 }
 .selectType /deep/.el-select{
     width: 70%;
+}
+.reportContent{
+  margin-top: 20px;
+  .el-table{
+    box-shadow: 0px 2px 2px 3px rgba(15, 15, 15, 0.08);
+  }
 }
 </style>
