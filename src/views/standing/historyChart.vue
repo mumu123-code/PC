@@ -17,11 +17,11 @@
             </el-col>
             <el-col :span="8">
               <el-form-item label="时间段：">
-                <el-date-picker v-model="val" type="daterange" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期" value-format="yyyy-MM-dd"></el-date-picker>
+                <el-date-picker v-model="val" type="daterange" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期" value-format="yyyy-MM-dd" size="small"></el-date-picker>
               </el-form-item>
             </el-col>
             <el-col :span="5">
-              <el-button type="primary" @click="queryForm">查询</el-button>
+              <el-button type="primary" @click="queryForm" size="small">查询</el-button>
             </el-col>
           </el-row>
        </el-form>
