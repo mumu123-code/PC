@@ -8,13 +8,16 @@
             <el-col :span="4"></el-col>
             <el-col :span="7">
               <el-form-item label="台账类型：">
-                <el-radio v-model="ledgerType.id" :label="1">原辅料台账</el-radio>
-                <el-radio v-model="ledgerType.id" :label="2">耗材台账</el-radio>
+                <el-radio-group v-model="ledgerType.id">
+                  <el-radio :label="1">原辅料台账</el-radio>
+                  <el-radio :label="2">耗材台账</el-radio>
+                </el-radio-group>
+                
               </el-form-item>
             </el-col>
             <el-col :span="8">
               <el-form-item label="时间段：">
-                <el-date-picker v-model="val" type="daterange" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期"></el-date-picker>
+                <el-date-picker v-model="val" type="daterange" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期" value-format="yyyy-MM-dd"></el-date-picker>
               </el-form-item>
             </el-col>
             <el-col :span="5">
@@ -39,7 +42,19 @@
           </div>
 
         </div>
-        <div v-if="ledgerType.id == 2">耗材台账</div>
+        <div v-if="ledgerType.id != 1">
+          <div class="typeTitle">耗材台账</div>
+
+          <div class="typeContent">
+            <el-table :data="consumablesData" style="width: 100%,margon-top:20px" :header-cell-style="{'background':'#F5F3F2'}">
+              <el-table-column prop="consumablesType" label="耗材种类" width="260"></el-table-column>
+              <el-table-column prop="replacementAmount" label="更换量(kg)" width="260"></el-table-column>
+              <el-table-column prop="replacementTime" label="更换时间" width="260"></el-table-column>
+              <el-table-column prop="handleType" label="处置情况" width="260"></el-table-column>
+              <el-table-column prop="handleTime" label="处置时间"></el-table-column>
+            </el-table>
+          </div>
+        </div>
 
      </div>
 
@@ -55,16 +70,18 @@ export default {
   name: "historyChart",
   data() {
     return {
-      ledgerType:[
-        {id:1,lable:'1'},
-        {id:2,lable:'2'}
-      ],
-      val:'',
+      ledgerType:{
+        id: 1
+      },
+      val:['',''],
       vocsData: [
         {
-          id:1,materialName: 'gg',purchaseQuantity: 'gyu',usageThisWeek: 'gg',
-          inventoryThisWeek:'gy', vocsContent:'ty',recoverType:'g',recoverAmount:'gg'
+          id:1,materialName: '',purchaseQuantity: '',usageThisWeek: '',
+          inventoryThisWeek:'', vocsContent:'',recoverType:'',recoverAmount:''
         }
+      ],
+      consumablesData:[
+        {id:1,consumablesType:'',replacementAmount:'',replacementTime:'',handleType:'',handleTime:''}
       ],
       vocsInfo: {
           ledgerType: 1,
@@ -80,8 +97,16 @@ export default {
     this.getMaterial();
   },
   methods: {
+    //查询
     queryForm(){
-
+      if(this.val.length == 0){
+        this.vocsInfo.startDate=""
+        this.vocsInfo.endDate=""
+      }else{
+        this.vocsInfo.startDate=this.val[0]+" 00:00:00"
+        this.vocsInfo.endDate=this.val[1]+" 23:59:59"
+      }
+      this.getMaterial()
     },
 
 
@@ -89,9 +114,15 @@ export default {
     async getMaterial(){
       const res = await getHistoryMaterial(this.vocsInfo);
       if(res.code == '1'){
-        if(res.data.list.length != 0){
-          this.vocsData = res.data.list
+        let list = res.data.list
+        if(list.length != 0){
+          this.vocsData = list
         }
+        list.forEach((el) => {
+          el.ledgerDetailList.forEach((val)=>{
+            this.vocsData.push(val)
+          })
+        });
       }
     }
   },

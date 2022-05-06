@@ -211,11 +211,20 @@ function areaTime(){
 	 }
 	 return typeName;
  }
+ function roomData(){
+	let data = [
+		{value:1,name:"烤漆房（喷漆房）"},
+		{value:2,name:"调漆间"},
+		{value:3,name:"危废间"}, 
+	]
+	return data;
+}
 module.exports = {
 	isAlarmType,
 	typeData,
 	isAdvice,
 	getDate,
 	areaTime,
-	isInstallationPosition
+	isInstallationPosition,
+    roomData
 }
