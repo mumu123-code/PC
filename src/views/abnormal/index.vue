@@ -5,7 +5,7 @@
     </div>
     <div class="selectRow">
       <el-row>
-        <el-col :span="7" offset="6" class="selectType">
+        <el-col :span="7" :offset="6" class="selectType">
           行为类型筛选： <el-select v-model="fromInfo.alarmType" filterable placeholder="请选择" size="small"> 
                             <el-option v-for="item in typeData" :key="item.value" :label="item.name" :value="item.value"> </el-option>
                         </el-select>
@@ -125,6 +125,9 @@ export default {
   }
   .list{
     margin-top:30px;
+    .el-table{
+      box-shadow: 0px 2px 2px 3px rgba(15, 15, 15, 0.08);
+    }
   }
   .paging{
     margin-top: 20px;
