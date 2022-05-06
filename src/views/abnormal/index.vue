@@ -23,33 +23,32 @@
         </el-col>
       </el-row>
     </div>
-     <div class="list">
-        <el-table :data="tableData" style="width: 100%" :header-cell-style="{'background':'#F5F3F2'}">
-          <el-table-column prop="installationLocation" label="安装位置">
-              <template slot-scope="scope">
-                {{ isInstallationPosition(scope.row.installationLocation) }}
-              </template>
-          </el-table-column>
-          <el-table-column prop="alarmType" label="行为类型">
-              <template slot-scope="scope">
-                {{ isType(scope.row.alarmType) }}
-              </template>
-          </el-table-column>
-          <el-table-column prop="alarmType" label="行为建议">
-              <template slot-scope="scope">
-                {{ isAdvice(scope.row.alarmType) }}
-              </template>
-          </el-table-column> 
-          <el-table-column prop="createTime" label="创建时间"> </el-table-column>
-        </el-table>
-        <el-row class="paging">
-            <el-pagination
-              background  @current-change="selectPage"
-              layout="prev, pager, next"
-              :total="total">
-            </el-pagination>
-        </el-row>
-        
+    <div class="list">
+      <el-table :data="tableData" style="width: 100%" :header-cell-style="{'background':'#F5F3F2'}">
+        <el-table-column prop="installationLocation" label="安装位置">
+            <template slot-scope="scope">
+              {{ isInstallationPosition(scope.row.installationLocation) }}
+            </template>
+        </el-table-column>
+        <el-table-column prop="alarmType" label="行为类型">
+            <template slot-scope="scope">
+              {{ isType(scope.row.alarmType) }}
+            </template>
+        </el-table-column>
+        <el-table-column prop="alarmType" label="行为建议">
+            <template slot-scope="scope">
+              {{ isAdvice(scope.row.alarmType) }}
+            </template>
+        </el-table-column> 
+        <el-table-column prop="createTime" label="创建时间"> </el-table-column>
+      </el-table>
+      <el-row class="paging">
+          <el-pagination
+            background  @current-change="selectPage"
+            layout="prev, pager, next"
+            :total="total">
+          </el-pagination>
+      </el-row> 
     </div>
   </div>
 </template>
