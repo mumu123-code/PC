@@ -5,7 +5,7 @@
     </div>
     <div class="selectRow">
       <el-row>
-        <el-col :span="7" class="selectType">
+        <el-col :span="7" offset="6" class="selectType">
           行为类型筛选： <el-select v-model="fromInfo.alarmType" filterable placeholder="请选择" size="small"> 
                             <el-option v-for="item in typeData" :key="item.value" :label="item.name" :value="item.value"> </el-option>
                         </el-select>
@@ -18,7 +18,7 @@
                       <el-option v-for="item in roomData" :key="item.value" :label="item.name" :value="item.value"> </el-option>
                   </el-select>
         </el-col>
-        <el-col :span="7">
+        <el-col :span="1">
            <el-button type="primary" size="small" @click="selectFunc">查询</el-button>
         </el-col>
       </el-row>

@@ -5,17 +5,12 @@
     </div>
     <div class="selectRow">
       <el-row>
-        <el-col :span="7" class="selectType">
-          行为类型筛选： <el-select v-model="fromInfo.alarmType" filterable placeholder="请选择" size="small"> 
-                            <el-option v-for="item in typeData" :key="item.value" :label="item.name" :value="item.value"> </el-option>
-                        </el-select>
-        </el-col>
          <el-col :span="5">
           选择日期：<el-date-picker v-model="selectTime" type="date" size="small" placeholder="选择日期"></el-date-picker> 
         </el-col>
         <el-col :span="5">
-          房间筛选：<el-select v-model="fromInfo.installationLocation" filterable placeholder="请选择" size="small"> 
-                      <el-option v-for="item in roomData" :key="item.value" :label="item.name" :value="item.value"> </el-option>
+          选择状态：<el-select v-model="fromInfo.installationLocation" filterable placeholder="请选择" size="small"> 
+                      <el-option v-for="item in stateData" :key="item.value" :label="item.name" :value="item.value"> </el-option>
                   </el-select>
         </el-col>
         <el-col :span="7">
@@ -42,8 +37,12 @@ export default {
             installationLocation:"",
         },
         selectTime:"",
-        typeData:[],
-        roomData:[],
+        stateData:[
+          {value:"",name:"请选择"},
+          {value:0,name:"未整改"},
+          {value:1,name:"整改中"},
+          {value:2,name:"整改完成"},
+        ],
     };
   },
   created(){
