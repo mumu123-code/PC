@@ -84,7 +84,8 @@ export default {
     .home-four {
       display: flex;
       flex-wrap: wrap;
-      width: 100%;
+      width: 80%;
+      margin: 0 auto;
       padding-bottom: 28px;
       .box {
         width: 48%;
@@ -94,24 +95,24 @@ export default {
         color: #a7a8bd;
         .box-show {
           margin: 0 auto;
-          padding: 56px;
-          width: 340px;
-          height: 340px;
+          padding: 28px;
+          width: 280px;
+          height: 280px;
           border-radius: 6px;
           box-shadow: 1px 2px 6px 2px #a7a8bd;
           cursor: pointer;
           div {
-            line-height: 68px;
+            line-height: 42px;
           }
         }
       }
       .box:nth-of-type(2) {
         .box-show {
-          padding-top: 65px;
+          padding-top: 32px;
         }
       }
       .box:nth-of-type(3), .box:nth-of-type(4) {
-        margin-top: 28px;
+        margin-top: 46px;
       }
     }
   }

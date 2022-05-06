@@ -8,27 +8,27 @@
 
     <div class="materialContent">
       <el-table :data="vocsData" style="width: 100%" :header-cell-style="{'background':'#F5F3F2'}">
-        <el-table-column prop="materialName" label="含VOCs材料名称" width="200">
+        <el-table-column prop="vocsData.materialName" label="含VOCs材料名称" width="200">
           <template slot-scope="scope">
             <el-input v-model="scope.row.materialName" placeholder="请输入"></el-input>
           </template>
         </el-table-column>
-        <el-table-column prop="purchaseQuantity" label="采购量(kg)" width="200">
+        <el-table-column prop="vocsData.purchaseQuantity" label="采购量(kg)" width="200">
           <template slot-scope="scope">
             <el-input v-model="scope.row.purchaseQuantity" placeholder="请输入"></el-input>
           </template>
         </el-table-column>
-        <el-table-column prop="usageThisWeek" label="本周使用量(kg)" width="200">
+        <el-table-column prop="vocsData.usageThisWeek" label="本周使用量(kg)" width="200">
           <template slot-scope="scope">
             <el-input v-model="scope.row.usageThisWeek" placeholder="请输入"></el-input>
           </template>
         </el-table-column>
-        <el-table-column prop="inventoryThisWeek" label="剩余库存量(kg)" width="200">
+        <el-table-column prop="vocsData.inventoryThisWeek" label="剩余库存量(kg)" width="200">
           <template slot-scope="scope">
             <el-input v-model="scope.row.inventoryThisWeek" placeholder="请输入"></el-input>
           </template>
         </el-table-column>
-        <el-table-column prop="vocsContent" label="VOCs含量(%)" width="200">
+        <el-table-column prop="vocsData.vocsContent" label="VOCs含量(%)" width="200">
           <template slot-scope="scope">
             <el-input v-model="scope.row.vocsContent" placeholder="请输入"></el-input>
           </template>
@@ -47,24 +47,40 @@
     </div>
 
     <div class="btn-box">
-      <el-button class="stagingBtn" type="primary">暂存</el-button>
-      <el-button class="submitBtn" type="success">提交</el-button>
+      <el-button class="stagingBtn" type="primary" @click="stagingBtn">暂存</el-button>
+      <el-button class="submitBtn" type="success" @click="submitBtn">提交</el-button>
     </div>
 
   </div>
 </template>
 
 <script>
+
+import { getStaging,addParameter } from "../../assets/js/standing";
+
 export default {
   name: "materialChart",
   data() {
     return {
-      time:'2022/04/29',
+      time:'',
       vocsData: [{
-        key:0,ledgerType:1,materialName: '',purchaseQuantity: '',usageThisWeek: '',
+        ledgerType:1,materialName: '',purchaseQuantity: '',usageThisWeek: '',
         inventoryThisWeek:'', vocsContent:'',recoverType:'',recoverAmount:''}],
       add:0,
+      listInfo: {
+        ledgerType: 1,
+        ledgerStatus: 0,
+        ledgerDetail:[]
+      },
     };
+  },
+  onload(){
+    let day = new Date();
+    let month = day.getMonth() + 1;
+    this.time = day.getFullYear() + "年" + month + "月" + day.getDate + "日";
+  },
+  created(){
+    this.getStagingMaterial();
   },
   methods:{
     addVocs(){
@@ -73,7 +89,34 @@ export default {
       }
         let obj = { key:0,ledgerType:1,materialName: '',purchaseQuantity: '',usageThisWeek: '',
         inventoryThisWeek:'', vocsContent:'',recoverType:'',recoverAmount:''};
-        this.vocsData.push(obj)
+        this.vocsData.push(obj);
+      console.log(this.vocsData, 'vocsData')
+    },
+    stagingBtn(){
+      this.listInfo.ledgerStatus = 1;
+      this.listInfo.ledgerDetail = this.vocsData;
+      this.addFunc();
+    },
+    submitBtn(){
+      this.listInfo.ledgerStatus = 2;
+      this.listInfo.ledgerDetail = this.vocsData;
+      this.addFunc();
+    },
+    //添加台账
+    async addFunc(){
+      const res = await addParameter(this.listInfo);
+      if (res?.code) {
+        console.log(res)
+      }
+    },
+
+    //获取暂存的原辅料台账
+    async getStagingMaterial(){
+      const res = await getStaging({'ledgerType':1});
+        console.log(res)
+      if(res?.code=="1"){
+        this.vocsData = res.data.ledgerDetail;
+      }
     }
   }
 };
