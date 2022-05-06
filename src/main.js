@@ -10,6 +10,9 @@ import {
   Submenu, Select, Option, Table, TableColumn, Pagination,radio,DatePicker,Row,Col,RadioGroup,Upload
 } from "element-ui";
 
+import JsonExcel from 'vue-json-excel';
+Vue.component('downloadExcel', JsonExcel)
+
 Vue.use(Button).use(Form).use(FormItem).use(Input).use(Container).use(Aside).use(Main).use(Header)
   .use(Menu).use(MenuItem).use(MenuItemGroup).use(Submenu).use(Select).use(Option).use(Table)
   .use(TableColumn).use(Pagination).use(radio ).use(DatePicker).use(Row).use(Col).use(RadioGroup).use(Upload);
