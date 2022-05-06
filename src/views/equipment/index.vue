@@ -20,7 +20,7 @@
 
     <!-- 设备table s -->
     <div class="tableTitle">总设备列表</div>
-    <el-table :data="tableData" max-height="350" border style="width: 100%">
+    <el-table :data="tableData" max-height="850" border style="width: 100%">
       <el-table-column prop="deviceNumber" label="设备编号" align="center">
       </el-table-column>
       <el-table-column prop="nvocs" label="Vocs值" align="center">
@@ -55,10 +55,10 @@
     </el-table>
     <!-- 设备table e -->
     <!-- 分页 s -->
-    <!-- <div class="pagination">
-      <el-pagination layout="prev, pager, next" :background="true" :total="totalNum">
+    <div class="pagination">
+      <el-pagination layout="prev, pager, next" :background="true" :total="tableNum">
       </el-pagination>
-    </div> -->
+    </div>
     <!-- 分页 e -->
   </div>
 </template>
@@ -90,73 +90,8 @@ export default {
       ],
       value: "",
       butShow: false, // 按钮的loading
-      tableData: [
-        {
-          id: 1,
-          deviceNumber: 20220,
-          nvocs: 1.2,
-          gvocs: 2.0,
-          operativeStatus: 1,
-          todayAlarmSum: 20,
-        },
-        {
-          id: 1,
-          deviceNumber: 20220,
-          nvocs: 1.2,
-          gvocs: 2.0,
-          operativeStatus: 1,
-          todayAlarmSum: 20,
-        },
-        {
-          id: 2,
-          deviceNumber: 20222,
-          nvocs: 1.2,
-          gvocs: 2.0,
-          operativeStatus: 1,
-          todayAlarmSum: 20,
-        },
-        {
-          id: 3,
-          deviceNumber: 20223,
-          nvocs: 1.2,
-          gvocs: 2.0,
-          operativeStatus: 1,
-          todayAlarmSum: 20,
-        },
-        {
-          id: 4,
-          deviceNumber: 20224,
-          nvocs: 1.2,
-          gvocs: 2.0,
-          operativeStatus: 1,
-          todayAlarmSum: 20,
-        },
-        {
-          id: 5,
-          deviceNumber: 20225,
-          nvocs: 1.2,
-          gvocs: 2.0,
-          operativeStatus: 1,
-          todayAlarmSum: 20,
-        },
-        {
-          id: 6,
-          deviceNumber: 20226,
-          nvocs: 1.2,
-          gvocs: 2.0,
-          operativeStatus: 1,
-          todayAlarmSum: 20,
-        },
-        {
-          id: 7,
-          deviceNumber: 20227,
-          nvocs: 1.2,
-          gvocs: 2.0,
-          operativeStatus: 1,
-          todayAlarmSum: 20,
-        },
-      ],
-      // tableNum: 5
+      tableData: [], // 总设备列表总数据
+      tableNum: 1, // 分页总长度
     };
   },
   mounted() {
@@ -180,6 +115,9 @@ export default {
       const res = await deviceList();
       if (res.code == "1" && res.data.length > 0) {
         this.tableData = res.data;
+        // 赋值总长度
+        this.tableNum = res.data.length;
+        console.log(this.tableNum, res.data.length, '长度')
       }
     },
   },
@@ -206,7 +144,7 @@ export default {
   .pagination {
     margin: 24px 0;
     width: 100%;
-    text-align: center;
+    text-align: right;
   }
 }
 </style>
