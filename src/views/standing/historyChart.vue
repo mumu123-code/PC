@@ -94,6 +94,7 @@ export default {
     },
     //类型筛选
     selectType(){
+      this.vocsData.length = 0;
       this.listInfo.pageNum = 0;
       this.getMaterial();
       console.log(this.listInfo.ledgerType)
@@ -104,12 +105,15 @@ export default {
       const res = await getHistory(this.listInfo);
       if(res?.code == '1'){
         this.total = res.data.total;
-        let list = res.data.list.ledgerDetailList;
+        let list = res.data.list;
         if(list == undefined){return}
         if(list.length != 0 ){
-          this.vocsData = list;
+          list.forEach((el) => {
+            el.ledgerDetailList.forEach((val)=>{
+              this.vocsData.push(val)
+            })
+          });
         }
-        
       }
     },
 
