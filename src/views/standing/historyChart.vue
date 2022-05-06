@@ -111,14 +111,11 @@ export default {
         if(list == undefined){return}
         if(list.length != 0 ){
           list.forEach((el) => {
-            console.log(el)
-            console.log()
             el.ledgerDetailList.forEach((val)=>{
               this.vocsData.push(val)
             })
           });
         }
-        
       }
     },
 
