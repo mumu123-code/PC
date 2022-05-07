@@ -3,9 +3,9 @@
     <div class="historyTitle">历史材料台账</div>
 
      <div class="historyType">
-       <el-form :inline="true">
-          <el-row type="flex">
-            <el-col :span="6" :offset="8">
+       <el-form>
+          <el-row>
+            <el-col :span="6">
               <el-form-item label="台账类型：">
                 <el-radio-group v-model="listInfo.ledgerType" @change="selectType()">
                   <el-radio :label="1">原辅料台账</el-radio>
@@ -13,14 +13,13 @@
                 </el-radio-group>
               </el-form-item>
             </el-col>
-            <el-col :span="8">
+            <el-col :span="10">
               <el-form-item label="时间段：">
                 <el-date-picker v-model="val" type="daterange" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期" value-format="yyyy-MM-dd" size="small"></el-date-picker>
               </el-form-item>
             </el-col>
             <el-col :span="1" style="padding-top:3px;">
-              <el-button type="primary" @click="queryForm" size="small">查询</el-button>
-                
+              <el-button type="primary" @click="queryForm" size="small">查询</el-button>    
             </el-col>
              <el-col :span="2" style="padding-top:3px;padding-left:20px;">
                <div class="out" v-if="listInfo.ledgerType == 1">
@@ -41,10 +40,10 @@
                 </div>
              </el-col>
           </el-row>
-       </el-form>
-      
-        
-        <div class="materialType">
+        </el-form>
+      </div>
+
+      <div class="materialType">
           <div class="typeContent">
             <!-- 原辅料台账 -->
             <el-table v-if="listInfo.ledgerType == 1" :data="vocsData" style="width: 100%" :header-cell-style="{'background':'#F5F3F2'}">
@@ -70,7 +69,6 @@
             <el-pagination background layout="prev, pager, next" :total="total" @current-change="selectPage"></el-pagination>
           </div>
         </div>
-     </div>
   </div>
 </template>
 
@@ -167,19 +165,18 @@ export default {
     letter-spacing:5px;
   }
   .historyType{
-    // width: 80vw;
-    margin: 0 auto;
+    width: 1280px;
     .el-form{
       margin-top: 20px;
-    }
-    .el-table{
+    }  
+  }
+  .el-table{
       margin-top: 20px;
       box-shadow: 0px 2px 2px 3px rgba(15, 15, 15, 0.08);
     }
-    .el-pagination{
+  .el-pagination{
       margin-top: 20px;
       float: right;
     }
-  }
 }
 </style>
