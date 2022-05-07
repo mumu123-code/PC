@@ -16,7 +16,7 @@
       <el-form-item label="密码" label-width="50px" prop="passWord">
         <el-input v-model="loginForm.passWord"></el-input>
       </el-form-item>
-      <el-button type="primary" size="medium" @click="login">登录</el-button>
+      <el-button type="primary" @click="login">登录</el-button>
     </el-form>
   </div>
 </template>

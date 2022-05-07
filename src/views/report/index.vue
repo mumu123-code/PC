@@ -5,30 +5,97 @@
     </div>
     <div class="selectRow">
       <el-row>
-        <el-col :span="7" class="selectType">
-          行为类型筛选： <el-select v-model="fromInfo.alarmType" filterable placeholder="请选择" size="small"> 
-                            <el-option v-for="item in typeData" :key="item.value" :label="item.name" :value="item.value"> </el-option>
-                        </el-select>
-        </el-col>
-         <el-col :span="5">
-          选择日期：<el-date-picker v-model="selectTime" type="date" size="small" placeholder="选择日期"></el-date-picker> 
+         <el-col :span="5" :offset="13">
+          选择日期：<el-date-picker v-model="selectTime" type="date" size="small" placeholder="选择日期" value-format="yyyy-MM-dd"></el-date-picker> 
         </el-col>
         <el-col :span="5">
-          房间筛选：<el-select v-model="fromInfo.installationLocation" filterable placeholder="请选择" size="small"> 
-                      <el-option v-for="item in roomData" :key="item.value" :label="item.name" :value="item.value"> </el-option>
+          选择状态：<el-select v-model="listFromInfo.rectificationStatus" filterable placeholder="请选择" size="small"> 
+                      <el-option v-for="item in stateData" :key="item.value" :label="item.name" :value="item.value"> </el-option>
                   </el-select>
         </el-col>
-        <el-col :span="7">
+        <el-col :span="1">
            <el-button type="primary" size="small" @click="selectFunc">查询</el-button>
         </el-col>
       </el-row>
     </div>
+    <div class="reportContent">
+      <el-table :data="reportData" style="width: 100%,margon-top:20px" :header-cell-style="{'background':'#F5F3F2'}">
+        <!-- <el-table-column prop="reportData.roomName" label="房间名称">
+           <template slot-scope="scope">
+              {{ scope.row.alarmCountRectificationList[0].bakingRoom }}
+            </template>
+        </el-table-column>
+        
+         <el-table-column prop="reportData.alarmType" label="报警类型">
+          <template slot-scope="scope">
+            {{ isType(scope.row.alarmCountRectificationList[0].alarmType) }}
+          </template>
+        </el-table-column>
+         <el-table-column prop="reportData.roomName" label="报警次数 " width="80">
+          <template slot-scope="scope">
+            {{ scope.row.alarmCountRectificationList[0].alarmCount }}
+          </template>
+        </el-table-column>
+        <el-table-column prop="reportData.roomName" label="安装位置 " width="140">
+          <template slot-scope="scope">
+            {{ isSize(scope.row.alarmCountRectificationList[0].installationLocation) }}
+          </template>
+        </el-table-column> -->
+        <el-table-column prop="reportData.rectificationStatus" label="整改内容">
+          <template slot-scope="scope">
+            {{ scope.row.rectificationContent }}
+          </template>
+        </el-table-column>
+        <el-table-column prop="reportData.rectificationStatus" label="整改状态">
+          <template slot-scope="scope">
+            {{ scope.row.rectificationStatus == 0 ? "未整改"  : scope.row.rectificationStatus == 1 ? "整改中" : "整改完成" }}
+          </template>
+        </el-table-column>
+        <el-table-column prop="reportData.rectificationMan" label="整改人"></el-table-column>
+        <el-table-column prop="reportData.phone" label="联系电话">
+             <template slot-scope="scope">
+              {{ scope.row.phone }}
+            </template>
+        </el-table-column>
+        <el-table-column prop="reportData.updateTime" label="通知时间">
+            <template slot-scope="scope">
+            {{ scope.row.updateTime }}
+          </template>
+        </el-table-column>
+        <el-table-column prop="reportData.detail" label="查看详情" width="100" align="center">
+           <template slot-scope="scope">
+             <!-- .id,scope.row.rectificationStatus -->
+             <span @click="showDetail(scope.row)" style="font-size:28px;"><i class="el-icon-view"></i></span>
+          </template>
+        </el-table-column>
+      </el-table>
+       <el-row class="paging">
+          <el-pagination
+            background  @current-change="selectPage"
+            layout="prev, pager, next"
+            :total="total">
+          </el-pagination>
+      </el-row> 
+    </div>
+    <!-- 弹出框s -->
+        <el-dialog title="报告详情" :visible.sync="detailModel" @close="hideModel">
+          <el-row>
+            <el-col :span="2">房间名称：</el-col>
+            <!-- <el-col :span="10">{{ detailInfo != {} ? detailInfo.alarmCountRectificationList[0].bakingRoom : "" }}</el-col> -->
+            <el-col :span="2">安装位置：</el-col>
+            <el-col :span="10">
+               <!-- {{ detailInfo != {} ? isSize(detailInfo.alarmCountRectificationList[0].installationLocation) : "" }} -->
+            </el-col>
+          </el-row>
+        </el-dialog>
    
+    <!-- 弹出框e -->
   </div>
 </template>
 
 <script>
 import isType from '../../../static/js/isType'
+import { getDiagnoseReportList,editReportState } from '../../assets/js/common'
 export default {
   name: "diagnosticReport",
   data() {
@@ -37,26 +104,106 @@ export default {
             pageNum:0,
             startDate:"",
             endDate:"",
-            pageSize:20,
+            pageSize:10,
             alarmType:"",
             installationLocation:"",
         },
         selectTime:"",
-        typeData:[],
-        roomData:[],
+        gridData:[],
+        stateData:[
+          {value:"",name:"请选择"},
+          {value:0,name:"未整改"},
+          {value:1,name:"整改中"},
+          {value:2,name:"整改完成"},
+        ],
+         total:0,
+         detailModel:false,
+        reportData:[
+          	{
+              "companyId": 0,
+              "id": 0,
+              "createTime": "2022-4-7 00:00:00",
+              "rectificationResult": "",
+              "rectificationMan": "",
+              "updateTime": "2022-4-7 00:00:00",
+              "phone": "188888888888",
+              "rectificationPicture": "",
+              "rectificationStatus": 1,
+              "rectificationContent": "",
+              "noticeTime": "2022-4-7 00:00:00",
+              "completionTime": "2022-4-7 00:00:00",
+              "viewTime": "2022-4-7 00:00:00",
+              "alarmCountRectificationList": [
+                {
+                  "deviceId": 0,
+                  "bakingRoom": "第三号烤漆房",
+                  "roomName": "",
+                  "installationLocation": 1,
+                  "alarmType": 9,
+                  "alarmCount": 0
+                }
+              ]
+            } 
+        ],
+        listFromInfo:{
+          startDate:"",
+          endDate:"",
+          pageSize:20,
+          pageNum:0,
+          rectificationStatus:"",
+        },
+        editStateId:"",
+        detailInfo:{},
     };
   },
   created(){
     this.typeData = isType.typeData();
     this.roomData = isType.roomData();
-    console.log(this.typeData);
+    // this.getList();
   },
   methods:{
+    //判断类型
     isType(type){
       return isType.isAlarmType(type);
     },
+    //安装位置
+    isSize(type){
+      return isType.isInstallationPosition(type);
+    },
     selectFunc(){
-
+        this.listFromInfo.startDate = this.selectTime + " 00:00:00";
+        this.listFromInfo.endDate = this.selectTime + " 23:59:59";
+        this.getList();
+    },
+    //显示详情
+    showDetail(val){
+      console.log(val)
+      this.detailModel = true;
+      this.editStateId = "";
+      if(val.state == 0){
+          // this.editState(val.id);
+          this.editStateId = val.id;
+      }
+    },
+    
+    async editState(id){
+      await editReportState({rid:id});
+    },
+    hideModel(){
+        this.getList();
+    },
+    //分页
+    selectPage(val){
+      this.listFromInfo.pageNum = val - 1;
+      this.getList();
+    },
+    //获取列表
+    async getList(){
+      const res = await getDiagnoseReportList(this.listFromInfo);
+      if(res?.code == "1"){
+        this.reportData = res.data.list;
+        this.total = res.data.total;
+      }
     },
   }
 };
@@ -74,8 +221,20 @@ export default {
     margin-top: 20px;
    
   }
+  .paging{
+    margin-top: 20px;
+  }
 }
 .selectType /deep/.el-select{
     width: 70%;
+}
+.reportContent{
+  margin-top: 20px;
+  .el-table{
+    box-shadow: 0px 2px 2px 3px rgba(15, 15, 15, 0.08);
+  }
+}
+/deep/.el-pagination{
+  float: right;
 }
 </style>

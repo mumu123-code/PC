@@ -3,7 +3,7 @@
     <div class="consumablesTitle">耗材台账页面</div>
 
     <div class="consumablesContent">
-      <el-button class="addBtn" type="primary" @click="addConsumables">添加</el-button>
+      <el-button class="addBtn" type="primary" @click="addConsumables" size="small">添加</el-button>
 
       <div class="creatTime">创建时间：{{ time }}</div>
 
@@ -23,7 +23,7 @@
             <el-date-picker v-model="scope.row.replacementTime" type="date" value-format="yyyy-MM-dd HH:mm:ss" placeholder="选择日期"></el-date-picker>
           </template>
         </el-table-column>
-        <el-table-column prop="consumablesData.handleType" label="处置情况" width="200">
+        <el-table-column prop="consumablesData.handleType" label="处置情况" width="300">
           <template slot-scope="scope">
             <el-radio label="1" v-model="scope.row.handleType" @change.native="getCurrentRow(scope.row)">危废间暂存</el-radio>
             <el-radio label="2" v-model="scope.row.handleType" @change.native="getCurrentRow(scope.row)">委外处置</el-radio>
@@ -54,7 +54,7 @@ export default {
   name: "consumablesChart",
   data() {
     return {
-      time:'',
+      time:new Date(),
       consumablesData:[
         {consumablesType:'',replacementAmount:'',replacementTime:'',handleType:'',handleTime:''}
       ],
@@ -68,13 +68,11 @@ export default {
       },
     };
   },
-  onload(){
-    let day = new Date();
-    let month = day.getMonth() + 1;
-    this.time = day.getFullYear() + "年" + month + "月" + day.getDate + "日";
-  },
   created(){
     this.getStagingMaterial();
+    let day = new Date();
+      let month = day.getMonth() + 1;
+      this.time = day.getFullYear() + "年" + month + "月" + day.getDate() + "日";
   },
   methods:{
     getCurrentRow(){
@@ -125,13 +123,12 @@ export default {
     letter-spacing: 5px;
   }
   .consumablesContent{
-    width: 75vw;
     margin: 0 auto;
     .addBtn{
     float: right;
     }
     .creatTime{
-    line-height: 40px;
+    line-height: 32px;
     }
     .el-table{
       margin-top: 20px;

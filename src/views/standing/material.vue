@@ -2,7 +2,7 @@
   <div class="material">
     <div class="materialTitle">原辅材料填报</div>
 
-    <el-button class="addSubmit" @click="addVocs" type="primary">添加</el-button>
+    <el-button class="addSubmit" @click="addVocs" type="primary" size="small">添加</el-button>
 
     <div class="creationTime">创建时间：{{ time }}</div>
 
@@ -74,13 +74,11 @@ export default {
       },
     };
   },
-  onload(){
-    let day = new Date();
-    let month = day.getMonth() + 1;
-    this.time = day.getFullYear() + "年" + month + "月" + day.getDate + "日";
-  },
   created(){
     this.getStagingMaterial();
+    let day = new Date();
+    let month = day.getMonth() + 1;
+    this.time = day.getFullYear() + "年" + month + "月" + day.getDate() + "日";
   },
   methods:{
     addVocs(){
@@ -105,7 +103,7 @@ export default {
     //添加台账
     async addFunc(){
       const res = await addParameter(this.listInfo);
-      if (res?.code) {
+      if (res?.code == "1") {
         console.log(res)
       }
     },
@@ -113,8 +111,9 @@ export default {
     //获取暂存的原辅料台账
     async getStagingMaterial(){
       const res = await getStaging({'ledgerType':1});
-        console.log(res)
       if(res?.code=="1"){
+        console.log(res)
+
         this.vocsData = res.data.ledgerDetail;
       }
     }
@@ -140,7 +139,7 @@ export default {
   }
   .creationTime{
     // margin-top: 40px;
-    line-height: 40px;
+    line-height: 32px;
   }
   .btn-box{
     margin-top: 20px;

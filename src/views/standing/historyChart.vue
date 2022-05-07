@@ -5,30 +5,46 @@
      <div class="historyType">
        <el-form :inline="true">
           <el-row type="flex">
-            <el-col :span="4"></el-col>
-            <el-col :span="7">
+            <el-col :span="6" :offset="8">
               <el-form-item label="台账类型：">
                 <el-radio-group v-model="listInfo.ledgerType" @change="selectType()">
                   <el-radio :label="1">原辅料台账</el-radio>
                   <el-radio :label="2">耗材台账</el-radio>
                 </el-radio-group>
-                
               </el-form-item>
             </el-col>
             <el-col :span="8">
               <el-form-item label="时间段：">
-                <el-date-picker v-model="val" type="daterange" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期" value-format="yyyy-MM-dd"></el-date-picker>
+                <el-date-picker v-model="val" type="daterange" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期" value-format="yyyy-MM-dd" size="small"></el-date-picker>
               </el-form-item>
             </el-col>
-            <el-col :span="5">
-              <el-button type="primary" @click="queryForm">查询</el-button>
+            <el-col :span="1" style="padding-top:3px;">
+              <el-button type="primary" @click="queryForm" size="small">查询</el-button>
+                
             </el-col>
+             <el-col :span="2" style="padding-top:3px;padding-left:20px;">
+               <div class="out" v-if="listInfo.ledgerType == 1">
+                      <template>
+                          <download-excel class="export-excel-wrapper" :data="vocsData" :fields="material" name="原辅料台账.xls" >
+                              <!-- 上面可以自定义自己的样式，还可以引用其他组件button -->
+                              <el-button type="success" size="small">导出台账</el-button>
+                          </download-excel>
+                      </template>
+                </div>
+                <div class="out" v-if="listInfo.ledgerType != 1">
+                      <template>
+                          <download-excel class="export-excel-wrapper" :data="vocsData" :fields="consumption" name="耗材台账.xls" >
+                              <!-- 上面可以自定义自己的样式，还可以引用其他组件button -->
+                              <el-button type="success" size="small">导出台账</el-button>
+                          </download-excel>
+                      </template>
+                </div>
+             </el-col>
           </el-row>
        </el-form>
-
+      
+        
         <div class="materialType">
-          <div class="typeTitle" v-if="listInfo.ledgerType == 1">原辅料台账</div>
-          <div class="typeTitles" v-if="listInfo.ledgerType != 1">耗材台账</div>
           <div class="typeContent">
             <!-- 原辅料台账 -->
             <el-table v-if="listInfo.ledgerType == 1" :data="vocsData" style="width: 100%" :header-cell-style="{'background':'#F5F3F2'}">
@@ -74,6 +90,22 @@ export default {
           startDate: "",
           endDate: ""
       },
+      material: {
+        "含VOCs材料名称":'materialName',
+        "采购量(kg)":'purchaseQuantity',
+        "本周使用量(kg)":'usageThisWeek',
+        "剩余库存量(kg)":'inventoryThisWeek',
+        "VOCs含量(%)":'vocsContent',
+        "回收方式":'recoverType',
+        "回收量":'recoverAmount', 
+      },
+      consumption:{
+        "耗材种类":'consumablesType',
+        "更换量(kg)":'replacementAmount',
+        "更换时间":'replacementTime',
+        "处置情况":'handleType',
+        "处置时间":'handleTime', 
+      },
       total:0,
     };
   },
@@ -98,6 +130,7 @@ export default {
     },
     //类型筛选
     selectType(){
+      this.vocsData.length = 0;
       this.listInfo.pageNum = 0;
       this.getMaterial();
       console.log(this.listInfo.ledgerType)
@@ -108,12 +141,16 @@ export default {
       const res = await getHistory(this.listInfo);
       if(res?.code == '1'){
         this.total = res.data.total;
-        let list = res.data.list.ledgerDetailList;
+        let list = res.data.list;
         if(list == undefined){return}
         if(list.length != 0 ){
-          this.vocsData = list;
+          list.forEach((el) => {
+            el.ledgerDetailList.forEach((val)=>{
+              this.vocsData.push(val)
+            })
+          });
         }
-        
+        console.log(this.vocsData);
       }
     },
 
@@ -130,16 +167,10 @@ export default {
     letter-spacing:5px;
   }
   .historyType{
-    width: 80vw;
+    // width: 80vw;
     margin: 0 auto;
     .el-form{
       margin-top: 20px;
-    }
-    .typeTitle,.typeTitles{
-      text-align: center;
-      font-size: 15px;
-      font-weight: bold;
-      letter-spacing:5px;
     }
     .el-table{
       margin-top: 20px;

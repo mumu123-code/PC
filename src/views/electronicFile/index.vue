@@ -1,17 +1,31 @@
 <template>
-  <div class="electronicFile">电子档案页面</div>
+  <div class="electronicFile">
+    <div class="electronicTitle">电子档案</div>
+
+
+  </div>
 </template>
 
 <script>
 export default {
   name: "electronicFile",
   data() {
-    return {};
-  },
-};
+    return {
+      };
+    },
+    methods: {
+      
+    }
+  }
 </script>
 
 <style lang="less" scoped>
 .electronicFile {
+  .electronicTitle{
+    text-align: center;
+    font-size: 18px;
+    font-weight: bold;
+    letter-spacing:5px;
+  }
 }
 </style>
