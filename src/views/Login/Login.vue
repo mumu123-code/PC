@@ -54,6 +54,8 @@ export default {
         this.$router.push({
           path: "/home",
         });
+      }else{
+        this.$message.error('账号或密码错误');
       }
     },
   },
