@@ -5,15 +5,15 @@
     </div>
     <div class="selectRow">
       <el-row class="w-100">
-         <el-col :span="5" :offset="13">
+         <el-col :xl="3" :md="5" :lg="11" :push="17">
           选择日期：<el-date-picker v-model="selectTime" type="date" size="small" placeholder="选择日期" value-format="yyyy-MM-dd"></el-date-picker> 
         </el-col>
-        <el-col :span="5">
+        <el-col :xl="3" :md="5" :lg="11">
           选择状态：<el-select v-model="listFromInfo.rectificationStatus" filterable placeholder="请选择" size="small"> 
                       <el-option v-for="item in stateData" :key="item.value" :label="item.name" :value="item.value"> </el-option>
                   </el-select>
         </el-col>
-        <el-col :span="1">
+        <el-col :xl="1" :md="8" :lg="2">
            <el-button type="primary" size="small" @click="selectFunc">查询</el-button>
         </el-col>
       </el-row>
@@ -60,16 +60,36 @@
         <el-dialog title="报告详情" :visible.sync="detailModel" @close="hideModel">
           <el-row>
             <el-col :span="3">通知时间：</el-col>
-            <el-col :span="9">
-              <!-- {{ detailInfo != {} ? detailInfo.reportData[0].noticeTime : "" }} -->123
+            <el-col :span="7">
+              {{ detailInfo.noticeTime }}
             </el-col>
             <el-col :span="3">通知内容：</el-col>
-            <el-col :span="9">
-               您的企业本周产生了123<!-- {{ detailInfo != {} ? isSize(detailInfo.reportData[0].rectificationContent) : "" }} -->次异常行为，具体如下
+            <el-col :span="11">
+               您的企业本周产生了{{ JSON.stringify(detailInfo)=='{}' ? "-" : detailInfo.alarmCountRectificationList[0].alarmCount }}次异常行为，具体如下
             </el-col>
           </el-row>
-          <div class="roomDetail">
-
+          <div class="roomDetail" v-for="(item,i) in  list" :key="i">
+            <div class="roomName">{{ item.name }}</div>
+            <div class="roomList" v-for="(el,index) in item.data" :key="index">
+              <div class="num">{{ index+1 }}</div>
+              <el-table>
+                 <el-table-column prop="behavior" label="行为">
+                   <template>
+                     {{ isType(el.alarmType) }}
+                   </template>
+                 </el-table-column>
+                 <el-table-column prop="cumulativeNumber" label="累计次数">
+                   <template>
+                     {{ el.alarmCount }}
+                   </template>
+                 </el-table-column>
+                 <el-table-column prop="controlProposal" label="管控建议">
+                   <template>
+                     {{ isAdvice(el.alarmType) }}
+                   </template>
+                 </el-table-column>
+              </el-table>
+            </div>
           </div>
         </el-dialog>
    
@@ -104,27 +124,43 @@ export default {
          detailModel:false,
         reportData:[
           	{
-              "companyId": 0,
-              "id": 0,
-              "createTime": "2022-4-7 00:00:00",
-              "rectificationResult": "",
-              "rectificationMan": "",
-              "updateTime": "2022-4-7 00:00:00",
-              "phone": "188888888888",
-              "rectificationPicture": "",
-              "rectificationStatus": 1,
-              "rectificationContent": "",
-              "noticeTime": "2022-4-7 00:00:00",
-              "completionTime": "2022-4-7 00:00:00",
-              "viewTime": "2022-4-7 00:00:00",
-              "alarmCountRectificationList": [
+              companyId: 0,
+              id: 0,
+              createTime: "2022-4-7 00:00:00",
+              rectificationResult: "",
+              rectificationMan: "",
+              updateTime: "2022-4-7 00:00:00",
+              phone: "188888888888",
+              rectificationPicture: "",
+              rectificationStatus: 1,
+              rectificationContent: "",
+              noticeTime: "2022-4-7 00:00:00",
+              completionTime: "2022-4-7 00:00:00",
+              viewTime: "2022-4-7 00:00:00",
+              alarmCountRectificationList: [
                 {
-                  "deviceId": 0,
-                  "bakingRoom": "第三号烤漆房",
-                  "roomName": "",
-                  "installationLocation": 1,
-                  "alarmType": 9,
-                  "alarmCount": 0
+                  deviceId: 0,
+                  bakingRoom: "第三号烤漆房",
+                  roomName: "1",
+                  installationLocation: 1,
+                  alarmType: 9,
+                  alarmCount: 0
+                },
+                {
+                  deviceId: 0,
+                  bakingRoom: "第三号烤漆房",
+                  roomName: "2",
+                  installationLocation: 1,
+                  alarmType: 9,
+                  alarmCount: 0
+                },
+                {
+                  deviceId: 0,
+                  bakingRoom: "第三号烤漆房",
+                  roomName: "3",
+                  installationLocation: 1,
+                  alarmType: 9,
+                  alarmCount: 0
                 }
               ]
             } 
@@ -138,6 +174,7 @@ export default {
         },
         editStateId:"",
         detailInfo:{},
+        list:[],
     };
   },
   created(){
@@ -161,13 +198,22 @@ export default {
     },
     //显示详情
     showDetail(val){
-      console.log(val)
+      // console.log(val)
+      this.detailInfo = val;
       this.detailModel = true;
       this.editStateId = "";
       if(val.state == 0){
           // this.editState(val.id);
           this.editStateId = val.id;
       }
+      let roomList=[];
+      let array = this.detailInfo.alarmCountRectificationList;
+      console.log(this.detailInfo.alarmCountRectificationList)
+      array.forEach(el => {
+        roomList.push(el.roomName)
+      });
+      console.log(roomList)
+      
     },
     
     async editState(id){
@@ -220,6 +266,9 @@ export default {
 }
 /deep/.el-pagination{
   float: right;
+}
+.roomDetail{
+  margin-top: 20px;
 }
 
 </style>
