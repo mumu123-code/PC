@@ -5,15 +5,15 @@
     </div>
     <div class="selectRow">
       <el-row class="w-100">
-         <el-col :xl="3" :md="5" :lg="11" :push="17">
+         <el-col :xl="5" :md="5" :lg="11" :push="13">
           选择日期：<el-date-picker v-model="selectTime" type="date" size="small" placeholder="选择日期" value-format="yyyy-MM-dd"></el-date-picker> 
         </el-col>
-        <el-col :xl="3" :md="5" :lg="11">
+        <el-col :xl="5" :md="5" :lg="11" :push="13">
           选择状态：<el-select v-model="listFromInfo.rectificationStatus" filterable placeholder="请选择" size="small"> 
                       <el-option v-for="item in stateData" :key="item.value" :label="item.name" :value="item.value"> </el-option>
                   </el-select>
         </el-col>
-        <el-col :xl="1" :md="8" :lg="2">
+        <el-col :xl="1" :md="8" :lg="2" :push="13">
            <el-button type="primary" size="small" @click="selectFunc">查询</el-button>
         </el-col>
       </el-row>
@@ -59,34 +59,35 @@
     <!-- 弹出框s -->
         <el-dialog title="报告详情" :visible.sync="detailModel" @close="hideModel">
           <el-row>
-            <el-col :span="3">通知时间：</el-col>
-            <el-col :span="7">
-              {{ detailInfo.noticeTime }}
-            </el-col>
-            <el-col :span="3">通知内容：</el-col>
-            <el-col :span="11">
+            <el-col :span="2">通知时间：</el-col>
+            <el-col :span="22"> {{ detailInfo.noticeTime }} </el-col>
+          </el-row>
+          <el-row>
+            <el-col :span="2">通知内容：</el-col>
+            <el-col :span="22">
                您的企业本周产生了{{ JSON.stringify(detailInfo)=='{}' ? "-" : detailInfo.alarmCountRectificationList[0].alarmCount }}次异常行为，具体如下
             </el-col>
           </el-row>
           <div class="roomDetail" v-for="(item,i) in  list" :key="i">
             <div class="roomName">{{ item.name }}</div>
-            <div class="roomList" v-for="(el,index) in item.data" :key="index">
-              <div class="num">{{ index+1 }}</div>
-              <el-table>
-                 <el-table-column prop="behavior" label="行为">
-                   <template>
-                     {{ isType(el.alarmType) }}
+             <!-- v-for="(el,index) in item.data" :key="index" -->
+            <div class="roomList">
+              <el-table :data="item.data">
+                 <el-table-column  type="index" label="序号"></el-table-column>
+                 <el-table-column prop="el.alarmType" label="行为">
+                   <template slot-scope="scope">
+                     {{ isType(scope.row.alarmType) }}
                    </template>
                  </el-table-column>
-                 <el-table-column prop="cumulativeNumber" label="累计次数">
-                   <template>
-                     {{ el.alarmCount }}
+                 <el-table-column prop="el.cumulativeNumber" label="累计次数" width="80" align="center">
+                   <template slot-scope="scope">
+                     {{ scope.row.alarmCount }}
                    </template>
                  </el-table-column>
-                 <el-table-column prop="controlProposal" label="管控建议">
-                   <template>
-                     {{ isAdvice(el.alarmType) }}
-                   </template>
+                 <el-table-column prop="el.alarmType" label="管控建议">
+                    <template slot-scope="scope">
+                     {{ isAdvice(scope.row.alarmType) }}
+                    </template> 
                  </el-table-column>
               </el-table>
             </div>
@@ -141,7 +142,7 @@ export default {
                 {
                   deviceId: 0,
                   bakingRoom: "第三号烤漆房",
-                  roomName: "1",
+                  roomName: "连微科技",
                   installationLocation: 1,
                   alarmType: 9,
                   alarmCount: 0
@@ -149,7 +150,7 @@ export default {
                 {
                   deviceId: 0,
                   bakingRoom: "第三号烤漆房",
-                  roomName: "2",
+                  roomName: "连微科技",
                   installationLocation: 1,
                   alarmType: 9,
                   alarmCount: 0
@@ -157,7 +158,7 @@ export default {
                 {
                   deviceId: 0,
                   bakingRoom: "第三号烤漆房",
-                  roomName: "3",
+                  roomName: "紫金港",
                   installationLocation: 1,
                   alarmType: 9,
                   alarmCount: 0
@@ -191,6 +192,9 @@ export default {
     isSize(type){
       return isType.isInstallationPosition(type);
     },
+    isAdvice(type){
+      return isType.isAdvice(type);
+    },
     selectFunc(){
         this.listFromInfo.startDate = this.selectTime + " 00:00:00";
         this.listFromInfo.endDate = this.selectTime + " 23:59:59";
@@ -206,13 +210,36 @@ export default {
           // this.editState(val.id);
           this.editStateId = val.id;
       }
-      let roomList=[];
-      let array = this.detailInfo.alarmCountRectificationList;
-      console.log(this.detailInfo.alarmCountRectificationList)
-      array.forEach(el => {
-        roomList.push(el.roomName)
-      });
-      console.log(roomList)
+      let arr = val.alarmCountRectificationList;
+      if(arr.length == 0){return};
+      let roomData = [];
+      arr.forEach((item)=>{
+          roomData.push(item.roomName);
+      })
+      roomData = new Set([...roomData])
+      let list = [];
+      roomData.forEach((item)=>{
+        list.push({
+          name:item,
+          data:[],
+        })
+      })
+      console.log(roomData)
+      list.forEach((item)=>{
+        arr.forEach((el)=>{
+          if(item.name == el.roomName){
+            item.data.push(el);
+          }
+        })
+      })
+      console.log(list)
+      this.list = list;
+      // console.log(this.detailInfo.alarmCountRectificationList)
+
+      // array.forEach(el => {
+      //   roomList.push(el.roomName)
+      // });
+      // console.log(roomList)
       
     },
     
