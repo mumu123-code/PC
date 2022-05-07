@@ -104,6 +104,11 @@ const routes = [
         name: "abnormal",
         component: () => import("../views/abnormal/index.vue"),
       },
+      {
+        path: "/charts", // 总设备
+        name: "charts",
+        component: () => import("../views/equipment/charts.vue"),
+      },
     ]
   },
 ];
