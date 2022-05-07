@@ -4,16 +4,16 @@
       诊断报告
     </div>
     <div class="selectRow">
-      <el-row class="w-100">
-         <el-col :xl="5" :md="5" :lg="11" :push="13">
+      <el-row class="w-100" type="flex" justify="start">
+         <el-col :xl="5" :md="5" :lg="7">
           选择日期：<el-date-picker v-model="selectTime" type="date" size="small" placeholder="选择日期" value-format="yyyy-MM-dd"></el-date-picker> 
         </el-col>
-        <el-col :xl="5" :md="5" :lg="11" :push="13">
+        <el-col :xl="5" :md="5" :lg="7">
           选择状态：<el-select v-model="listFromInfo.rectificationStatus" filterable placeholder="请选择" size="small"> 
                       <el-option v-for="item in stateData" :key="item.value" :label="item.name" :value="item.value"> </el-option>
                   </el-select>
         </el-col>
-        <el-col :xl="1" :md="8" :lg="2" :push="13">
+        <el-col :xl="1" :md="8" :lg="2">
            <el-button type="primary" size="small" @click="selectFunc">查询</el-button>
         </el-col>
       </el-row>
@@ -59,13 +59,10 @@
     <!-- 弹出框s -->
         <el-dialog title="报告详情" :visible.sync="detailModel" @close="hideModel">
           <el-row>
-            <el-col :span="2">通知时间：</el-col>
-            <el-col :span="22"> {{ detailInfo.noticeTime }} </el-col>
+            <el-col :span="24">通知时间：{{ detailInfo.noticeTime }} </el-col>
           </el-row>
           <el-row>
-            <el-col :span="2">通知内容：</el-col>
-            <el-col :span="22">
-               您的企业本周产生了{{ JSON.stringify(detailInfo)=='{}' ? "-" : detailInfo.alarmCountRectificationList[0].alarmCount }}次异常行为，具体如下
+            <el-col :span="24">通知内容：您的企业本周产生了{{ JSON.stringify(detailInfo)=='{}' ? "-" : detailInfo.alarmCountRectificationList[0].alarmCount }}次异常行为，具体如下:
             </el-col>
           </el-row>
           <div class="roomDetail" v-for="(item,i) in  list" :key="i">
@@ -247,7 +244,9 @@ export default {
       await editReportState({rid:id});
     },
     hideModel(){
+      if(this.detailInfo.rectificationStatus == 0){
         this.getList();
+      }
     },
     //分页
     selectPage(val){
@@ -295,7 +294,18 @@ export default {
   float: right;
 }
 .roomDetail{
+    // background: #d8e3e7;
   margin-top: 20px;
+  .roomName{
+    font-size: 15px;
+    padding-top: 10px;
+    letter-spacing: 3px;
+  }
+  .roomList{
+    margin-top: 14px;
+    box-shadow: 0px 2px 2px 3px rgba(15, 15, 15, 0.08);
+    
+  }
 }
 
 </style>
