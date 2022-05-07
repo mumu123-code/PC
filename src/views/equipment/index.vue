@@ -2,17 +2,17 @@
   <div class="equipment">
     <!-- 搜索 s -->
     <div class="equipment-search">
-      <span>设备名称：</span>
-      <el-select v-model="value" placeholder="请选择">
+      <span>房间名称：</span>
+      <el-select v-model="value" placeholder="请选择" size="small">
         <el-option
-          v-for="item in options"
-          :key="item.value"
-          :label="item.label"
-          :value="item.value"
+          v-for="item in tableData"
+          :key="item.roomName"
+          :label="item.roomName"
+          :value="item.roomName"
         >
         </el-option>
       </el-select>
-      <el-button type="primary" :loading="butShow" class="searchBut"
+      <el-button type="primary" :loading="butShow" class="searchBut" size="small"
         >查询</el-button
       >
     </div>
@@ -21,13 +21,15 @@
     <!-- 设备table s -->
     <div class="tableTitle">总设备列表</div>
     <el-table :data="tableData" max-height="850" border style="width: 100%">
+     <el-table-column prop="roomName" label="房间名称" align="center">
+      </el-table-column>
       <el-table-column prop="deviceNumber" label="设备编号" align="center">
       </el-table-column>
-      <el-table-column prop="nvocs" label="Vocs值" align="center">
+      <el-table-column prop="nvocs" label="Vocs(LW-N)" align="center">
       </el-table-column>
       <el-table-column
         prop="gvocs"
-        label="gVocs值"
+        label="gVocs(LW-G)"
         align="center"
       ></el-table-column>
       <el-table-column label="工作状态" align="center">

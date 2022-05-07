@@ -1,7 +1,8 @@
 <template>
   <div class="about">
     <el-container>
-      <el-header>企业PC系统</el-header>
+      <el-header>VOCs数智哨兵系统(企业版)</el-header>
+      <div class="title">( {{companyName}} )</div>
       <el-container>
         <el-aside width="200px">
           <NavMenu />
@@ -20,7 +21,12 @@ import NavMenu from "../components/Navmenu/NavMenu.vue";
 export default {
   name: "AboutView",
   data() {
-    return {};
+    return {
+      companyName:"",
+    };
+  },
+  created(){
+    this.companyName = JSON.parse(sessionStorage.getItem('userInfo')).companyName
   },
   components: {
     NavMenu,
@@ -35,9 +41,14 @@ export default {
     background-color: #fff;
     text-align: center;
     height: 10vh;
-    line-height: 8vh;
+    line-height: 10vh;
     font-weight: bold;
     font-size: 20px;
+    letter-spacing: 2px;
+  }
+  .title{
+    text-align: center;
+    margin-top: -20px;
   }
   .el-aside {
     background-color: #fff;
