@@ -15,6 +15,7 @@ module.exports = {
           '^/api': ''//请求的时候使用这个api
         }
       }
-    }
+    },
+    port: 8085,
   },
 }

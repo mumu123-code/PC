@@ -243,8 +243,9 @@ export default {
             this.roomTemArr.push(gtemperature);
             this.ductTemArr.push(ntemperature);
           } else {
+            console.log(this.dateArr[this.dateArr.length - 1],date[1], '你好啊!');
             // 如果数组的最后一位与本次循环时间不相同，添加本次时间进去
-            if(this.dateArr[this.dateArr.length] !== date[1]) {
+            if(this.dateArr[this.dateArr.length - 1] !== date[1]) {
               this.dateArr.push(date[1]);
               this.roomVocsArr.push(gvocs);
               this.ductVocsArr.push(nvocs);
@@ -255,6 +256,7 @@ export default {
         })
       }
       if(res.data.pages > res.data.pageNum) {
+        this.formInfo.pageNum ++;
         this.getHistoryData();
       } else {
           this.$set(this.seriesData[0],'data',this.roomVocsArr);
@@ -263,6 +265,7 @@ export default {
           this.$set(this.seriesData[3],'data',this.ductTemArr);
           this.$set(this.options.xAxis,'data', this.dateArr);
           this.$set(this.options,'series',this.seriesData);
+          // this.options.series = this.seriesData;
           this.initChart();          
       }
     }

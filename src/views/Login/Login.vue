@@ -11,7 +11,7 @@
       <span class="loginTitle">企业PC系统</span>
       <!-- </el-form-item> -->
       <el-form-item label="账号" label-width="50px" prop="userName">
-        <el-input v-model="loginForm.userName" :maxlength="11"></el-input>
+        <el-input v-model="loginForm.userName"></el-input>
       </el-form-item>
       <el-form-item label="密码" label-width="50px" prop="passWord">
         <el-input v-model="loginForm.passWord"></el-input>
@@ -29,7 +29,7 @@ export default {
   data() {
     return {
       loginForm: {
-        userName: "浙江轻机离心机制造有限公司",
+        userName: "杭州天宏焊接材料有限公司",
         passWord: "123456",
         systemId: 3,
       },
