@@ -40,9 +40,13 @@
           <template slot-scope="scope">
             {{ isSize(scope.row.alarmCountRectificationList[0].installationLocation) }}
           </template>
+        </el-table-column> -->
+        <el-table-column prop="reportData.rectificationStatus" label="整改内容">
+          <template slot-scope="scope">
+            {{ scope.row.rectificationContent }}
+          </template>
         </el-table-column>
-
-        <el-table-column prop="reportData.rectificationStatus" label="整改状态" width="100">
+        <el-table-column prop="reportData.rectificationStatus" label="整改状态">
           <template slot-scope="scope">
             {{ scope.row.rectificationStatus == 0 ? "未整改"  : scope.row.rectificationStatus == 1 ? "整改中" : "整改完成" }}
           </template>
@@ -53,7 +57,7 @@
               {{ scope.row.phone }}
             </template>
         </el-table-column>
-        <el-table-column prop="reportData.updateTime" label="通知时间" width="140">
+        <el-table-column prop="reportData.updateTime" label="通知时间">
             <template slot-scope="scope">
             {{ scope.row.updateTime }}
           </template>
