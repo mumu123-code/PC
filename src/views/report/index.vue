@@ -4,7 +4,7 @@
       诊断报告
     </div>
     <div class="selectRow">
-      <el-row>
+      <el-row class="w-100">
          <el-col :span="5" :offset="13">
           选择日期：<el-date-picker v-model="selectTime" type="date" size="small" placeholder="选择日期" value-format="yyyy-MM-dd"></el-date-picker> 
         </el-col>
@@ -20,27 +20,6 @@
     </div>
     <div class="reportContent">
       <el-table :data="reportData" style="width: 100%,margon-top:20px" :header-cell-style="{'background':'#F5F3F2'}">
-        <!-- <el-table-column prop="reportData.roomName" label="房间名称">
-           <template slot-scope="scope">
-              {{ scope.row.alarmCountRectificationList[0].bakingRoom }}
-            </template>
-        </el-table-column>
-        
-         <el-table-column prop="reportData.alarmType" label="报警类型">
-          <template slot-scope="scope">
-            {{ isType(scope.row.alarmCountRectificationList[0].alarmType) }}
-          </template>
-        </el-table-column>
-         <el-table-column prop="reportData.roomName" label="报警次数 " width="80">
-          <template slot-scope="scope">
-            {{ scope.row.alarmCountRectificationList[0].alarmCount }}
-          </template>
-        </el-table-column>
-        <el-table-column prop="reportData.roomName" label="安装位置 " width="140">
-          <template slot-scope="scope">
-            {{ isSize(scope.row.alarmCountRectificationList[0].installationLocation) }}
-          </template>
-        </el-table-column> -->
         <el-table-column prop="reportData.rectificationStatus" label="整改内容">
           <template slot-scope="scope">
             {{ scope.row.rectificationContent }}
@@ -51,8 +30,8 @@
             {{ scope.row.rectificationStatus == 0 ? "未整改"  : scope.row.rectificationStatus == 1 ? "整改中" : "整改完成" }}
           </template>
         </el-table-column>
-        <el-table-column prop="reportData.rectificationMan" label="整改人"></el-table-column>
-        <el-table-column prop="reportData.phone" label="联系电话">
+        <el-table-column prop="reportData.rectificationMan" label="整改人" width="100"></el-table-column>
+        <el-table-column prop="reportData.phone" label="联系电话" width="180">
              <template slot-scope="scope">
               {{ scope.row.phone }}
             </template>
@@ -62,7 +41,7 @@
             {{ scope.row.updateTime }}
           </template>
         </el-table-column>
-        <el-table-column prop="reportData.detail" label="查看详情" width="100" align="center">
+        <el-table-column prop="reportData.detail" label="查看详情" align="center">
            <template slot-scope="scope">
              <!-- .id,scope.row.rectificationStatus -->
              <span @click="showDetail(scope.row)" style="font-size:28px;"><i class="el-icon-view"></i></span>
@@ -80,13 +59,18 @@
     <!-- 弹出框s -->
         <el-dialog title="报告详情" :visible.sync="detailModel" @close="hideModel">
           <el-row>
-            <el-col :span="2">房间名称：</el-col>
-            <!-- <el-col :span="10">{{ detailInfo != {} ? detailInfo.alarmCountRectificationList[0].bakingRoom : "" }}</el-col> -->
-            <el-col :span="2">安装位置：</el-col>
-            <el-col :span="10">
-               <!-- {{ detailInfo != {} ? isSize(detailInfo.alarmCountRectificationList[0].installationLocation) : "" }} -->
+            <el-col :span="3">通知时间：</el-col>
+            <el-col :span="9">
+              <!-- {{ detailInfo != {} ? detailInfo.reportData[0].noticeTime : "" }} -->123
+            </el-col>
+            <el-col :span="3">通知内容：</el-col>
+            <el-col :span="9">
+               您的企业本周产生了123<!-- {{ detailInfo != {} ? isSize(detailInfo.reportData[0].rectificationContent) : "" }} -->次异常行为，具体如下
             </el-col>
           </el-row>
+          <div class="roomDetail">
+
+          </div>
         </el-dialog>
    
     <!-- 弹出框e -->
@@ -219,12 +203,12 @@ export default {
   }
   .selectRow{
     margin-top: 20px;
-   
   }
   .paging{
     margin-top: 20px;
   }
 }
+
 .selectType /deep/.el-select{
     width: 70%;
 }
@@ -237,4 +221,5 @@ export default {
 /deep/.el-pagination{
   float: right;
 }
+
 </style>
