@@ -4,34 +4,34 @@
       诊断报告
     </div>
     <div class="selectRow">
-      <el-row>
-         <el-col :span="5" :offset="13">
+      <el-row >
+         <el-col :span="6">
           选择日期：<el-date-picker v-model="selectTime" type="date" size="small" placeholder="选择日期" value-format="yyyy-MM-dd"></el-date-picker> 
         </el-col>
-        <el-col :span="5">
+        <el-col :span="6">
           选择状态：<el-select v-model="listFromInfo.rectificationStatus" filterable placeholder="请选择" size="small"> 
                       <el-option v-for="item in stateData" :key="item.value" :label="item.name" :value="item.value"> </el-option>
                   </el-select>
         </el-col>
-        <el-col :span="1">
+        <el-col :span="2">
            <el-button type="primary" size="small" @click="selectFunc">查询</el-button>
         </el-col>
       </el-row>
     </div>
     <div class="reportContent">
       <el-table :data="reportData" style="width: 100%,margon-top:20px" :header-cell-style="{'background':'#F5F3F2'}">
-        <el-table-column prop="reportData.roomName" label="房间名称">
+        <el-table-column prop="reportData.roomName" label="房间名称" width="140">
            <template slot-scope="scope">
               {{ scope.row.alarmCountRectificationList[0].bakingRoom }}
             </template>
         </el-table-column>
         
-         <el-table-column prop="reportData.alarmType" label="报警类型">
+         <el-table-column prop="reportData.alarmType" label="报警类型" width="400">
           <template slot-scope="scope">
             {{ isType(scope.row.alarmCountRectificationList[0].alarmType) }}
           </template>
         </el-table-column>
-         <el-table-column prop="reportData.roomName" label="报警次数 " width="80">
+         <el-table-column prop="reportData.roomName" label="报警次数 " width="120">
           <template slot-scope="scope">
             {{ scope.row.alarmCountRectificationList[0].alarmCount }}
           </template>
@@ -48,7 +48,7 @@
           </template>
         </el-table-column>
         <el-table-column prop="reportData.rectificationMan" label="整改人" width="100"></el-table-column>
-        <el-table-column prop="reportData.phone" label="联系电话" width="150">
+        <el-table-column prop="reportData.phone" label="联系电话" width="180">
              <template slot-scope="scope">
               {{ scope.row.phone }}
             </template>
@@ -58,7 +58,7 @@
             {{ scope.row.updateTime }}
           </template>
         </el-table-column>
-        <el-table-column prop="reportData.detail" label="查看详情" width="100" align="center">
+        <el-table-column prop="reportData.detail" label="查看详情" align="center">
            <template slot-scope="scope">
              <!-- .id,scope.row.rectificationStatus -->
              <span @click="showDetail(scope.row)" style="font-size:28px;"><i class="el-icon-view"></i></span>
@@ -76,13 +76,18 @@
     <!-- 弹出框s -->
         <el-dialog title="报告详情" :visible.sync="detailModel" @close="hideModel">
           <el-row>
-            <el-col :span="2">房间名称：</el-col>
-            <!-- <el-col :span="10">{{ detailInfo != {} ? detailInfo.alarmCountRectificationList[0].bakingRoom : "" }}</el-col> -->
-            <el-col :span="2">安装位置：</el-col>
-            <el-col :span="10">
-               <!-- {{ detailInfo != {} ? isSize(detailInfo.alarmCountRectificationList[0].installationLocation) : "" }} -->
+            <el-col :span="3">通知时间：</el-col>
+            <el-col :span="9">
+              <!-- {{ detailInfo != {} ? detailInfo.reportData[0].noticeTime : "" }} -->123
+            </el-col>
+            <el-col :span="3">通知内容：</el-col>
+            <el-col :span="9">
+               您的企业本周产生了123<!-- {{ detailInfo != {} ? isSize(detailInfo.reportData[0].rectificationContent) : "" }} -->次异常行为，具体如下
             </el-col>
           </el-row>
+          <div class="roomDetail">
+
+          </div>
         </el-dialog>
    
     <!-- 弹出框e -->
@@ -214,13 +219,14 @@ export default {
     letter-spacing:5px;
   }
   .selectRow{
+    width: 1280px;
     margin-top: 20px;
-   
   }
   .paging{
     margin-top: 20px;
   }
 }
+
 .selectType /deep/.el-select{
     width: 70%;
 }
@@ -233,4 +239,5 @@ export default {
 /deep/.el-pagination{
   float: right;
 }
+
 </style>
