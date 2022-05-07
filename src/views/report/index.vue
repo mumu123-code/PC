@@ -20,7 +20,7 @@
     </div>
     <div class="reportContent">
       <el-table :data="reportData" style="width: 100%,margon-top:20px" :header-cell-style="{'background':'#F5F3F2'}">
-        <el-table-column prop="reportData.roomName" label="房间名称">
+        <!-- <el-table-column prop="reportData.roomName" label="房间名称">
            <template slot-scope="scope">
               {{ scope.row.alarmCountRectificationList[0].bakingRoom }}
             </template>
@@ -40,20 +40,24 @@
           <template slot-scope="scope">
             {{ isSize(scope.row.alarmCountRectificationList[0].installationLocation) }}
           </template>
+        </el-table-column> -->
+        <el-table-column prop="reportData.rectificationStatus" label="整改内容">
+          <template slot-scope="scope">
+            {{ scope.row.rectificationContent }}
+          </template>
         </el-table-column>
-
-        <el-table-column prop="reportData.rectificationStatus" label="整改状态" width="100">
+        <el-table-column prop="reportData.rectificationStatus" label="整改状态">
           <template slot-scope="scope">
             {{ scope.row.rectificationStatus == 0 ? "未整改"  : scope.row.rectificationStatus == 1 ? "整改中" : "整改完成" }}
           </template>
         </el-table-column>
-        <el-table-column prop="reportData.rectificationMan" label="整改人" width="100"></el-table-column>
-        <el-table-column prop="reportData.phone" label="联系电话" width="150">
+        <el-table-column prop="reportData.rectificationMan" label="整改人"></el-table-column>
+        <el-table-column prop="reportData.phone" label="联系电话">
              <template slot-scope="scope">
               {{ scope.row.phone }}
             </template>
         </el-table-column>
-        <el-table-column prop="reportData.updateTime" label="通知时间" width="140">
+        <el-table-column prop="reportData.updateTime" label="通知时间">
             <template slot-scope="scope">
             {{ scope.row.updateTime }}
           </template>
