@@ -48,7 +48,6 @@ export default {
   }
   .title{
     text-align: center;
-    margin-top: -20px;
   }
   .el-aside {
     background-color: #fff;
