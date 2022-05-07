@@ -24,8 +24,7 @@
            <template slot-scope="scope">
               {{ scope.row.alarmCountRectificationList[0].bakingRoom }}
             </template>
-        </el-table-column>
-        
+        </el-table-column> 
          <el-table-column prop="reportData.alarmType" label="报警类型">
           <template slot-scope="scope">
             {{ isType(scope.row.alarmCountRectificationList[0].alarmType) }}
