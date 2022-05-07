@@ -50,7 +50,7 @@ export default {
   methods: {
     go() {
       this.$router.push({
-        path: "/about",
+        path: "/equipment",
       });
     },
   },
