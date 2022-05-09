@@ -49,8 +49,91 @@ export default {
       ductVocsArr: [], // 风管内Vocs值
       roomTemArr: [], // 房间内温度
       ductTemArr: [], // 风管内温度
-      seriesData: [
-        {
+      options: {
+        legend: [
+          {
+            top: "0%",
+            left: "0%",
+            textStyle: {
+              fontSize: 12, // 字体大小
+              color: "#", // 字体颜色（图例与图例文字配色保持一致）
+            },
+            data: [
+              {
+                name: "房间内温度",
+              },
+              {
+                name: "风管内温度"
+              }
+            ]
+          },
+          {
+            top: "0%",
+            right: "0%",
+            textStyle: {
+              fontSize: 12, // 字体大小
+              color: "#", // 字体颜色（图例与图例文字配色保持一致）
+            },
+            data: [
+              {
+                name: "房间内Vocs值",
+              },
+              {
+                name: "风管内Vocs值"
+              }
+            ]
+          }
+        ],
+        tooltip: {
+          trigger: 'axis'
+        },
+        xAxis: {
+          name: '时间',
+          type: 'category',
+          data: [],
+          nameTextStyle: {
+            padding: [0,0,20,50]
+          },
+          axisLabel: {
+            interval: 59
+          }
+        },
+        yAxis: [
+          {
+            type: 'value',
+            name: "温度值",
+            nameTextStyle: {
+              padding: [0,0,0,0]
+            },
+            splitNumber: 6, // 设置坐标轴的分割段数
+            min: 0,
+            max: 30,
+            interval: (30 - 0) / 6,
+            axisLabel: {
+              formatter: function(v) {
+                return v.toFixed(1)
+              }
+            },
+          },
+          {
+            type: 'value',
+            name: "Vocs值",
+            nameTextStyle: {
+              padding: [0,0,0,0]
+            },
+            splitNumber: 6, // 设置坐标轴的分割段数
+            min: 0,
+            max: 10,
+            interval: (10 - 0) / 6,
+            axisLabel: {
+              formatter: function(v) {
+                return v.toFixed(1)
+              }
+            },
+          }
+        ],
+        series: [
+          {
             name: '房间内Vocs值',
             type: "line",
             color: ["#1890FF"],
@@ -81,92 +164,8 @@ export default {
             symbol: 'none',
             smooth: false,
             data: [],
-          }
-      ],
-      options: {
-        legend: [
-          {
-            top: "0%",
-            left: "0%",
-            textStyle: {
-              fontSize: 12, // 字体大小
-              color: "#", // 字体颜色（图例与图例文字配色保持一致）
-            },
-            data: [
-              {
-                name: "房间内Vocs值",
-              },
-              {
-                name: "风管内Vocs值"
-              }
-            ]
           },
-          {
-            top: "0%",
-            right: "0%",
-            textStyle: {
-              fontSize: 12, // 字体大小
-              color: "#", // 字体颜色（图例与图例文字配色保持一致）
-            },
-            data: [
-              {
-                name: "房间内温度",
-              },
-              {
-                name: "风管内温度"
-              }
-            ]
-          }
         ],
-        tooltip: {
-          trigger: 'axis'
-        },
-        xAxis: {
-          name: '时间',
-          type: 'category',
-          data: [],
-          nameTextStyle: {
-            padding: [0,0,20,50]
-          },
-          axisLabel: {
-            interval: 59
-          }
-        },
-        yAxis: [
-          {
-            type: 'value',
-            name: "Vocs值",
-            nameTextStyle: {
-              padding: [0,0,0,0]
-            },
-            splitNumber: 6, // 设置坐标轴的分割段数
-            min: 0,
-            max: 10,
-            interval: (10 - 0) / 6,
-            axisLabel: {
-              formatter: function(v) {
-                return v.toFixed(1)
-              }
-            },
-          },
-          {
-            type: 'value',
-            name: "温度值",
-            nameTextStyle: {
-              padding: [0,0,0,0]
-            },
-            splitNumber: 6, // 设置坐标轴的分割段数
-            min: 0,
-            max: 30,
-            interval: (30 - 0) / 6,
-            axisLabel: {
-              formatter: function(v) {
-                return v.toFixed(1)
-              }
-            },
-          }
-        ],
-        series: []
       }
     };
   },
@@ -184,26 +183,6 @@ export default {
       var maxval = maxint * 5 + 5; // 最终设置的最大值
       return maxval; // 输出最大值
     },
-    // 获取最小值方法
-    // calMin(arr) {
-    //   var min = Math.min.apply(null, arr); // 获取最小值方法
-    //   var minint = Math.floor(min / 1); // 向下以1的倍数取整
-    //   var minval = minint * 1 - 5; // 最终设置的最小值
-    //   return minval; // 输出最小值
-    // },
-    // getXaxis() {
-    //   let Arr = [];
-    //   for (let i = 0; i < 24; i++) {
-    //     for (let k = 0; k < 60; k++) {
-    //       let mm,dd;
-    //       i < 10 ? (mm = `0${i}`) : (mm = i);
-    //       k < 10 ? (dd = `0${k}`) : (dd = k);
-    //       Arr.push(`${mm}:${dd}`);
-    //     }
-    //   }
-    //   Arr.push('23:59');
-    //   return Arr;
-    // },
     // 初始化图表
     initChart() {
       // 调用方法获取数据的最大值
@@ -216,11 +195,14 @@ export default {
       // dataMaxGv > dataMaxNv ? (maxV = dataMaxGv) : (maxV = dataMaxNv);
       // dataMaxGt > dataMaxNt ? (maxT = dataMaxGt) : (maxT = dataMaxNt);
 
+      // this.$set(this.options.yAxis[0], 'max', maxV);
+      // this.$set(this.options.yAxis[0], 'interval', (maxV / 6));
+      // this.$set(this.options.yAxis[1], 'max', maxT);
+      // this.$set(this.options.yAxis[1], 'interval', (maxT / 6));
+
       // 基于准备好的dom，初始化echarts实例
       var myChart = echarts.init(document.getElementById('main'));
       // 绘制图表
-      console.log(this.options, 'options');
-      console.log(this.seriesData, 'seriesData');
       myChart.setOption(this.options);
     },
     // 获取设备信息
@@ -235,22 +217,22 @@ export default {
         res.data.list.map(item => {
           // 取出需要的值
           const { createTime, gvocs, nvocs, gtemperature, ntemperature } = item;
-          const date = createTime.split(' ');
+          const date = createTime.split(' ')[1].split(':').splice(0,2);
+          const dateStr = date.join(':');
           if(!this.dateArr.length) {
-            this.dateArr.push(date[1]);
-            this.roomVocsArr.push(gvocs);
-            this.ductVocsArr.push(nvocs);
-            this.roomTemArr.push(gtemperature);
-            this.ductTemArr.push(ntemperature);
+            this.dateArr.unshift(dateStr);
+            this.roomVocsArr.unshift(gvocs);
+            this.ductVocsArr.unshift(nvocs);
+            this.roomTemArr.unshift(gtemperature);
+            this.ductTemArr.unshift(ntemperature);
           } else {
-            console.log(this.dateArr[this.dateArr.length - 1],date[1], '你好啊!');
             // 如果数组的最后一位与本次循环时间不相同，添加本次时间进去
-            if(this.dateArr[this.dateArr.length - 1] !== date[1]) {
-              this.dateArr.push(date[1]);
-              this.roomVocsArr.push(gvocs);
-              this.ductVocsArr.push(nvocs);
-              this.roomTemArr.push(gtemperature);
-              this.ductTemArr.push(ntemperature);
+            if(this.dateArr[0] !== dateStr) {
+              this.dateArr.unshift(dateStr);
+              this.roomVocsArr.unshift(gvocs);
+              this.ductVocsArr.unshift(nvocs);
+              this.roomTemArr.unshift(gtemperature);
+              this.ductTemArr.unshift(ntemperature);
             }
           }
         })
@@ -259,13 +241,11 @@ export default {
         this.formInfo.pageNum ++;
         this.getHistoryData();
       } else {
-          this.$set(this.seriesData[0],'data',this.roomVocsArr);
-          this.$set(this.seriesData[1],'data',this.ductVocsArr);
-          this.$set(this.seriesData[2],'data',this.roomTemArr);
-          this.$set(this.seriesData[3],'data',this.ductTemArr);
           this.$set(this.options.xAxis,'data', this.dateArr);
-          this.$set(this.options,'series',this.seriesData);
-          // this.options.series = this.seriesData;
+          this.$set(this.options.series[0],'data',this.roomVocsArr);
+          this.$set(this.options.series[1],'data',this.ductVocsArr);
+          this.$set(this.options.series[2],'data',this.roomTemArr);
+          this.$set(this.options.series[3],'data',this.ductTemArr);
           this.initChart();          
       }
     }

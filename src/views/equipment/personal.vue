@@ -2,7 +2,7 @@
   <div class="personal">
     <!-- 顶部编号、历史数据查看 s -->
     <div class="personal-top">
-      <div class="personalTop-name">设备编号：20222</div>
+      <div class="personalTop-name">房间名：{{roomName}}</div>
       <el-button type="info" size="mini" round @click="toGo">
         历史数据查看 <i class="el-icon-arrow-right"></i>
       </el-button>
@@ -210,12 +210,14 @@ export default {
       productionStatusArr: [], // 设备生产状态数据
       time: "",
       activeId: 0, // 设备id
+      roomName: '', // 房间名称
       productionObj: {}, // 设备信息数据
     };
   },
   mounted() {
     // 上个页面传值下来的id
     this.activeId = this.$route.query.id;
+    this.roomName = this.$route.query.roomName;
     // 设置当天日期
     this.time = getNowTime();
     // 获取设备生产状态
