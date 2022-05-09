@@ -105,6 +105,7 @@ export default {
         name: "personal",
         query: {
           id: row.id,
+          roomName: row.roomName
         },
       });
     },
@@ -119,7 +120,6 @@ export default {
         this.tableData = res.data;
         // 赋值总长度
         this.tableNum = res.data.length;
-        console.log(this.tableNum, res.data.length, '长度')
       }
     },
   },
