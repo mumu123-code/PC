@@ -4,16 +4,16 @@
       诊断报告
     </div>
     <div class="selectRow">
-      <el-row class="w-100">
-         <el-col :span="5" :offset="13">
+      <el-row class="w-100" type="flex" justify="start">
+         <el-col :xl="5" :md="5" :lg="7">
           选择日期：<el-date-picker v-model="selectTime" type="date" size="small" placeholder="选择日期" value-format="yyyy-MM-dd"></el-date-picker> 
         </el-col>
-        <el-col :span="5">
+        <el-col :xl="5" :md="5" :lg="7">
           选择状态：<el-select v-model="listFromInfo.rectificationStatus" filterable placeholder="请选择" size="small"> 
                       <el-option v-for="item in stateData" :key="item.value" :label="item.name" :value="item.value"> </el-option>
                   </el-select>
         </el-col>
-        <el-col :span="1">
+        <el-col :xl="1" :md="8" :lg="2">
            <el-button type="primary" size="small" @click="selectFunc">查询</el-button>
         </el-col>
       </el-row>
@@ -59,17 +59,35 @@
     <!-- 弹出框s -->
         <el-dialog title="报告详情" :visible.sync="detailModel" @close="hideModel">
           <el-row>
-            <el-col :span="3">通知时间：</el-col>
-            <el-col :span="9">
-              <!-- {{ detailInfo != {} ? detailInfo.reportData[0].noticeTime : "" }} -->123
-            </el-col>
-            <el-col :span="3">通知内容：</el-col>
-            <el-col :span="9">
-               您的企业本周产生了123<!-- {{ detailInfo != {} ? isSize(detailInfo.reportData[0].rectificationContent) : "" }} -->次异常行为，具体如下
+            <el-col :span="24">通知时间：{{ detailInfo.noticeTime }} </el-col>
+          </el-row>
+          <el-row>
+            <el-col :span="24">通知内容：您的企业本周产生了{{ JSON.stringify(detailInfo)=='{}' ? "-" : detailInfo.alarmCountRectificationList[0].alarmCount }}次异常行为，具体如下:
             </el-col>
           </el-row>
-          <div class="roomDetail">
-
+          <div class="roomDetail" v-for="(item,i) in  list" :key="i">
+            <div class="roomName">{{ item.name }}</div>
+             <!-- v-for="(el,index) in item.data" :key="index" -->
+            <div class="roomList">
+              <el-table :data="item.data">
+                 <el-table-column  type="index" label="序号"></el-table-column>
+                 <el-table-column prop="el.alarmType" label="行为">
+                   <template slot-scope="scope">
+                     {{ isType(scope.row.alarmType) }}
+                   </template>
+                 </el-table-column>
+                 <el-table-column prop="el.cumulativeNumber" label="累计次数" width="80" align="center">
+                   <template slot-scope="scope">
+                     {{ scope.row.alarmCount }}
+                   </template>
+                 </el-table-column>
+                 <el-table-column prop="el.alarmType" label="管控建议">
+                    <template slot-scope="scope">
+                     {{ isAdvice(scope.row.alarmType) }}
+                    </template> 
+                 </el-table-column>
+              </el-table>
+            </div>
           </div>
         </el-dialog>
    
@@ -104,27 +122,43 @@ export default {
          detailModel:false,
         reportData:[
           	{
-              "companyId": 0,
-              "id": 0,
-              "createTime": "2022-4-7 00:00:00",
-              "rectificationResult": "",
-              "rectificationMan": "",
-              "updateTime": "2022-4-7 00:00:00",
-              "phone": "188888888888",
-              "rectificationPicture": "",
-              "rectificationStatus": 1,
-              "rectificationContent": "",
-              "noticeTime": "2022-4-7 00:00:00",
-              "completionTime": "2022-4-7 00:00:00",
-              "viewTime": "2022-4-7 00:00:00",
-              "alarmCountRectificationList": [
+              companyId: 0,
+              id: 0,
+              createTime: "2022-4-7 00:00:00",
+              rectificationResult: "",
+              rectificationMan: "",
+              updateTime: "2022-4-7 00:00:00",
+              phone: "188888888888",
+              rectificationPicture: "",
+              rectificationStatus: 1,
+              rectificationContent: "",
+              noticeTime: "2022-4-7 00:00:00",
+              completionTime: "2022-4-7 00:00:00",
+              viewTime: "2022-4-7 00:00:00",
+              alarmCountRectificationList: [
                 {
-                  "deviceId": 0,
-                  "bakingRoom": "第三号烤漆房",
-                  "roomName": "",
-                  "installationLocation": 1,
-                  "alarmType": 9,
-                  "alarmCount": 0
+                  deviceId: 0,
+                  bakingRoom: "第三号烤漆房",
+                  roomName: "连微科技",
+                  installationLocation: 1,
+                  alarmType: 9,
+                  alarmCount: 0
+                },
+                {
+                  deviceId: 0,
+                  bakingRoom: "第三号烤漆房",
+                  roomName: "连微科技",
+                  installationLocation: 1,
+                  alarmType: 9,
+                  alarmCount: 0
+                },
+                {
+                  deviceId: 0,
+                  bakingRoom: "第三号烤漆房",
+                  roomName: "紫金港",
+                  installationLocation: 1,
+                  alarmType: 9,
+                  alarmCount: 0
                 }
               ]
             } 
@@ -138,6 +172,7 @@ export default {
         },
         editStateId:"",
         detailInfo:{},
+        list:[],
     };
   },
   created(){
@@ -154,6 +189,9 @@ export default {
     isSize(type){
       return isType.isInstallationPosition(type);
     },
+    isAdvice(type){
+      return isType.isAdvice(type);
+    },
     selectFunc(){
         this.listFromInfo.startDate = this.selectTime + " 00:00:00";
         this.listFromInfo.endDate = this.selectTime + " 23:59:59";
@@ -161,20 +199,54 @@ export default {
     },
     //显示详情
     showDetail(val){
-      console.log(val)
+      // console.log(val)
+      this.detailInfo = val;
       this.detailModel = true;
       this.editStateId = "";
       if(val.state == 0){
           // this.editState(val.id);
           this.editStateId = val.id;
       }
+      let arr = val.alarmCountRectificationList;
+      if(arr.length == 0){return};
+      let roomData = [];
+      arr.forEach((item)=>{
+          roomData.push(item.roomName);
+      })
+      roomData = new Set([...roomData])
+      let list = [];
+      roomData.forEach((item)=>{
+        list.push({
+          name:item,
+          data:[],
+        })
+      })
+      console.log(roomData)
+      list.forEach((item)=>{
+        arr.forEach((el)=>{
+          if(item.name == el.roomName){
+            item.data.push(el);
+          }
+        })
+      })
+      console.log(list)
+      this.list = list;
+      // console.log(this.detailInfo.alarmCountRectificationList)
+
+      // array.forEach(el => {
+      //   roomList.push(el.roomName)
+      // });
+      // console.log(roomList)
+      
     },
     
     async editState(id){
       await editReportState({rid:id});
     },
     hideModel(){
+      if(this.detailInfo.rectificationStatus == 0){
         this.getList();
+      }
     },
     //分页
     selectPage(val){
@@ -220,6 +292,20 @@ export default {
 }
 /deep/.el-pagination{
   float: right;
+}
+.roomDetail{
+    // background: #d8e3e7;
+  margin-top: 20px;
+  .roomName{
+    font-size: 15px;
+    padding-top: 10px;
+    letter-spacing: 3px;
+  }
+  .roomList{
+    margin-top: 14px;
+    box-shadow: 0px 2px 2px 3px rgba(15, 15, 15, 0.08);
+    
+  }
 }
 
 </style>
