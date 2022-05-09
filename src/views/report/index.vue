@@ -88,13 +88,13 @@
                  </el-table-column>
               </el-table>
             </div>
-            <div class="roomName">整改结果</div>
-            <el-row :gutter="20">
-              <el-col :span="6" v-for="(item,i) in imgData" :key="i">
-                <img :src="item" class="image" alt="">
-              </el-col>
-            </el-row>
-          </div>
+            </div>
+            <div class="roomResult" v-if="detailInfo.rectificationResult!=''">整改结果：{{detailInfo.rectificationResult}}</div>
+              <el-row :gutter="20" v-if="imgData.length != 0">
+                <el-col :span="6" v-for="(item,i) in imgData" :key="i">
+                  <img v-if="item != ''" :src="item" class="image" alt="">
+                </el-col>
+              </el-row>
         </el-dialog>
    
     <!-- 弹出框e -->
@@ -135,7 +135,7 @@ export default {
               rectificationMan: "",
               updateTime: "2022-4-7 00:00:00",
               phone: "188888888888",
-              rectificationPicture: "",
+              rectificationPicture: "https://zjlianweihoss.oss-cn-hangzhou.aliyuncs.com/file/1649907389625-detail-logo.png;https://zjlianweihoss.oss-cn-hangzhou.aliyuncs.com/file/1649907389625-detail-logo.png;https://zjlianweihoss.oss-cn-hangzhou.aliyuncs.com/file/1649907389625-detail-logo.png;https://zjlianweihoss.oss-cn-hangzhou.aliyuncs.com/file/1649907389625-detail-logo.png;",
               rectificationStatus: 1,
               rectificationContent: "",
               noticeTime: "2022-4-7 00:00:00",
@@ -169,9 +169,7 @@ export default {
               ]
             } 
         ],
-        imgData:[
-          "https://zjlianweihoss.oss-cn-hangzhou.aliyuncs.com/file/1651226994989-feng.png","https://zjlianweihoss.oss-cn-hangzhou.aliyuncs.com/file/1651226994989-feng.png","https://zjlianweihoss.oss-cn-hangzhou.aliyuncs.com/file/1651226994989-feng.png","https://zjlianweihoss.oss-cn-hangzhou.aliyuncs.com/file/1651226994989-feng.png"
-        ],
+        imgData:[],
         listFromInfo:{
           startDate:"",
           endDate:"",
@@ -218,6 +216,11 @@ export default {
       }
       let arr = val.alarmCountRectificationList;
       if(arr.length == 0){return};
+      if (val.rectificationPicture != "") {
+        this.imgData=val.rectificationPicture.split(";");
+        console.log(this.imgData)
+      }
+      
       let roomData = [];
       arr.forEach((item)=>{
           roomData.push(item.roomName);
@@ -240,6 +243,8 @@ export default {
       })
       console.log(list)
       this.list = list;
+      
+
       // console.log(this.detailInfo.alarmCountRectificationList)
 
       // array.forEach(el => {
@@ -307,7 +312,7 @@ export default {
   margin-top: 20px;
   .roomName{
     font-size: 15px;
-    padding-top: 10px;
+    padding-top: 20px;
     letter-spacing: 3px;
   }
   .roomList{
@@ -315,10 +320,16 @@ export default {
     box-shadow: 0px 2px 2px 3px rgba(15, 15, 15, 0.08);
     
   }
+  
 }
+.roomResult{
+    margin-top: 14px;
+    font-size: 15px;
+  }
 .image{
   width: 100%;
   height: 100%;
+  padding-top: 14px;
 }
 
 </style>
