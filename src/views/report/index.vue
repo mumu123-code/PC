@@ -308,7 +308,6 @@ export default {
   float: right;
 }
 .roomDetail{
-    // background: #d8e3e7;
   margin-top: 20px;
   .roomName{
     font-size: 15px;
