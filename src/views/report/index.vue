@@ -89,7 +89,7 @@
               </el-table>
             </div>
             <div class="roomName">整改结果</div>
-            <el-row gutter="20">
+            <el-row :gutter="20">
               <el-col :span="6" v-for="(item,i) in imgData" :key="i">
                 <img :src="item" class="image" alt="">
               </el-col>
