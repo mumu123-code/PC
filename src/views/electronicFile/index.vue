@@ -83,9 +83,6 @@ export default {
   name: "electronicFile",
   data() {
     return {
-      };
-    },
-    methods: {
       listData:[{
 						name: '环评报告',
 						type: 1,
@@ -123,6 +120,10 @@ export default {
 						type: 9,
 					},
 				],
+      };
+    },
+    methods: {
+      
     }
   }
 </script>
