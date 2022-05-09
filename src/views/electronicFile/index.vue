@@ -1,76 +1,21 @@
 <template>
   <div class="electronicFile">
     <div class="electronicTitle">电子档案</div>
-    <div>
-      <!-- <el-row :gutter="20" class="list">
-        <el-col :span="6" class="chunk">
-          <div>内容1</div>
-        </el-col>
-        <el-col :span="6" class="chunk">
-          <div>内容2</div>
-        </el-col>
-        <el-col :span="6" class="chunk">
-            <div>内容2</div>
-        </el-col>
-        <el-col :span="6" class="chunk">
-            <div>内容2</div>
-        </el-col>
-      </el-row>
-      <el-row :gutter="20" class="list">
-        <el-col :span="6" class="chunk">
-        <div>内容2</div>
-        </el-col>
-        <el-col :span="6" class="chunk">
-          <div>内容2</div>
-        </el-col>
-        <el-col :span="6" class="chunk">
-            <div>内容2</div>
-        </el-col>
-        <el-col :span="6" class="chunk">
-            <div>内容2</div>
-        </el-col>
-      </el-row> -->
-      <el-row :gutter="20">
-        <el-col :span="6">
+    <div> 
+      <el-row :gutter="80">
+        <el-col :span="8" v-for="(item,i) in listData" :key="i" class="list">
           <div class="grid-content bg-purple">
-            <div class="list-title">环评报告</div>
-          </div>
-        </el-col>
-        <el-col :span="6">
-          <div class="grid-content bg-purple">
-            <div class="list-title"></div>
-          </div>
-        </el-col>
-        <el-col :span="6">
-          <div class="grid-content bg-purple">
-               <div class="list-title"></div>
-          </div>
-        </el-col>
-        <el-col :span="6">
-          <div class="grid-content bg-purple">
-               <div class="list-title"></div>
-          </div>
-        </el-col>
-      </el-row>
-      <el-row :gutter="20">
-        <el-col :span="6">
-          <div class="grid-content bg-purple">
-             <div class="list-title"></div>
-          </div>
-        </el-col>
-        <el-col :span="6">
-          <div class="grid-content bg-purple">
-             <div class="list-title"></div>
-          </div>
-        </el-col>
-        <el-col :span="6">
-          <div class="grid-content bg-purple">
-             <div class="list-title"></div>
-          </div>
-        </el-col>
-        <el-col :span="6">
-          <div class="grid-content bg-purple">
-             <div class="list-title"></div>
+            <div class="list-title">{{item.name}}</div>
+            <el-row>
+              <el-col :span="6" :offset="6">
+                 <el-upload class="upload-up" action="https://api.elianwei.com/company/base/aly/oss/upload" :limit="1" :on-exceed="handleExceed" :on-success="handleAvatarSuccess">
+                  <el-button size="small" type="primary"  @click="selectFileType(item.type)">点击上传</el-button>
+                </el-upload>
+              </el-col>
+              <el-col :span="6">
+                <el-button size="small" type="primary" class="detail-btn"  @click="viewDetail(item.type)">查看详情</el-button>
+              </el-col>
+            </el-row>
           </div>
         </el-col>
       </el-row>
@@ -79,6 +24,7 @@
 </template>
 
 <script>
+import { addArchives,getFileDetail } from '../../assets/js/common'
 export default {
   name: "electronicFile",
   data() {
@@ -120,10 +66,59 @@ export default {
 						type: 9,
 					},
 				],
+        fileType:0,
       };
     },
     methods: {
-      
+      handleAvatarSuccess(res){
+        this.addElectronicFile(res.data);
+      },
+      selectFileType(state){
+        this.fileType = state;
+      },
+      handleExceed(){
+        this.$message({
+          showClose: true,
+          message: '只能选择一个上传文件',
+          type: 'error'
+        });
+      },
+      //添加电子档案
+      async addElectronicFile(url){ 
+        const res = await addArchives({electronicFileType:this.fileType,fileUrl:url});
+        if(res?.code == "1"){
+           this.$message({
+              message: '上传成功',
+              type: 'success'
+            });
+        }else{
+           this.$message({
+            showClose: true,
+            message: res.msg,
+            type: 'error'
+          });
+        }
+      },
+      //查看详情
+      async viewDetail(state){
+        console.log(state)
+        const res = await getFileDetail();
+        if(res?.code != "1"){
+          this.$message({
+            showClose: true,
+            message: '请先上传文件',
+            type: 'error'
+          });
+          return;
+        }
+        let fileData = [];
+        res.data.forEach((el) => {
+          if(el.electronicFileType == state){
+            fileData.push(el.fileUrl)
+          }
+        });
+        window.location.href = fileData[0];
+      }
     }
   }
 </script>
@@ -139,17 +134,17 @@ export default {
   .list{
     margin-top: 20px;
     margin-bottom: 40px;
-      .chunk{
-          height: 80px;
-          border: 1px solid #eee;
-          border-radius: 4px;
-        }
+    .list-title{
+      padding: 20px;
+      text-align: center;
+      font-size: 24px;
+      margin-bottom: 30px;
+    }
   }
- 
 }
 .el-row {
     margin-top: 20px;
-    margin-bottom: 40px;
+    padding-bottom: 40px;
     &:last-child {
       margin-bottom: 0;
     }
@@ -158,14 +153,18 @@ export default {
     border-radius: 4px;
   }
   .bg-purple {
-    border:1px solid #d3dce6;
+    // border:1px solid #d3dce6;
+    background-color: #f9fafc;
   }
   .grid-content {
     border-radius: 4px;
-    min-height: 136px;
+    min-height: 150px;
   }
-  .row-bg {
-    padding: 10px 0;
-    background-color: #f9fafc;
+  .upload-up,.detail-btn{
+    margin: auto;
+    text-align: center;
+  }
+  .detail-btn{
+    display: block;
   }
 </style>

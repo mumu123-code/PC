@@ -109,8 +109,47 @@ const routes = [
         name: "charts",
         component: () => import("../views/equipment/charts.vue"),
       },
+      
     ]
   },
+  {
+    path: "/waste",
+    name: "waste",
+    component: () => import("../views/waste/index.vue"),
+    children:[
+      {
+        path:"/wasteParameter",
+        name:"wasteParameter",
+        component:()=>import("../views/waste/components/table.vue"),
+      },
+      {
+        path:"/wasteNetIn",
+        name:"wasteParameter",
+        component:()=>import("../views/waste/components/netIn.vue"),
+      },
+      {
+        path:"/wasteManagement",
+        name:"wasteParameter",
+        component:()=>import("../views/waste/components/management.vue"),
+      },
+      {
+        path:"/wastePlan",
+        name:"wasteParameter",
+        component:()=>import("../views/waste/components/plan.vue"),
+      },
+      {
+        path:"/wastePrevention",
+        name:"wasteParameter",
+        component:()=>import("../views/waste/components/prevention.vue"),
+      },
+      {
+        path:"/wasteReference",
+        name:"wasteParameter",
+        component:()=>import("../views/waste/components/reference.vue"),
+      },
+    ]
+  },
+ 
 ];
 
 const routerPush = VueRouter.prototype.push;

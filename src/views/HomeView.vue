@@ -4,13 +4,13 @@
       <!-- <img src="../assets/images/homeBg.png" alt="背景图" class="homeBg" /> -->
       <div class="home-four">
         <div class="box">
-          <div class="box-show" @click="go">
+          <div class="box-show" @click="jump('gas')">
             <img src="../assets/images/3.png" alt="气" />
             <div>气</div>
           </div>
         </div>
         <div class="box">
-          <div class="box-show">
+          <div class="box-show" @click="jump('waste')">
             <img src="../assets/images/1.png" alt="固" />
             <div>固</div>
           </div>
@@ -48,9 +48,19 @@ export default {
     console.log(_.range(10)); // 生成元素为0到9的数组
   },
   methods: {
-    go() {
+    jump(state) {
+      let path = "/equipment";
+      switch(state){
+        case "gas":
+          path="/equipment";
+          break;
+        case "waste":
+          path="/waste";
+          break;
+        
+      }
       this.$router.push({
-        path: "/equipment",
+        path: path
       });
     },
   },
@@ -64,14 +74,16 @@ export default {
   justify-content: space-around;
   width: 100vw;
   height: 100vh;
-  background: rgba(255, 255, 255, 0.7);
-  background-image: linear-gradient(
-    to bottom right,
-    #f3ece6,
-    #e5e7eb,
-    #e4f0e4,
-    #f5f3e2
-  );
+  background-size: 100%;
+  background-image: url('https://zjlianweihoss.oss-cn-hangzhou.aliyuncs.com/file/1652084150833-bg.jpg');
+  // background: rgba(255, 255, 255, 0.7);
+  // background-image: linear-gradient(
+  //   to bottom right,
+  //   #f3ece6,
+  //   #e5e7eb,
+  //   #e4f0e4,
+  //   #f5f3e2
+  // );
   -webkit-backdrop-filter: blur(10px);
   backdrop-filter: blur(10px);
   .home-content {
@@ -100,6 +112,7 @@ export default {
           height: 280px;
           border-radius: 6px;
           box-shadow: 1px 2px 6px 2px #a7a8bd;
+          background: rgba(241, 242, 240, .3);
           cursor: pointer;
           div {
             line-height: 42px;

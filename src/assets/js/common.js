@@ -31,3 +31,28 @@ export function getReportDetail(data){
         data,
     })
 }
+//添加电子档案
+export function addArchives(data){
+    return request({
+        method:"post",
+        url:"/electronicFile/add",
+        data
+    })
+}
+//查看电子档案
+export function getFileDetail(data){
+    return request({
+        method:"post",
+        url:"/electronicFile/list",
+        data,
+    })
+}
+
+//固废台账列表
+export function getWasteParameter(data){
+    return request({
+        method:"post",
+        url:"/waste/pageList",
+        data
+    })
+}

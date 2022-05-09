@@ -8,7 +8,7 @@
       class="loginForm"
     >
       <!-- <el-form-item> -->
-      <span class="loginTitle">企业PC系统</span>
+      <span class="loginTitle">VOCs数智哨兵系统(企业版)</span>
       <!-- </el-form-item> -->
       <el-form-item label="账号" label-width="50px" prop="userName">
         <el-input v-model="loginForm.userName"></el-input>
@@ -66,14 +66,16 @@ export default {
 .login {
   width: 100vw;
   height: 100vh;
-  background: rgba(255, 255, 255, 0.7);
-  background-image: linear-gradient(
-    to bottom right,
-    #f3ece6,
-    #e5e7eb,
-    #e4f0e4,
-    #f5f3e2
-  );
+  // background: rgba(255, 255, 255, 0.7);
+  // background-image: linear-gradient(
+  //   to bottom right,
+  //   #f3ece6,
+  //   #e5e7eb,
+  //   #e4f0e4,
+  //   #f5f3e2
+  // );
+   background-size: 100%;
+  background-image: url('https://zjlianweihoss.oss-cn-hangzhou.aliyuncs.com/file/1652084150833-bg.jpg');
   -webkit-backdrop-filter: blur(10px);
   backdrop-filter: blur(10px);
   .loginForm {
@@ -84,7 +86,7 @@ export default {
     padding: 2vw 5vw;
     width: 480px;
     height: 380px;
-    background: #f1f2f0;
+    background: rgba(241, 242, 240, .1);
     display: flex;
     flex-direction: column;
     align-items: center;
