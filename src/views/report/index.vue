@@ -88,6 +88,12 @@
                  </el-table-column>
               </el-table>
             </div>
+            <div class="roomName">整改结果</div>
+            <el-row gutter="20">
+              <el-col :span="6" v-for="(item,i) in imgData" :key="i">
+                <img :src="item" class="image" alt="">
+              </el-col>
+            </el-row>
           </div>
         </el-dialog>
    
@@ -125,7 +131,7 @@ export default {
               companyId: 0,
               id: 0,
               createTime: "2022-4-7 00:00:00",
-              rectificationResult: "",
+              rectificationResult: "整改结果整改结果整改结果整改结果整改结果整改结果整改结果整改结果",
               rectificationMan: "",
               updateTime: "2022-4-7 00:00:00",
               phone: "188888888888",
@@ -162,6 +168,9 @@ export default {
                 }
               ]
             } 
+        ],
+        imgData:[
+          "https://zjlianweihoss.oss-cn-hangzhou.aliyuncs.com/file/1651226994989-feng.png","https://zjlianweihoss.oss-cn-hangzhou.aliyuncs.com/file/1651226994989-feng.png","https://zjlianweihoss.oss-cn-hangzhou.aliyuncs.com/file/1651226994989-feng.png","https://zjlianweihoss.oss-cn-hangzhou.aliyuncs.com/file/1651226994989-feng.png"
         ],
         listFromInfo:{
           startDate:"",
@@ -306,6 +315,10 @@ export default {
     box-shadow: 0px 2px 2px 3px rgba(15, 15, 15, 0.08);
     
   }
+}
+.image{
+  width: 100%;
+  height: 100%;
 }
 
 </style>
