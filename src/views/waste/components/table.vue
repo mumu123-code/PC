@@ -71,7 +71,7 @@ export default{
                 "企业名称":'companyName',
                 "出库时间":'createTime',
                 "废物代码":'wasteCode',
-                "危废类别":'hazardousWasteCategory',
+                // "危废类别":'hazardousWasteCategory',
                 "入库数量(kg)":'inQuantity',
                 "出库数量(kg)":'outQuantity',
                 "危废处置去向":'disposalDestination', 
