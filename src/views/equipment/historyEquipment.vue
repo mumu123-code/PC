@@ -197,7 +197,7 @@ export default {
     };
   },
   async mounted(){
-    this.time = moment(new Date()).subtract(1, 'd').format('YYYY-MM-DD');
+    this.time = moment(new Date()).format('YYYY-MM-DD');
     // 获取id
     this.formInfo.deviceId = this.$route.query.id;
     await this.getHistoryData();
@@ -304,10 +304,12 @@ export default {
           // }
         // })
       }
-      if(res.data.pageNum < 3) {
+      if(res.data.pageNum < res.data.pages) {
         this.formInfo.pageNum ++;
         this.getHistoryData();
       } else {
+          this.formInfo.pageNum = 1;
+
           // 造假数据
           this.roomVocsArr = this.roomVocsArr.splice(0, 1441);
           this.ductVocsArr = this.ductVocsArr.splice(0, 1441);
