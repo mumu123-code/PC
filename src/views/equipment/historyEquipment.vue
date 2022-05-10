@@ -197,7 +197,7 @@ export default {
     };
   },
   async mounted(){
-    this.time = moment(new Date()).format('YYYY-MM-DD');
+    this.time = moment(new Date()).subtract(1, 'd').format('YYYY-MM-DD');
     // 获取id
     this.formInfo.deviceId = this.$route.query.id;
     await this.getHistoryData();
