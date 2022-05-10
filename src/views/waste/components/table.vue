@@ -21,7 +21,7 @@
                     <el-button type="primary" @click="selectTable" size="small">查询</el-button>    
                 </el-col>
                 <el-col :span="2" style="padding-top:3px;padding-left:20px;">
-                <div class="out">
+                    <div class="out">
                         <template>
                             <download-excel class="export-excel-wrapper" :data="data" :fields="parameterXLS" name="台账.xls" >
                                 <el-button type="success" size="small">导出台账</el-button>
@@ -35,14 +35,19 @@
                     <el-table-column prop="companyName" label="企业名称" width="350"></el-table-column>
                     <el-table-column prop="createTime" label="出库时间" width="200"></el-table-column>
                     <el-table-column prop="wasteCode" label="废物代码" width="200"></el-table-column>
-                    <el-table-column prop="hazardousWasteCategory" label="危废类别" width="200">
+                    <!-- <el-table-column prop="hazardousWasteCategory" label="危废类别" width="200">
                         <template slot-scope="scope">
                             {{ isType(scope.row.hazardousWasteCategory) }}
                         </template>
-                    </el-table-column>
+                    </el-table-column> -->
                     <el-table-column prop="inQuantity" label="入库数量(kg)" width="120"></el-table-column>
                     <el-table-column prop="outQuantity" label="出库数量(kg)" width="120"></el-table-column>
-                    <el-table-column prop="disposalDestination" label="危废处置去向" width="200"></el-table-column>
+                    <!-- <el-table-column prop="disposalDestination" label="危废处置去向" width="200"></el-table-column> -->
+                    <el-table-column prop="disposalDestination" label="危废处置去向" width="200">
+                        <template slot-scope="scope">
+                            {{ isType(scope.row.disposalDestination) }}
+                        </template>
+                    </el-table-column>
                     <el-table-column prop="destinationUnit" label="危废处置去向单位" width="200"></el-table-column>
                     <el-table-column prop="storageQuantity" label="累计贮存数量(kg)" width="200"></el-table-column>
                     <el-table-column prop="preparerIn" label="入库人"></el-table-column>
@@ -66,7 +71,7 @@ export default{
                 "企业名称":'companyName',
                 "出库时间":'createTime',
                 "废物代码":'wasteCode',
-                "危废类别":'hazardousWasteCategory',
+                // "危废类别":'hazardousWasteCategory',
                 "入库数量(kg)":'inQuantity',
                 "出库数量(kg)":'outQuantity',
                 "危废处置去向":'disposalDestination', 
