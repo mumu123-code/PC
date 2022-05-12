@@ -245,8 +245,8 @@ export default {
       };
 
       const res = await getReport(formInfo);
-      if (res.code == "1") {
-        this.productionObj = res.data;
+      if (res.code == "1" && res.data.length > 0) {
+        this.productionObj = res.data[0];
       }
     },
     // 跳转到历史数据查看页
