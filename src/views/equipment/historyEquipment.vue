@@ -307,8 +307,6 @@ export default {
         this.$set(series[3], 'data', this.ductTemArr);
         this.$set(this.options.xAxis, 'data', this.getTime());
 
-        console.log(series, 'series');
-
         // 关闭loading
         loading.close();
         this.initChart();          
