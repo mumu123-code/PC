@@ -1,7 +1,7 @@
 <template>
     <div class="wasteList">
           <el-container>
-            <el-header>VOCs数智哨兵系统(企业版)</el-header>
+            <el-header>连微数字哨兵产品分布图</el-header>
             <div class="title">( {{ companyName }} )</div>
             <el-container>
                 <el-aside width="260px">
