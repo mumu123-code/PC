@@ -68,7 +68,7 @@ export default {
         startDate: '', // 开始时间
         endDate: '', // 结束时间
         pageNum: 1,
-        pageSize: 500,
+        pageSize: 1440,
       },
       dateArr: [], // 存放xaxis轴得时间刻度
       roomVocsArr: [], // 房间内Vocs值
@@ -133,8 +133,8 @@ export default {
             },
             splitNumber: 6, // 设置坐标轴的分割段数
             min: 0,
-            max: 30,
-            interval: (30 - 0) / 6,
+            max: 100,
+            interval: 100 / 6,
             axisLabel: {
               formatter: function(v) {
                 return v.toFixed(1)
@@ -149,8 +149,8 @@ export default {
             },
             splitNumber: 6, // 设置坐标轴的分割段数
             min: 0,
-            max: 10,
-            interval: (10 - 0) / 6,
+            max: 100,
+            interval: 100 / 6,
             axisLabel: {
               formatter: function(v) {
                 return v.toFixed(1)
@@ -227,20 +227,20 @@ export default {
     },
     // 初始化图表
     initChart() {
-      // 调用方法获取数据的最大值
-      // const dataMaxGv = this.calMax(this.roomVocsArr); // Vocs最大值
-      // const dataMaxNv = this.calMax(this.ductVocsArr);
-      // const dataMaxGt = this.calMax(this.roomTemArr); // 温度最大值
-      // const dataMaxNt = this.calMax(this.ductTemArr);
+      // 获取最大值
+      let VocsMax;
+      const { calMax } = this;
+      if(calMax(this.roomVocsArr) > calMax(this.ductVocsArr)) {
+        VocsMax = calMax(this.roomVocsArr);
+      } else {
+        VocsMax = calMax(this.ductTemArr);
+      }
 
-      // let maxV,maxT;
-      // dataMaxGv > dataMaxNv ? (maxV = dataMaxGv) : (maxV = dataMaxNv); 
-      // dataMaxGt > dataMaxNt ? (maxT = dataMaxGt) : (maxT = dataMaxNt);
+      // 设置最大值和每个间隔代表的数
+      this.$set(this.options.yAxis[0], 'max', VocsMax);
+      this.$set(this.options.yAxis[0], 'interval', (VocsMax / 6));
 
-      // this.$set(this.options.yAxis[0], 'max', maxV);
-      // this.$set(this.options.yAxis[0], 'interval', (maxV / 6));
-      // this.$set(this.options.yAxis[1], 'max', maxT);
-      // this.$set(this.options.yAxis[1], 'interval', (maxT / 6));
+
 
       // 基于准备好的dom，初始化echarts实例
       var myChart = echarts.init(document.getElementById('main'));
@@ -254,6 +254,9 @@ export default {
         this.formInfo.endDate = `${this.time} 23:59:59`;
       }
 
+      // 清空数据
+      
+
       // 开启loading
       const loading = this.$loading({
         lock: true,
@@ -264,69 +267,51 @@ export default {
 
       const res = await getReportDetail(this.formInfo);
       if(res.code == '1') {
-        res.data.list.map(item => {
-          const { gvocs, nvocs, gtemperature, ntemperature, gwindspeed } = item;
-          this.roomVocsArr.unshift(gvocs);
-          this.ductVocsArr.unshift(nvocs);
-          this.roomTemArr.unshift(gtemperature);
-          this.ductTemArr.unshift(ntemperature);
-
-          // 造假数据
-          if(gwindspeed > 0.5) {
-            this.productionStatusArr.unshift(true);
-          } else {
-            this.productionStatusArr.unshift(false);
+        res.data.list.map((item,index) => {
+          if(!item) {
+            item = {
+              gvocs: 0, 
+              nvocs: 0, 
+              gtemperature: 0, 
+              ntemperature: 0, 
+              gwindspeed: 0
+            }
           }
-        })
 
-        /** 先注释使用假的数据 */
-        // res.data.list.map(item => {
-        //   // 取出需要的值
-        //   const { createTime, gvocs, nvocs, gtemperature, ntemperature } = item;
+          const {  gvocs, nvocs, gtemperature, ntemperature, gwindspeed } = item;
 
-          // const date = createTime.split(' ')[1].split(':').splice(0,2);
-          // const dateStr = date.join(':');
-          // if(!this.dateArr.length) {
-          //   this.dateArr.unshift(dateStr);
-          //   this.roomVocsArr.unshift(gvocs);
-          //   this.ductVocsArr.unshift(nvocs);
-          //   this.roomTemArr.unshift(gtemperature);
-          //   this.ductTemArr.unshift(ntemperature);
-          // } else {
-          //   // 如果数组的最后一位与本次循环时间不相同，添加本次时间进去
-          //   if(this.dateArr[0] !== dateStr) {
-          //     this.dateArr.unshift(dateStr);
-          //     this.roomVocsArr.unshift(gvocs);
-          //     this.ductVocsArr.unshift(nvocs);
-          //     this.roomTemArr.unshift(gtemperature);
-          //     this.ductTemArr.unshift(ntemperature);
-          //   }
-          // }
-        // })
-      }
-      if(res.data.pageNum < res.data.pages) {
-        this.formInfo.pageNum ++;
-        this.getHistoryData();
-      } else {
-          this.formInfo.pageNum = 1;
+          this.roomVocsArr.push(gvocs);
+          this.ductVocsArr.push(nvocs);
+          this.roomTemArr.push(gtemperature);
+          this.ductTemArr.push(ntemperature);
 
-          // 造假数据
-          this.roomVocsArr = this.roomVocsArr.splice(0, 1441);
-          this.ductVocsArr = this.ductVocsArr.splice(0, 1441);
-          this.roomTemArr = this.roomTemArr.splice(0, 1441);
-          this.ductTemArr = this.ductTemArr.splice(0, 1441);
-          this.productionStatusArr = this.productionStatusArr.splice(0, 96);
+          /**
+           * 每个小时取六个点,取8点到24点的数据
+           */
+          const indexNum = index % 10;
+          if(index > 479 && !indexNum) {
+            if(gwindspeed > 0.5) {
+              this.productionStatusArr.push(true);
+            } else {
+              this.productionStatusArr.push(false);
+            }
+          }
+          console.log(this.productionStatusArr, 'production')
+        });
 
-          this.$set(this.options.xAxis,'data', this.getTime());
-          this.$set(this.options.series[0],'data',this.roomVocsArr);
-          this.$set(this.options.series[1],'data',this.ductVocsArr);
-          this.$set(this.options.series[2],'data',this.roomTemArr);
-          this.$set(this.options.series[3],'data',this.ductTemArr);
+        // 设置图表数据
+        const { series } = this.options;
+        this.$set(series[0], 'data', this.roomVocsArr);
+        this.$set(series[1], 'data', this.ductVocsArr);
+        this.$set(series[2], 'data', this.roomTemArr);
+        this.$set(series[3], 'data', this.ductTemArr);
+        this.$set(this.options.xAxis, 'data', this.getTime());
 
+        console.log(series, 'series');
 
-          // 关闭loading
-          loading.close();
-          this.initChart();          
+        // 关闭loading
+        loading.close();
+        this.initChart();          
       }
     }
   },

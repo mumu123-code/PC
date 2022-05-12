@@ -17,7 +17,7 @@
       <el-menu-item index="/report">
         <span slot="title">诊断报告</span>
       </el-menu-item>
-      <el-submenu index="/standing">
+      <el-submenu index="/material">
         <template slot="title">
           <span>台账报表</span>
         </template>

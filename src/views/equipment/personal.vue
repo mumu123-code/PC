@@ -140,7 +140,7 @@
             <img
               src="../../../static/images/feng.png"
             />
-            {{ productionObj.gwindspeed || "-" }} m/s
+            {{ (productionObj.gwindspeed > 0.02 ? productionObj.gwindspeed : 0) || "-" }} m/s
           </span>
           <!--  -->
         </div>
@@ -223,7 +223,7 @@ export default {
     // 获取设备生产状态
     this.getProductStatus();
     // 获取设备信息
-    this.getReportDetail();
+    // this.getReportDetail();
   },
   methods: {
     // 获取设备状态

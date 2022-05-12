@@ -4,9 +4,9 @@
             物联网计量设备参考性能要求
         </div>    
         <div class="con-list">
-            （1）通讯要求<br/>
-               &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 通讯方式为蓝牙，通过蓝牙连接到终端后，最终通过无线网、4G/5G上传至杭州市生态智卫“无废场景”系统。<br/>
-            （2）性能指标要求<br/>
+            (1)通讯要求<br/>
+               &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 通讯方式为蓝牙,通过蓝牙连接到终端后,最终通过无线网、4G/5G上传至杭州市生态智卫“无废场景”系统。<br/>
+            (2)性能指标要求<br/>
                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 终端必须满足如下性能指标:<br/>
                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 数据采集误差: ≤10克<br/>
                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 平均无故障运行时间:1440h 以上<br/>

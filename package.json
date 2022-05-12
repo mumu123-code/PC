@@ -58,7 +58,7 @@
         0,
         "windows"
       ],
-      "no-multi-spaces": 1,
+      "no-multi-spaces": "off",
       "no-trailing-spaces": 0,
       "no-undef": 2,
       "no-underscore-dangle": 0,
