@@ -17,11 +17,19 @@ export function getProductionStatus(data) {
     })
 }
 
-// 获取设备信息
+// 获取历史设备信息
 export function getReportDetail(data) {
     return request({
         method: "post",
         url: "/sensorData/list",
+        data,
+    })
+}
+// 获取设备信息
+export function getReport(data) {
+    return request({
+        method: "post",
+        url: "/sensorData/listToday",
         data,
     })
 }

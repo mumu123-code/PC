@@ -198,7 +198,7 @@
 <script>
 import {
   getProductionStatus,
-  getReportDetail,
+  getReport,
 } from "../../assets/js/equipment";
 
 import { getNowTime } from "./isType";
@@ -223,7 +223,7 @@ export default {
     // 获取设备生产状态
     this.getProductStatus();
     // 获取设备信息
-    // this.getReportDetail();
+    this.getReportDetail();
   },
   methods: {
     // 获取设备状态
@@ -242,13 +242,11 @@ export default {
     async getReportDetail() {
       let formInfo = {
         deviceId: this.activeId,
-        pageNum: 1,
-        pageSize: 1,
       };
 
-      const res = await getReportDetail(formInfo);
+      const res = await getReport(formInfo);
       if (res.code == "1") {
-        this.productionObj = res.data.list[0];
+        this.productionObj = res.data;
       }
     },
     // 跳转到历史数据查看页

@@ -8,7 +8,7 @@
       class="loginForm"
     >
       <!-- <el-form-item> -->
-      <span class="loginTitle">连微哨兵产品分布图</span>
+      <span class="loginTitle">VOCs数智哨兵系统(企业版)</span>
       <!-- </el-form-item> -->
       <el-form-item label="账号" label-width="50px" prop="userName">
         <el-input v-model="loginForm.userName"></el-input>
