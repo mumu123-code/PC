@@ -46,11 +46,11 @@
           </span>
         </div>
         <div class="personalConPro-bottom">
-          <span>
+          <span v-if="productionObj.door1Value == 127">
             门1:
             <img
               src="https://zjlianweihoss.oss-cn-hangzhou.aliyuncs.com/file/1649909506806-door-close.png"
-              v-if="productionObj.door1Value == 1"
+              v-if="[1,22].includes(productionObj.door1Value)"
             />
             <img
               src="https://zjlianweihoss.oss-cn-hangzhou.aliyuncs.com/file/1649909506837-door-open.png"
@@ -61,7 +61,7 @@
             门2:
             <img
               src="https://zjlianweihoss.oss-cn-hangzhou.aliyuncs.com/file/1649909506806-door-close.png"
-              v-if="productionObj.door2Value == 1"
+              v-if="[1,22].includes(productionObj.door1Value)"
             />
             <img
               src="https://zjlianweihoss.oss-cn-hangzhou.aliyuncs.com/file/1649909506837-door-open.png"
@@ -72,7 +72,7 @@
             门3:
             <img
               src="https://zjlianweihoss.oss-cn-hangzhou.aliyuncs.com/file/1649909506806-door-close.png"
-              v-if="productionObj.door3Value == 1"
+              v-if="[1,22].includes(productionObj.door1Value)"
             />
             <img
               src="https://zjlianweihoss.oss-cn-hangzhou.aliyuncs.com/file/1649909506837-door-open.png"
@@ -83,7 +83,7 @@
             门4:
             <img
               src="https://zjlianweihoss.oss-cn-hangzhou.aliyuncs.com/file/1649909506806-door-close.png"
-              v-if="productionObj.door4Value == 1"
+              v-if="[1,22].includes(productionObj.door1Value)"
             />
             <img
               src="https://zjlianweihoss.oss-cn-hangzhou.aliyuncs.com/file/1649909506837-door-open.png"
@@ -94,7 +94,7 @@
             门5:
             <img
               src="https://zjlianweihoss.oss-cn-hangzhou.aliyuncs.com/file/1649909506806-door-close.png"
-              v-if="productionObj.door5Value == 1"
+              v-if="[1,22].includes(productionObj.door1Value)"
             />
             <img
               src="https://zjlianweihoss.oss-cn-hangzhou.aliyuncs.com/file/1649909506837-door-open.png"
