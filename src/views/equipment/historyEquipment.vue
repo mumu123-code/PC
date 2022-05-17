@@ -22,6 +22,8 @@
     <div id="main"></div>
 
     <div class="tableTitle">企业治污措施</div>
+    <div id="main1"></div>
+
     <!-- 颜色提示 s -->
     <div class="boxColor">
       <div class="left"></div>
@@ -127,7 +129,7 @@ export default {
         yAxis: [
            {
             type: 'value',
-            name: "Vocs值",
+            name: "VOCs值",
             nameTextStyle: {
               padding: [0,0,0,0]
             },
@@ -160,7 +162,7 @@ export default {
         ],
         series: [
           {
-            name: '房间内Vocs值',
+            name: '房间内VOCs值',
             type: "line",
             color: ["#1890FF"],
             symbol: 'none',
@@ -168,7 +170,7 @@ export default {
             data: [],
           },
           {
-            name: '风管内Vocs值',
+            name: '风管内VOCs值',
             type: "line",
             color: ["#91CB74"],
             symbol: 'none',
@@ -195,6 +197,104 @@ export default {
           },
         ],
       },
+      options1: {
+        legend: [
+          {
+            top: "0%",
+            right: "8%",
+            textStyle: {
+              fontSize: 12, // 字体大小
+              color: "#", // 字体颜色（图例与图例文字配色保持一致）
+            },
+            data: [
+              {
+                name: "风速",
+              }
+            ]
+          },
+          {
+            top: "0%",
+            left: "8%",
+            textStyle: {
+              fontSize: 12, // 字体大小
+              color: "#", // 字体颜色（图例与图例文字配色保持一致）
+            },
+            data: [
+              {
+                name: "湿度",
+              }
+            ]
+          }
+        ],
+        tooltip: {
+          trigger: 'axis'
+        },
+        xAxis: {
+          name: '时间',
+          type: 'category',
+          data: [],
+          nameTextStyle: {
+            padding: [0,0,20,50]
+          },
+          axisLabel: {
+            interval: 59
+          }
+        },
+        yAxis: [
+           {
+            type: 'value',
+            name: "风速值",
+            nameTextStyle: {
+              padding: [0,0,0,0]
+            },
+            splitNumber: 6, // 设置坐标轴的分割段数
+            min: 0,
+            max: 100,
+            interval: 100 / 6,
+            axisLabel: {
+              formatter: function(v) {
+                return v.toFixed(1)
+              }
+            },
+          },
+          {
+            type: 'value',
+            name: "湿度值",
+            nameTextStyle: {
+              padding: [0,0,0,0]
+            },
+            splitNumber: 6, // 设置坐标轴的分割段数
+            min: 0,
+            max: 100,
+            interval: 100 / 6,
+            axisLabel: {
+              formatter: function(v) {
+                return v.toFixed(1)
+              }
+            },
+          }
+        ],
+        series: [
+          {
+            name: '风速值',
+            type: "line",
+            color: ["#1890FF"],
+            symbol: 'none',
+            smooth: true,
+            data: [],
+          },
+          {
+            name: '温度值',
+            type: "line",
+            color: ["#91CB74"],
+            symbol: 'none',
+            smooth: true,
+            data: [],
+          }
+        ],
+      },
+      temperatureArr: [], // 企业治污措施湿度数据
+      windArr: [], // 企业治污措施风速数据
       productionStatusArr: [], // 企业治污措施数据
     };
   },
@@ -243,10 +343,25 @@ export default {
       this.$set(this.options.yAxis[0], 'max', VocsMax);
       this.$set(this.options.yAxis[0], 'interval', (VocsMax / 6));
 
+
+      // 企业治污措施图表
+      const temMax = calMax(this.temperatureArr);
+      const windMax = calMax(this.windArr);
+      this.$set(this.options1.yAxis[0], 'max', temMax);
+      this.$set(this.options1.yAxis[0], 'interval', (temMax / 6));
+      this.$set(this.options1.yAxis[1], 'max', windMax);
+      this.$set(this.options1.yAxis[1], 'interval', (windMax / 6));
+
+      console.log(this.options1, 'options1');
+
+
       // 基于准备好的dom，初始化echarts实例
       var myChart = echarts.init(document.getElementById('main'));
+      var myChart1 = echarts.init(document.getElementById('main1'));
+
       // 绘制图表
       myChart.setOption(this.options);
+      myChart1.setOption(this.options1);
     },
     // 获取设备信息
     async getHistoryData() {
@@ -261,6 +376,8 @@ export default {
       this.roomTemArr = [];
       this.ductTemArr = [];
       this.productionStatusArr = [];
+      this.temperatureArr = [];
+      this.windArr = [];
 
       // 开启loading
       const loading = this.$loading({
@@ -279,16 +396,19 @@ export default {
               nvocs: 0, 
               gtemperature: 0, 
               ntemperature: 0, 
-              gwindspeed: 0
+              gwindspeed: 0,
+              ghumidity: 0
             }
           }
 
-          const {  gvocs, nvocs, gtemperature, ntemperature, gwindspeed } = item;
+          const {  gvocs, nvocs, gtemperature, ntemperature, gwindspeed, ghumidity } = item;
 
           this.roomVocsArr.push(gvocs);
           this.ductVocsArr.push(nvocs);
           this.roomTemArr.push(gtemperature);
           this.ductTemArr.push(ntemperature);
+          this.temperatureArr.push(ghumidity);
+          this.windArr.push(gwindspeed);
 
           /**
            * 每个小时取六个点,取8点到24点的数据
@@ -311,6 +431,12 @@ export default {
         this.$set(series[3], 'data', this.ductTemArr);
         this.$set(this.options.xAxis, 'data', this.getTime());
 
+        // 设置企业治污图表数据
+        const { series: series1 } = this.options1;
+        this.$set(series1[0], 'data', this.temperatureArr);
+        this.$set(series1[1], 'data', this.windArr);
+        this.$set(this.options1.xAxis, 'data', this.getTime());
+
         // 关闭loading
         loading.close();
         this.initChart(); 
@@ -331,7 +457,7 @@ export default {
     }
   }
 }
-#main {
+#main, #main1 {
   width: 1260px;
   height: 300px;
 }
