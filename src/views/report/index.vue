@@ -57,7 +57,7 @@
       </el-row> 
     </div>
     <!-- 弹出框s -->
-        <el-dialog title="报告详情" :visible.sync="detailModel" @close="hideModel">
+        <el-dialog title="报告详情" :visible.sync="detailModel" @close="hideModel" class="detail-dialog">
           <el-row>
             <el-col :span="24">通知时间：{{ detailInfo.noticeTime }} </el-col>
           </el-row>
@@ -330,10 +330,11 @@ export default {
   height: 100%;
   padding-top: 14px;
 }
-
-/deep/ .el-dialog__body {
-  height: 820px;
+/deep/ .detail-dialog .el-dialog{
+  padding-bottom: 20px;
+}
+/deep/.detail-dialog .el-dialog__body {
+  max-height: 520px;
   overflow-y: auto;
 }
-
 </style>

@@ -49,4 +49,16 @@ i {
 ::-webkit-scrollbar-thumb:window-inactive {
   background: rgba(255, 0, 0, 0.4);
 }
+.font14{
+  font-size: 14px;
+}
+.text-right{
+  text-align: right;
+}
+.l-h-32{
+  line-height: 32px;
+}
+.w-100{
+  width: 100% !important;
+}
 </style>

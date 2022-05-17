@@ -219,6 +219,18 @@ function areaTime(){
 	]
 	return data;
 }
+
+//打开附件
+function openFile(strUrl) {
+	let a = document.createElement("a");
+	document.body.appendChild(a);
+	a.style = "display: none";
+	a.target = "_blank";
+	a.href = strUrl;
+	a.click();
+	document.body.removeChild(a);
+}
+
 module.exports = {
 	isAlarmType,
 	typeData,
@@ -226,5 +238,6 @@ module.exports = {
 	getDate,
 	areaTime,
 	isInstallationPosition,
-    roomData
+    roomData,
+	openFile
 }
