@@ -102,10 +102,10 @@ export default {
             },
             data: [
               {
-                name: "房间内Vocs值",
+                name: "房间内VOCs值",
               },
               {
-                name: "风管内Vocs值"
+                name: "风管内VOCs值"
               }
             ]
           }
