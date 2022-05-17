@@ -352,8 +352,6 @@ export default {
       this.$set(this.options1.yAxis[1], 'max', windMax);
       this.$set(this.options1.yAxis[1], 'interval', (windMax / 6));
 
-      console.log(this.options1, 'options1');
-
 
       // 基于准备好的dom，初始化echarts实例
       var myChart = echarts.init(document.getElementById('main'));
