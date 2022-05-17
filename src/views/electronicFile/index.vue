@@ -25,6 +25,7 @@
 
 <script>
 import { addArchives,getFileDetail } from '../../assets/js/common'
+import { openFile } from '../../../static/js/isType'
 export default {
   name: "electronicFile",
   data() {
@@ -76,6 +77,7 @@ export default {
       selectFileType(state){
         this.fileType = state;
       },
+     
       handleExceed(){
         this.$message({
           showClose: true,
@@ -101,7 +103,6 @@ export default {
       },
       //查看详情
       async viewDetail(state){
-        console.log(state)
         const res = await getFileDetail();
         if(res?.code != "1"){
           this.$message({
@@ -117,8 +118,11 @@ export default {
             fileData.push(el.fileUrl)
           }
         });
-        window.location.href = fileData[0];
-      }
+        this.viewFile(fileData[0]);
+      },
+      viewFile(url){
+        return openFile(url);
+      },
     }
   }
 </script>

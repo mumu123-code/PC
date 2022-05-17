@@ -25,8 +25,8 @@
         </el-table-column>
         <el-table-column prop="consumablesData.handleType" label="处置情况" width="300">
           <template slot-scope="scope">
-            <el-radio label="1" v-model="scope.row.handleType" @change.native="getCurrentRow(scope.row)">危废间暂存</el-radio>
-            <el-radio label="2" v-model="scope.row.handleType" @change.native="getCurrentRow(scope.row)">委外处置</el-radio>
+            <el-radio :label="1" v-model="scope.row.handleType" @change.native="getCurrentRow(scope.row)">危废间暂存</el-radio>
+            <el-radio :label="2" v-model="scope.row.handleType" @change.native="getCurrentRow(scope.row)">委外处置</el-radio>
           </template>
         </el-table-column>
         <el-table-column prop="consumablesData.handleTime" label="处置时间">
@@ -107,10 +107,10 @@ export default {
     async getStagingMaterial(){
       const res = await getStaging({'ledgerType':2});
         console.log(res)
-      if(res?.code=="1"){
-        this.consumablesData = res.data.ledgerDetail;
-      }
-    }
+        if(res?.code=="1"){
+          this.consumablesData = res.data.ledgerDetail;
+        }
+    },
   }
 };
 </script>

@@ -4,19 +4,22 @@
       异常行为
     </div>
     <div class="selectRow">
-      <el-row>
-        <el-col :span="7" class="selectType">
-          行为类型筛选： <el-select v-model="fromInfo.alarmType" filterable placeholder="请选择" size="small"> 
-                            <el-option v-for="item in typeData" :key="item.value" :label="item.name" :value="item.value"> </el-option>
-                        </el-select>
+      <el-row :gutter="10">
+        <el-col :span="1" class="font14 l-h-32 text-right">类型筛选:</el-col>
+        <el-col :span="5" class="selectType">
+          <el-select class="w-100" v-model="fromInfo.alarmType" filterable placeholder="请选择" size="small"> 
+              <el-option v-for="item in typeData" :key="item.value" :label="item.name" :value="item.value"> </el-option>
+          </el-select>
         </el-col>
-         <el-col :span="3">
-          选择日期：<el-date-picker v-model="selectTime" type="date" size="small" placeholder="选择日期" value-format="yyyy-MM-dd"></el-date-picker> 
+        <el-col :span="1" class="font14 l-h-32 text-right">选择日期:</el-col>
+        <el-col :span="4">
+          <el-date-picker class="w-100" v-model="selectTime" type="date" size="small" placeholder="选择日期" value-format="yyyy-MM-dd"></el-date-picker> 
         </el-col>
-        <el-col :span="3">
-          房间筛选：<el-select v-model="fromInfo.installationLocation" filterable placeholder="请选择" size="small"> 
-                      <el-option v-for="item in roomData" :key="item.value" :label="item.name" :value="item.value"> </el-option>
-                  </el-select>
+        <el-col :span="1" class="font14 l-h-32 text-right">房间筛选:</el-col>
+        <el-col :span="4">
+          <el-select class="w-100" v-model="fromInfo.installationLocation" filterable placeholder="请选择" size="small"> 
+              <el-option v-for="item in roomData" :key="item.value" :label="item.name" :value="item.value"> </el-option>
+          </el-select>
         </el-col>
         <el-col :span="1">
            <el-button type="primary" size="small" @click="selectFunc">查询</el-button>
