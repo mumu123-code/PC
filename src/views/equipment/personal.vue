@@ -18,31 +18,31 @@
             <img
               src="https://zjlianweihoss.oss-cn-hangzhou.aliyuncs.com/file/1649909506953-temperature.png"
             />
-            {{ productionObj.ntemperature || "-" }} °C
+            {{ (productionObj.ntemperature ? productionObj.ntemperature : '0') || "-" }} °C
           </span>
           <span>
             <img
               src="https://zjlianweihoss.oss-cn-hangzhou.aliyuncs.com/file/1649909507008-water.png"
             />
-            {{ productionObj.nhumidity || "-" }} %
+            {{ (productionObj.nhumidity ? productionObj.nhumidity : '0') || "-" }} %
           </span>
           <span>
             <img
               src="https://zjlianweihoss.oss-cn-hangzhou.aliyuncs.com/file/1649909506887-oxygen.png"
             />
-            {{ productionObj.no2 || "-" }} %
+            {{ (productionObj.no2 ? productionObj.no2 : '0') || "-" }} %
           </span>
           <span>
             <img
               src="https://zjlianweihoss.oss-cn-hangzhou.aliyuncs.com/file/1649909506764-cloud.png"
             />
-            {{ productionObj.nhumidity || "-" }} mg/m³
+            {{ (productionObj.gvocs ? productionObj.gvocs : '0') || "-" }} mg/m³
           </span>
           <span>
             <img
               src="https://zjlianweihoss.oss-cn-hangzhou.aliyuncs.com/file/1649909506601-arrow.png"
             />
-            {{ productionObj.nmicropressure || "-" }} kPa
+            {{ (productionObj.nmicropressure ? productionObj.nmicropressure : '0') || "-" }} kPa
           </span>
         </div>
         <div class="personalConPro-bottom">
@@ -110,25 +110,25 @@
             <img
               src="https://zjlianweihoss.oss-cn-hangzhou.aliyuncs.com/file/1649909506953-temperature.png"
             />
-            {{ productionObj.gtemperature || "-" }} °C
+            {{ (productionObj.gtemperature ? productionObj.gtemperature : '0') || "-" }} °C
           </span>
           <span>
             <img
               src="https://zjlianweihoss.oss-cn-hangzhou.aliyuncs.com/file/1649909507008-water.png"
             />
-            {{ productionObj.ghumidity || "-" }} %
+            {{ (productionObj.ghumidity ? productionObj.ghumidity : '0') || "-" }} %
           </span>
           <span>
             <img
               src="https://zjlianweihoss.oss-cn-hangzhou.aliyuncs.com/file/1649909506887-oxygen.png"
             />
-            {{ productionObj.go2 || "-" }} %
+            {{ (productionObj.go2 ? productionObj.go2 : '0') || "-" }} %
           </span>
           <span>
             <img
               src="https://zjlianweihoss.oss-cn-hangzhou.aliyuncs.com/file/1649909506764-cloud.png"
             />
-            {{ productionObj.ghumidity || "-" }} mg/m³
+            {{ (productionObj.nvocs ? productionObj.nvocs : '0') || "-" }} mg/m³
           </span>
           <span>
             <img
