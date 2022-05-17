@@ -79,7 +79,7 @@ export default {
         legend: [
           {
             top: "0%",
-            left: "0%",
+            right: "8%",
             textStyle: {
               fontSize: 12, // 字体大小
               color: "#", // 字体颜色（图例与图例文字配色保持一致）
@@ -95,7 +95,7 @@ export default {
           },
           {
             top: "0%",
-            right: "0%",
+            left: "8%",
             textStyle: {
               fontSize: 12, // 字体大小
               color: "#", // 字体颜色（图例与图例文字配色保持一致）
@@ -125,9 +125,9 @@ export default {
           }
         },
         yAxis: [
-          {
+           {
             type: 'value',
-            name: "温度值",
+            name: "Vocs值",
             nameTextStyle: {
               padding: [0,0,0,0]
             },
@@ -143,7 +143,7 @@ export default {
           },
           {
             type: 'value',
-            name: "Vocs值",
+            name: "温度值",
             nameTextStyle: {
               padding: [0,0,0,0]
             },
@@ -164,7 +164,7 @@ export default {
             type: "line",
             color: ["#1890FF"],
             symbol: 'none',
-            smooth: false,
+            smooth: true,
             data: [],
           },
           {
@@ -172,7 +172,7 @@ export default {
             type: "line",
             color: ["#91CB74"],
             symbol: 'none',
-            smooth: false,
+            smooth: true,
             data: [],
           },
           {
@@ -180,7 +180,8 @@ export default {
             type: "line",
             color: ["#FAC858"],
             symbol: 'none',
-            smooth: false,
+            smooth: true,
+            yAxisIndex: 1,
             data: [],
           },
           {
@@ -188,7 +189,8 @@ export default {
             type: "line",
             color: ["#EE6666"],
             symbol: 'none',
-            smooth: false,
+            smooth: true,
+            yAxisIndex: 1,
             data: [],
           },
         ],
@@ -220,7 +222,7 @@ export default {
 
     // 获取最大值方法
     calMax(arr) {
-      var max = Math.max.apply(null, arr); // 获取最大值方法
+      var max = Math.max.apply(Math, arr); // 获取最大值方法
       var maxint = Math.ceil(max / 5); // 向上以5的倍数取整
       var maxval = maxint * 5 + 5; // 最终设置的最大值
       return maxval; // 输出最大值
@@ -230,17 +232,16 @@ export default {
       // 获取最大值
       let VocsMax;
       const { calMax } = this;
+
       if(calMax(this.roomVocsArr) > calMax(this.ductVocsArr)) {
         VocsMax = calMax(this.roomVocsArr);
       } else {
-        VocsMax = calMax(this.ductTemArr);
+        VocsMax = calMax(this.ductVocsArr);
       }
 
       // 设置最大值和每个间隔代表的数
       this.$set(this.options.yAxis[0], 'max', VocsMax);
       this.$set(this.options.yAxis[0], 'interval', (VocsMax / 6));
-
-
 
       // 基于准备好的dom，初始化echarts实例
       var myChart = echarts.init(document.getElementById('main'));
@@ -255,7 +256,11 @@ export default {
       }
 
       // 清空数据
-      
+      this.roomVocsArr = [];
+      this.ductVocsArr = [];
+      this.roomTemArr = [];
+      this.ductTemArr = [];
+      this.productionStatusArr = [];
 
       // 开启loading
       const loading = this.$loading({
@@ -296,7 +301,6 @@ export default {
               this.productionStatusArr.push(false);
             }
           }
-          console.log(this.productionStatusArr, 'production')
         });
 
         // 设置图表数据
@@ -309,7 +313,7 @@ export default {
 
         // 关闭loading
         loading.close();
-        this.initChart();          
+        this.initChart(); 
       }
     }
   },

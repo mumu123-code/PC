@@ -40,8 +40,8 @@ export default {
   .el-header {
     background-color: #fff;
     text-align: center;
-    height: 10vh;
-    line-height: 10vh;
+    height: 60px;
+    line-height: 60px;
     font-weight: bold;
     font-size: 20px;
     letter-spacing: 2px;

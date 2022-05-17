@@ -134,13 +134,13 @@
             <img
               src="https://zjlianweihoss.oss-cn-hangzhou.aliyuncs.com/file/1649909506601-arrow.png"
             />
-            {{ productionObj.nmicropressure || "-" }} kPa
+            {{ productionObj.nmicropressure !== null ? productionObj.nmicropressure : "-" }} kPa
           </span>
           <span>
             <img
               src="../../../static/images/feng.png"
             />
-            {{ (productionObj.gwindspeed > 0.02 ? productionObj.gwindspeed : 0) || "-" }} m/s
+            {{ (productionObj.gwindspeed > 0.02 ? productionObj.gwindspeed : '0') || "-" }} m/s
           </span>
           <!--  -->
         </div>

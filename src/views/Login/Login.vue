@@ -29,7 +29,7 @@ export default {
   data() {
     return {
       loginForm: {
-        userName: "杭州天宏焊接材料有限公司",
+        userName: "杭州德奥汽车有限公司",
         passWord: "123456",
         systemId: 3,
       },

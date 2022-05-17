@@ -331,4 +331,9 @@ export default {
   padding-top: 14px;
 }
 
+/deep/ .el-dialog__body {
+  height: 820px;
+  overflow-y: auto;
+}
+
 </style>

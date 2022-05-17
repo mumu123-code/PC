@@ -5,15 +5,15 @@
     </div>
     <div class="selectRow">
       <el-row>
-        <el-col :span="7" :offset="6" class="selectType">
+        <el-col :span="7" class="selectType">
           行为类型筛选： <el-select v-model="fromInfo.alarmType" filterable placeholder="请选择" size="small"> 
                             <el-option v-for="item in typeData" :key="item.value" :label="item.name" :value="item.value"> </el-option>
                         </el-select>
         </el-col>
-         <el-col :span="5">
+         <el-col :span="3">
           选择日期：<el-date-picker v-model="selectTime" type="date" size="small" placeholder="选择日期" value-format="yyyy-MM-dd"></el-date-picker> 
         </el-col>
-        <el-col :span="5">
+        <el-col :span="3">
           房间筛选：<el-select v-model="fromInfo.installationLocation" filterable placeholder="请选择" size="small"> 
                       <el-option v-for="item in roomData" :key="item.value" :label="item.name" :value="item.value"> </el-option>
                   </el-select>
@@ -121,7 +121,6 @@ export default {
   }
   .selectRow{
     margin-top: 20px;
-   
   }
   .list{
     margin-top:30px;
@@ -138,5 +137,8 @@ export default {
 }
 /deep/.el-pagination{
   float: right;
+}
+/deep/ .el-date-editor--date, /deep/ .el-select--small {
+  width: 130px;
 }
 </style>

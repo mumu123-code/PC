@@ -39,7 +39,7 @@ export default {
       });
       
       var bgPatternImg = new Image();
-      bgPatternImg.src = "/assets/images/homeBg.png";
+      bgPatternImg.src = "https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fimg.jj20.com%2Fup%2Fallimg%2F1113%2F052420110515%2F200524110515-2-1200.jpg&refer=http%3A%2F%2Fimg.jj20.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=auto?sec=1655023200&t=125c5be23f33b3046481fe46104cad12";
       const chartData = [
         {
           value: 520,
@@ -111,16 +111,17 @@ export default {
           color: "transparent",
         },
       };
+
       for (let i = 0; i < chartData.length; i++) {
         pieData1.push({
           ...chartData[i],
           itemStyle: {
             borderRadius: 100,
-            shadowColor: "#2a2a34",
+            shadowColor: "#005AA0",
             shadowBlur: 5,
             shadowOffsetY: 0,
             shadowOffsetX: 0,
-            borderColor: "#2a2a34",
+            borderColor: "#005AA0",
             borderWidth: 2,
           },
         });
@@ -131,8 +132,8 @@ export default {
           itemStyle: {
             borderRadius: 10,
             color: colorList[i],
-            opacity: 0.1,
-            shadowColor: "#000",
+            opacity: .4,
+            shadowColor: "#fff",
             shadowBlur: 1,
             shadowOffsetY: 5,
             shadowOffsetX: 0,
@@ -142,22 +143,24 @@ export default {
       }
 
       let option = {
+        // 背景样式
         backgroundColor: {
-          image: bgPatternImg,
-          repeat: "repeat",
+          type: 'pattern',
+          image: bgPatternImg, // 支持为 HTMLImageElement, HTMLCanvasElement，不支持路径字符串
+          repeat: 'repeat' // 是否平铺，可以是 'repeat-x', 'repeat-y', 'no-repeat'
         },
         title: [
           {
-            text: "75.0%",
+            text: "7.0%",
             x: "50%",
             y: "43%",
             textAlign: "center",
             textStyle: {
-              fontSize: "40",
+              fontSize: "20",
               fontWeight: "500",
               color: "#98b5d2",
               textAlign: "center",
-              textShadowColor: "#000",
+              textShadowColor: "#B6C8E4",
               textShadowBlur: "1",
               textShadowOffsetX: 2,
               textShadowOffsetY: 2,
@@ -169,7 +172,7 @@ export default {
             top: "52%",
             textAlign: "center",
             textStyle: {
-              fontSize: "18",
+              fontSize: "12",
               fontWeight: "400",
               color: "#5c5a68",
               textAlign: "center",
@@ -184,26 +187,26 @@ export default {
           left: "10%",
           top: "35%",
           align: "left",
-          itemGap: 18,
+          itemGap: 12,
           itemWidth: 20,
           itemHeight: 20,
-          shadowBlur: 10,
+          shadowBlur: 20,
           shadowOffsetY: 0,
           shadowOffsetX: 0,
-          borderColor: "#2a2a34",
+          borderColor: "#87A7D0",
           borderWidth: 2,
           textStyle: {
-            color: "#D8DDE3",
+            color: "red",
             rich: {
               name: {
                 verticalAlign: "right",
                 align: "left",
                 fontSize: 18,
-                color: "#D8DDE3",
+                color: "red",
               },
               percent: {
                 padding: [0, 0, 0, 10],
-                color: "#D8DDE3",
+                color: "blue",
                 fontSize: 18,
               },
             },
@@ -225,7 +228,7 @@ export default {
             z: 3,
             roundCap: true,
             radius: ["44%", "51%"],
-            center: ["50%", "50%"],
+            center: ["50%", "51%"],
             label: {
               show: false,
             },
@@ -237,7 +240,7 @@ export default {
           {
             type: "pie",
             z: 2,
-            radius: ["40%", "55%"],
+            radius: ["39%", "56%"],
             center: ["50%", "50%"],
             label: {
               show: false,
