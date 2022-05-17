@@ -88,7 +88,6 @@ export default {
         let obj = { key:0,ledgerType:1,materialName: '',purchaseQuantity: '',usageThisWeek: '',
         inventoryThisWeek:'', vocsContent:'',recoverType:'',recoverAmount:''};
         this.vocsData.push(obj);
-      console.log(this.vocsData, 'vocsData')
     },
     stagingBtn(){
       this.listInfo.ledgerStatus = 1;
