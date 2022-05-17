@@ -9,8 +9,20 @@
     <div class="materialContent">
       <el-table :data="vocsData" style="width: 100%" :header-cell-style="{'background':'#F5F3F2'}">
         <el-table-column prop="vocsData.materialName" label="含VOCs材料名称" width="200">
-          <template slot-scope="scope">
-            <el-input v-model="scope.row.materialName" placeholder="请输入"></el-input>
+            <template slot-scope="scope">
+              <el-select
+              v-model="scope.row.materialName"
+              filterable
+              allow-create
+              default-first-option
+              placeholder="请选择文章标签">
+              <el-option
+                v-for="item in materialNameArr"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value">
+              </el-option>
+            </el-select>
           </template>
         </el-table-column>
         <el-table-column prop="vocsData.purchaseQuantity" label="采购量(kg)" width="200">
@@ -55,8 +67,9 @@
 </template>
 
 <script>
-
-import { getStaging,addParameter } from "../../assets/js/standing";
+// import导入日期格式化
+import moment from "moment";
+import { getStaging,addParameter,getLedgerName } from "../../assets/js/standing";
 
 export default {
   name: "materialChart",
@@ -70,8 +83,10 @@ export default {
       listInfo: {
         ledgerType: 1,
         ledgerStatus: 0,
-        ledgerDetail:[]
+        ledgerDetail:[],
+        createTime: moment().format("YYYY-MM-DD"),
       },
+      materialNameArr: [],
     };
   },
   created(){
@@ -79,6 +94,8 @@ export default {
     let day = new Date();
     let month = day.getMonth() + 1;
     this.time = day.getFullYear() + "年" + month + "月" + day.getDate() + "日";
+    // 获取台账名称列表
+    this.getLedgerName();
   },
   methods:{
     addVocs(){
@@ -99,20 +116,32 @@ export default {
       this.listInfo.ledgerDetail = this.vocsData;
       this.addFunc();
     },
-    //添加台账
+    // 获取台账名称列表
+    async getLedgerName() {
+      // 清空数据
+      this.materialNameArr = [];
+      const res = await getLedgerName();
+      if(res?.code == "1") {
+        res.data.map(val => {
+          this.materialNameArr.push({
+            value: val,
+            label: val
+          })
+        });
+      }
+    },
+    // 添加台账
     async addFunc(){
       const res = await addParameter(this.listInfo);
       if (res?.code == "1") {
-        console.log(res)
+        this.$message.success(res.msg);
       }
     },
 
-    //获取暂存的原辅料台账
+    // 获取暂存的原辅料台账
     async getStagingMaterial(){
       const res = await getStaging({'ledgerType':1});
       if(res?.code=="1"){
-        console.log(res)
-
         this.vocsData = res.data.ledgerDetail;
       }
     }

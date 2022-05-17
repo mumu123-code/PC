@@ -66,6 +66,7 @@ export default {
         ledgerStatus: 0,
         ledgerDetail:[]
       },
+      
     };
   },
   created(){
@@ -98,7 +99,7 @@ export default {
     async addFunc(){
       const res = await addParameter(this.listInfo);
       if (res?.code) {
-        console.log(res)
+        this.$message.success(res.msg);
       }
     },
 

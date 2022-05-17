@@ -46,7 +46,7 @@
       <div class="materialType">
           <div class="typeContent">
             <!-- 原辅料台账 -->
-            <el-table v-if="listInfo.ledgerType == 1" :data="vocsData" style="width: 100%" :header-cell-style="{'background':'#F5F3F2'}">
+            <el-table v-if="listInfo.ledgerType == 1" :data="vocsData" style="width: 100%" max-height="750" :header-cell-style="{'background':'#F5F3F2'}">
               <el-table-column prop="materialName" label="含VOCs材料名称" width="200"></el-table-column>
               <el-table-column prop="purchaseQuantity" label="采购量(kg)" width="200"></el-table-column>
               <el-table-column prop="usageThisWeek" label="本周使用量(kg)" width="200"></el-table-column>
@@ -57,7 +57,7 @@
             </el-table>
 
             <!-- 耗材台账 -->
-              <el-table v-if="listInfo.ledgerType != 1" :data="vocsData" style="width: 100%,margon-top:20px" :header-cell-style="{'background':'#F5F3F2'}">
+            <el-table v-if="listInfo.ledgerType != 1" :data="vocsData" style="width: 100%,margon-top:20px" max-height="750" :header-cell-style="{'background':'#F5F3F2'}">
               <el-table-column prop="consumablesType" label="耗材种类" width="260"></el-table-column>
               <el-table-column prop="replacementAmount" label="更换量(kg)" width="260"></el-table-column>
               <el-table-column prop="replacementTime" label="更换时间" width="260"></el-table-column>
@@ -105,6 +105,7 @@ export default {
         "处置时间":'handleTime', 
       },
       total:0,
+      
     };
   },
   created(){

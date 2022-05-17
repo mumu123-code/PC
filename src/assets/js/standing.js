@@ -27,3 +27,11 @@ export function getHistory(data) {
     });
 }
 
+//获取台账名称列表
+export function getLedgerName() {
+    return request({
+        method: "get",
+        url: "/ledger/listName"
+    });
+}
+
