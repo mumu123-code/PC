@@ -208,7 +208,7 @@ export default {
             },
             data: [
               {
-                name: "风速",
+                name: "风速值",
               }
             ]
           },
@@ -221,7 +221,7 @@ export default {
             },
             data: [
               {
-                name: "温度",
+                name: "温度值",
               }
             ]
           }
