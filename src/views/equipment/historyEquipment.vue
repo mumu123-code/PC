@@ -201,7 +201,7 @@ export default {
         legend: [
           {
             top: "0%",
-            right: "8%",
+            left: "8%",
             textStyle: {
               fontSize: 12, // 字体大小
               color: "#", // 字体颜色（图例与图例文字配色保持一致）
@@ -214,14 +214,14 @@ export default {
           },
           {
             top: "0%",
-            left: "8%",
+            right: "8%",
             textStyle: {
               fontSize: 12, // 字体大小
               color: "#", // 字体颜色（图例与图例文字配色保持一致）
             },
             data: [
               {
-                name: "湿度",
+                name: "温度",
               }
             ]
           }
@@ -243,7 +243,7 @@ export default {
         yAxis: [
            {
             type: 'value',
-            name: "风速值",
+            name: "温度值",
             nameTextStyle: {
               padding: [0,0,0,0]
             },
@@ -259,7 +259,7 @@ export default {
           },
           {
             type: 'value',
-            name: "湿度值",
+            name: "风速值",
             nameTextStyle: {
               padding: [0,0,0,0]
             },
@@ -276,7 +276,7 @@ export default {
         ],
         series: [
           {
-            name: '风速值',
+            name: '温度值',
             type: "line",
             color: ["#1890FF"],
             symbol: 'none',
@@ -284,16 +284,16 @@ export default {
             data: [],
           },
           {
-            name: '温度值',
+            name: '风速值',
             type: "line",
             color: ["#91CB74"],
             symbol: 'none',
             smooth: true,
             data: [],
+            yAxisIndex: 1,
           }
         ],
       },
-      temperatureArr: [], // 企业治污措施湿度数据
       windArr: [], // 企业治污措施风速数据
       productionStatusArr: [], // 企业治污措施数据
     };
@@ -345,10 +345,10 @@ export default {
 
 
       // 企业治污措施图表
-      const temMax = calMax(this.temperatureArr);
+      const ductTemMax = calMax(this.ductTemArr);
       const windMax = calMax(this.windArr);
-      this.$set(this.options1.yAxis[0], 'max', temMax);
-      this.$set(this.options1.yAxis[0], 'interval', (temMax / 6));
+      this.$set(this.options1.yAxis[0], 'max', ductTemMax);
+      this.$set(this.options1.yAxis[0], 'interval', (ductTemMax / 6));
       this.$set(this.options1.yAxis[1], 'max', windMax);
       this.$set(this.options1.yAxis[1], 'interval', (windMax / 6));
 
@@ -394,18 +394,16 @@ export default {
               nvocs: 0, 
               gtemperature: 0, 
               ntemperature: 0, 
-              gwindspeed: 0,
-              ghumidity: 0
+              gwindspeed: 0
             }
           }
 
-          const {  gvocs, nvocs, gtemperature, ntemperature, gwindspeed, ghumidity } = item;
+          const {  gvocs, nvocs, gtemperature, ntemperature, gwindspeed } = item;
 
           this.roomVocsArr.push(gvocs);
           this.ductVocsArr.push(nvocs);
           this.roomTemArr.push(gtemperature);
           this.ductTemArr.push(ntemperature);
-          this.temperatureArr.push(ghumidity);
           this.windArr.push(gwindspeed);
 
           /**
@@ -431,7 +429,7 @@ export default {
 
         // 设置企业治污图表数据
         const { series: series1 } = this.options1;
-        this.$set(series1[0], 'data', this.temperatureArr);
+        this.$set(series1[0], 'data', this.roomTemArr);
         this.$set(series1[1], 'data', this.windArr);
         this.$set(this.options1.xAxis, 'data', this.getTime());
 

@@ -36,71 +36,29 @@
             <img
               src="https://zjlianweihoss.oss-cn-hangzhou.aliyuncs.com/file/1649909506764-cloud.png"
             />
-            {{ (productionObj.gvocs ? productionObj.gvocs : '0') || "-" }} mg/m³
+            {{ (productionObj.nvocs ? productionObj.nvocs : '0') || "-" }} mg/m³
           </span>
           <span>
             <img
               src="https://zjlianweihoss.oss-cn-hangzhou.aliyuncs.com/file/1649909506601-arrow.png"
             />
-            {{ (productionObj.nmicropressure ? productionObj.nmicropressure : '0') || "-" }} kPa
+            {{ isType(productionObj.nmicropressure) }}
           </span>
         </div>
         <div class="personalConPro-bottom">
-          <span v-if="productionObj.door1Value == 127">
-            门1:
-            <img
-              src="https://zjlianweihoss.oss-cn-hangzhou.aliyuncs.com/file/1649909506806-door-close.png"
-              v-if="[1,22].includes(productionObj.door1Value)"
-            />
-            <img
-              src="https://zjlianweihoss.oss-cn-hangzhou.aliyuncs.com/file/1649909506837-door-open.png"
-              v-else
-            />
-          </span>
-          <span>
-            门2:
-            <img
-              src="https://zjlianweihoss.oss-cn-hangzhou.aliyuncs.com/file/1649909506806-door-close.png"
-              v-if="[1,22].includes(productionObj.door1Value)"
-            />
-            <img
-              src="https://zjlianweihoss.oss-cn-hangzhou.aliyuncs.com/file/1649909506837-door-open.png"
-              v-else
-            />
-          </span>
-          <span>
-            门3:
-            <img
-              src="https://zjlianweihoss.oss-cn-hangzhou.aliyuncs.com/file/1649909506806-door-close.png"
-              v-if="[1,22].includes(productionObj.door1Value)"
-            />
-            <img
-              src="https://zjlianweihoss.oss-cn-hangzhou.aliyuncs.com/file/1649909506837-door-open.png"
-              v-else
-            />
-          </span>
-          <span>
-            门4:
-            <img
-              src="https://zjlianweihoss.oss-cn-hangzhou.aliyuncs.com/file/1649909506806-door-close.png"
-              v-if="[1,22].includes(productionObj.door1Value)"
-            />
-            <img
-              src="https://zjlianweihoss.oss-cn-hangzhou.aliyuncs.com/file/1649909506837-door-open.png"
-              v-else
-            />
-          </span>
-          <span>
-            门5:
-            <img
-              src="https://zjlianweihoss.oss-cn-hangzhou.aliyuncs.com/file/1649909506806-door-close.png"
-              v-if="[1,22].includes(productionObj.door1Value)"
-            />
-            <img
-              src="https://zjlianweihoss.oss-cn-hangzhou.aliyuncs.com/file/1649909506837-door-open.png"
-              v-else
-            />
-          </span>
+          <div v-for="(item,index) in doorArr" :key="index">
+            <span v-if="item != 127">
+              门{{index + 1}}:
+              <img
+                src="https://zjlianweihoss.oss-cn-hangzhou.aliyuncs.com/file/1649909506806-door-close.png"
+                v-if="[1,22].includes(item)"
+              />
+              <img
+                src="https://zjlianweihoss.oss-cn-hangzhou.aliyuncs.com/file/1649909506837-door-open.png"
+                v-else
+              />
+            </span>
+          </div>
         </div>
       </div>
       <div class="personalCon-measure">
@@ -128,13 +86,13 @@
             <img
               src="https://zjlianweihoss.oss-cn-hangzhou.aliyuncs.com/file/1649909506764-cloud.png"
             />
-            {{ (productionObj.nvocs ? productionObj.nvocs : '0') || "-" }} mg/m³
+            {{ (productionObj.gvocs ? productionObj.gvocs : '0') || "-" }} mg/m³
           </span>
           <span>
             <img
               src="https://zjlianweihoss.oss-cn-hangzhou.aliyuncs.com/file/1649909506601-arrow.png"
             />
-            {{ productionObj.nmicropressure !== null ? productionObj.nmicropressure : "-" }} kPa
+            {{ productionObj.gwindpressure !== null ? productionObj.gwindpressure : "-" }} kPa
           </span>
           <span>
             <img
@@ -212,6 +170,7 @@ export default {
       activeId: 0, // 设备id
       roomName: '', // 房间名称
       productionObj: {}, // 设备信息数据
+      doorArr: [], // 门的数据
     };
   },
   mounted() {
@@ -247,6 +206,9 @@ export default {
       const res = await getReport(formInfo);
       if (res.code == "1" && res.data.length > 0) {
         this.productionObj = res.data[0];
+        const { door1Value,door2Value,door3Value,door4Value,door5Value,door6Value } = res.data[0];
+        this.doorArr = [door1Value,door2Value,door3Value,door4Value,door5Value,door6Value];
+
       }
     },
     // 跳转到历史数据查看页
@@ -258,6 +220,11 @@ export default {
         },
       });
     },
+    // 分辨大气压的不同类型
+    isType(i) {
+      const arr = ['大气压','微正压','微负压'];
+      return arr[i*1];
+    }
   },
 };
 </script>

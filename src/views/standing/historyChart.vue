@@ -54,6 +54,7 @@
               <el-table-column prop="vocsContent" label="VOCs含量(%)" width="200"></el-table-column>
               <el-table-column prop="recoverType" label="回收方式" width="200"></el-table-column>
               <el-table-column prop="recoverAmount" label="回收量"></el-table-column>
+              <el-table-column prop="createTime" label="日期"></el-table-column>
             </el-table>
 
             <!-- 耗材台账 -->
@@ -145,7 +146,9 @@ export default {
         if(list.length != 0 ){
           list.forEach((el) => {
             el.ledgerDetailList.forEach((val)=>{
-              this.vocsData.push(val)
+              const createTime = el.createTime.split(' ')[0];
+              val.createTime = createTime;
+              this.vocsData.push(val);
             })
           });
         }
