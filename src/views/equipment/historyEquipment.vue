@@ -201,7 +201,7 @@ export default {
         legend: [
           {
             top: "0%",
-            right: "8%",
+            left: "8%",
             textStyle: {
               fontSize: 12, // 字体大小
               color: "#", // 字体颜色（图例与图例文字配色保持一致）
@@ -214,7 +214,7 @@ export default {
           },
           {
             top: "0%",
-            left: "8%",
+            right: "8%",
             textStyle: {
               fontSize: 12, // 字体大小
               color: "#", // 字体颜色（图例与图例文字配色保持一致）
@@ -243,7 +243,7 @@ export default {
         yAxis: [
            {
             type: 'value',
-            name: "风速值",
+            name: "温度值",
             nameTextStyle: {
               padding: [0,0,0,0]
             },
@@ -259,7 +259,7 @@ export default {
           },
           {
             type: 'value',
-            name: "温度值",
+            name: "风速值",
             nameTextStyle: {
               padding: [0,0,0,0]
             },
