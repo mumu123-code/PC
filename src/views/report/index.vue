@@ -185,7 +185,7 @@ export default {
   created(){
     this.typeData = isType.typeData();
     this.roomData = isType.roomData();
-    // this.getList();
+    this.getList();
   },
   methods:{
     //判断类型
