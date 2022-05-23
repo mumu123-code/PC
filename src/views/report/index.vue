@@ -206,21 +206,27 @@ export default {
     },
     //显示详情
     showDetail(val){
-      // console.log(val)
+       console.log(val)
       this.detailInfo = val;
-      this.detailModel = true;
       this.editStateId = "";
       if(val.state == 0){
           // this.editState(val.id);
           this.editStateId = val.id;
       }
       let arr = val.alarmCountRectificationList;
-      if(arr.length == 0){return};
+      if(arr == null){
+         this.$message({
+          message: '暂无详情内容',
+          type: 'warning'
+        });
+        return;
+      };
+      this.detailModel = true;
+      console.log(val.alarmCountRectificationList)
       if (val.rectificationPicture != "") {
         this.imgData=val.rectificationPicture.split(";");
         console.log(this.imgData)
       }
-      
       let roomData = [];
       arr.forEach((item)=>{
           roomData.push(item.roomName);
