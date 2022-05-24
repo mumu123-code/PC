@@ -40,8 +40,8 @@
                             {{ isType(scope.row.hazardousWasteCategory) }}
                         </template>
                     </el-table-column> -->
-                    <el-table-column prop="inQuantity" label="入库数量(kg)" width="120"></el-table-column>
-                    <el-table-column prop="outQuantity" label="出库数量(kg)" width="120"></el-table-column>
+                    <el-table-column prop="inQuantity" label="入库数量(吨)" width="120"></el-table-column>
+                    <el-table-column prop="outQuantity" label="出库数量(吨)" width="120"></el-table-column>
                     <!-- <el-table-column prop="disposalDestination" label="危废处置去向" width="200"></el-table-column> -->
                     <el-table-column prop="disposalDestination" label="危废处置去向" width="200">
                         <template slot-scope="scope">
@@ -49,7 +49,7 @@
                         </template>
                     </el-table-column>
                     <el-table-column prop="destinationUnit" label="危废处置去向单位" width="200"></el-table-column>
-                    <el-table-column prop="storageQuantity" label="累计贮存数量(kg)" width="200"></el-table-column>
+                    <el-table-column prop="storageQuantity" label="累计贮存数量(吨)" width="200"></el-table-column>
                     <el-table-column prop="preparerIn" label="入库人"></el-table-column>
                     <el-table-column prop="preparerOut" label="出库人"></el-table-column>
                     <el-table-column prop="remarks" label="备注" width="400"></el-table-column>
