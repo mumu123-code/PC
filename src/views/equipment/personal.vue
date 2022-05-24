@@ -132,7 +132,7 @@
     </div>
     <!-- 颜色提示 e -->
 
-    <div class="charts-box">
+    <!-- <div class="charts-box">
       <div class="line">
         <div
           v-for="(item, index) in productionStatusArr"
@@ -149,11 +149,17 @@
           ]"
         ></div>
       </div>
+    </div> -->
+    <div class="mainBg">
+      <div id="main"></div>
     </div>
+    
+  
   </div>
 </template>
 
 <script>
+import * as echarts from 'echarts';
 import {
   getProductionStatus,
   getReport,
@@ -171,6 +177,32 @@ export default {
       roomName: '', // 房间名称
       productionObj: {}, // 设备信息数据
       doorArr: [], // 门的数据
+      data:[],
+      option: {
+        legend: {
+          selectedMode: false,
+        },
+        series: {
+          type: 'sunburst',
+          clickable: false,
+          data: [],
+          radius: [0, "100%"],
+          sort: null,
+          levels: [
+            {},
+            {
+              r0: "33%",
+              r: "90%",
+              label: {
+                align: 'right'
+              },
+              emphasis: {
+                focus: 'none',
+              }
+            },
+          ]
+        }
+      }
     };
   },
   mounted() {
@@ -195,6 +227,8 @@ export default {
       const res = await getProductionStatus(form);
       if (res.code == "1") {
         this.productionStatusArr = res.data;
+        // echarts 初始化
+        this.init();
       }
     },
     // 获取生产状态，治污措施数据
@@ -208,7 +242,6 @@ export default {
         this.productionObj = res.data[0];
         const { door1Value,door2Value,door3Value,door4Value,door5Value,door6Value } = res.data[0];
         this.doorArr = [door1Value,door2Value,door3Value,door4Value,door5Value,door6Value];
-
       }
     },
     // 跳转到历史数据查看页
@@ -224,6 +257,31 @@ export default {
     isType(i) {
       const arr = ['大气压','微正压','微负压'];
       return arr[i*1];
+    },
+    // echarts 初始化
+    init() {
+      const arr = ['#ccc', '#18bc37', '#1890ff', 'red'];
+      this.productionStatusArr.forEach(item => {
+        const { startTime } = item;
+        const timeArr = startTime.split(' ')[1].split(':');
+
+        this.data.push({
+          name: `${timeArr[0]}:${timeArr[1]}`,
+          itemStyle: {
+            color: arr[item.operativeStatus]
+          },
+          label: {
+            fontSize: 20,
+            fongWeight: 'bold'
+          },
+          value: 1
+        })
+      });
+
+      var myChart = echarts.init(document.getElementById('main'));
+      this.$set(this.option.series, 'data', this.data);
+      console.log(this.option.series, 'series');
+      myChart.setOption(this.option);
     }
   },
 };
@@ -370,5 +428,12 @@ export default {
     font-size: 20px;
     font-weight: bold;
   }
+}
+.mainBg {
+  pointer-events: none;
+}
+#main {
+  width: 600px;
+  height: 600px;
 }
 </style>
