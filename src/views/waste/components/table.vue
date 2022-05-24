@@ -40,16 +40,20 @@
                             {{ isType(scope.row.hazardousWasteCategory) }}
                         </template>
                     </el-table-column> -->
-                    <el-table-column prop="inQuantity" label="入库数量(kg)" width="120"></el-table-column>
-                    <el-table-column prop="outQuantity" label="出库数量(kg)" width="120"></el-table-column>
+                    <el-table-column prop="inQuantity" label="入库数量(吨)" width="120"></el-table-column>
+                    <el-table-column prop="outQuantity" label="出库数量(吨)" width="120"></el-table-column>
                     <!-- <el-table-column prop="disposalDestination" label="危废处置去向" width="200"></el-table-column> -->
                     <el-table-column prop="disposalDestination" label="危废处置去向" width="200">
                         <template slot-scope="scope">
                             {{ isType(scope.row.disposalDestination) }}
                         </template>
                     </el-table-column>
-                    <el-table-column prop="destinationUnit" label="危废处置去向单位" width="200"></el-table-column>
-                    <el-table-column prop="storageQuantity" label="累计贮存数量(kg)" width="200"></el-table-column>
+                    <el-table-column prop="destinationUnit" label="危废处置去向单位" width="200">
+                        <template slot-scope="scope">
+                            {{ isUnit(scope.row.destinationUnit) }}
+                        </template>
+                    </el-table-column>
+                    <el-table-column prop="storageQuantity" label="累计贮存数量(吨)" width="200"></el-table-column>
                     <el-table-column prop="preparerIn" label="入库人"></el-table-column>
                     <el-table-column prop="preparerOut" label="出库人"></el-table-column>
                     <el-table-column prop="remarks" label="备注" width="400"></el-table-column>
@@ -72,11 +76,11 @@ export default{
                 "出库时间":'createTime',
                 "废物代码":'wasteCode',
                 // "危废类别":'hazardousWasteCategory',
-                "入库数量(kg)":'inQuantity',
-                "出库数量(kg)":'outQuantity',
+                "入库数量(吨)":'inQuantity',
+                "出库数量(吨)":'outQuantity',
                 "危废处置去向":'disposalDestination', 
                 "危废处置去向单位":'destinationUnit',
-                "累计贮存数量(kg)":'storageQuantity',
+                "累计贮存数量(吨)":'storageQuantity',
                 "入库人":'preparerIn',
                 "出库人":'preparerOut',
                  "备注":'remarks',
@@ -118,6 +122,21 @@ export default{
                     break;
                 case 2:
                     state = "委外处置";
+                    break;
+            }
+            return state;
+        },
+        isUnit(type){
+            let state = "";
+            switch(type){
+                case 0:
+                    state = "本市";
+                    break;
+                case 1:
+                    state = "省内";
+                    break;
+                case 2:
+                    state = "省外";
                     break;
             }
             return state;
