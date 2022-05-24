@@ -57,6 +57,7 @@
 import * as echarts from 'echarts';
 import moment from "moment";
 
+
 import { getReportDetail } from '../../assets/js/equipment';
 
 export default {
@@ -387,6 +388,11 @@ export default {
 
       const res = await getReportDetail(this.formInfo);
       if(res.code == '1') {
+        /** 获取当前时间，每分钟一条 */
+        var minutes = moment().format('m');
+        var hours_24 = moment().format('H');
+        var year = moment().format('YYYY-MM-DD');
+
         res.data.list.map((item,index) => {
           if(!item) {
             item = {
@@ -418,6 +424,16 @@ export default {
             }
           }
         });
+
+        if(this.time == year) {
+          const num = hours_24 * 60 + minutes * 1;
+          this.roomVocsArr = this.roomVocsArr.splice(0, num);
+          this.ductVocsArr = this.ductVocsArr.splice(0, num);
+          this.roomTemArr = this.roomTemArr.splice(0, num);
+          this.ductTemArr = this.ductTemArr.splice(0, num);
+          this.windArr = this.windArr.splice(0, num);
+          this.productionStatusArr = this.productionStatusArr.splice(0, num);
+        }
 
         // 设置图表数据
         const { series } = this.options;
