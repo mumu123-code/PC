@@ -32,7 +32,7 @@
       <label>在线</label>
     </div>
     <!-- 颜色提示 e -->
-    <div class="charts-box">
+    <!-- <div class="charts-box">
       <div class="line">
         <div
           v-for="(item, index) in productionStatusArr"
@@ -47,7 +47,10 @@
           ]"
         ></div>
       </div>
-    </div>
+    </div> -->
+    
+    <div id="roundMain"></div>
+
     <!-- 图表 e -->
 
   </div>
@@ -297,7 +300,173 @@ export default {
       },
       windArr: [], // 企业治污措施风速数据
       productionStatusArr: [], // 企业治污措施数据
-    };
+      roundOp: {
+        series: [ // 时钟外圈颜色状态
+          { 
+            type: "pie",
+            name: 'pie',
+            radius: ["70%", "85%"],
+            center: ["50%", "50%"],
+            hoverAnimation: true,
+            z: 10,
+            itemStyle: {
+              normal: {
+                borderWidth: 1,
+                borderColor: "#c3c3c3"
+              }
+            },
+            label: {
+              show: false
+            },
+            data: [],
+            labelLine: {
+              show: false
+            }
+          },
+          { ///大表盘时针
+            name: '小时',
+            type: 'gauge',
+            radius: '70%', //仪表盘半径
+            min: 0,
+            max: 24,
+            startAngle: 90,
+            endAngle: -269.9999,
+            splitNumber: 24,
+            animation: 0,
+            pointer: { //仪表盘指针
+              length: '0%',
+              width: '0%'
+            },
+            itemStyle: { //仪表盘指针样式
+              normal: {
+                color: '#fff',
+                shadowColor: 'rgba(0, 0, 0, 0.5)',
+                shadowBlur: 10,
+                shadowOffsetX: 2,
+                shadowOffsetY: 2
+              }
+            },
+            axisLine: { //仪表盘轴线样式
+              lineStyle: {
+                width: 1,
+              }
+            },
+            axisTick: { //仪表盘刻度样式
+              distance: 0,
+              length: '3%',
+              splitNumber: 4, //分隔线之间分割的刻度数
+              lineStyle: {
+                color: '#ccc',
+                width: 1
+              }
+            },
+            splitLine: { //分割线样式
+              distance: 0,
+              length: '5%',
+              lineStyle: {
+                color: '#ccc',
+                width: 5
+              }
+            },
+            axisLabel: {
+              show: true,
+              formatter: function(param) {
+                if (param !== 0) {
+                  return param
+                } else {
+                  return null
+                }
+              },
+              color: '#333',
+              fontSize: 18,
+              distance: 5,
+            },
+            title: {
+              show: 0
+            }, //仪表盘标题
+            detail: {
+              show: 0
+            }, //仪表盘显示数据
+            data: [{
+              value: null
+            }]
+          }, 
+          { ///大表盘分针
+            name: '分钟',
+            type: 'gauge',
+            radius: '0%', //仪表盘半径
+            min: 0,
+            max: 60,
+            startAngle: 90,
+            endAngle: -269.9999,
+            splitNumber: 12,
+            animation: 0,
+            pointer: { //仪表盘指针
+              length: '85%',
+              width: '3%'
+            },
+            itemStyle: { //仪表盘指针样式
+              normal: {
+                color: '#fff',
+                shadowColor: 'rgba(0, 0, 0, 0.5)',
+                shadowBlur: 10,
+                shadowOffsetX: 2,
+                shadowOffsetY: 2
+              }
+            },
+            axisLine: { //仪表盘轴线样式
+              lineStyle: {
+                width: 1,
+              }
+            },
+            splitLine: { //分割线样式
+              show: false,
+            },
+            axisTick: { //仪表盘刻度样式
+              show: false,
+ 
+            },
+            axisLabel: {
+              show: false,
+            }, //刻度标签
+            title: {
+              show: 0
+            }, //仪表盘标题
+            detail: {
+              show: 0
+            }, //仪表盘显示数据
+            data: [{
+              value: null
+            }]
+          },
+          { //指针内环
+            type: 'pie',
+            hoverAnimation: false,
+            legendHoverLink: false,
+            radius: ['0%', '5%'],
+            z: 10,
+            label: {
+              normal: {
+                show: false
+              }
+            },
+            labelLine: {
+              normal: {
+                show: false
+              }
+            },
+            data: [{
+              value: 10,
+              itemStyle: {
+                normal: {
+                  color: "#FFFFFF"
+                }
+              }
+            }]
+          }
+        ]
+      }
+    }
   },
   async mounted(){
     this.time = moment(new Date()).subtract(1, 'd').format('YYYY-MM-DD');
@@ -395,12 +564,24 @@ export default {
 
         res.data.list.map((item,index) => {
           if(!item) {
-            item = {
-              gvocs: 0, 
-              nvocs: 0, 
-              gtemperature: 0, 
-              ntemperature: 0, 
-              gwindspeed: 0
+            const obj = res.data.list[index - 1];
+            if(!obj) {
+              item = {
+                gvocs: 0, 
+                nvocs: 0, 
+                gtemperature: 0, 
+                ntemperature: 0, 
+                gwindspeed: 0
+              }
+            } else {
+              const { gvocs, nvocs, gtemperature, ntemperature, gwindspeed } = obj;
+              item = {
+                gvocs, 
+                nvocs, 
+                gtemperature, 
+                ntemperature, 
+                gwindspeed
+              }
             }
           }
 
@@ -415,12 +596,12 @@ export default {
           /**
            * 每个小时取六个点,取8点到24点的数据
            */
-          const indexNum = index % 10;
-          if(index > 479 && !indexNum) {
-            if(gwindspeed > 0.5) {
-              this.productionStatusArr.push(true);
+          const indexNum = index % 12;
+          if(!indexNum) {
+            if(gwindspeed && gwindspeed > 0.5) {
+              this.productionStatusArr.push(0);
             } else {
-              this.productionStatusArr.push(false);
+              this.productionStatusArr.push(1);
             }
           }
         });
@@ -452,7 +633,50 @@ export default {
         // 关闭loading
         loading.close();
         this.initChart(); 
+        this.drawClockChart();
       }
+    },
+    // 绘画时钟
+    drawClockChart() {
+      var datetime = new Date();
+      var h = datetime.getHours();
+      var m = datetime.getMinutes();
+      var s = datetime.getSeconds();
+      var minutes = m + s / 60;
+      var hours_24 = h + m / 60;
+      var hours_12;
+      if (hours_24 > 12) {
+        hours_12 = hours_24 - 12;
+      } else {
+        hours_12 = hours_24;
+      }
+      var gethour = (hours_12).toFixed(2);
+      var getminutes = (minutes).toFixed(2);
+      var dataType = []
+      const arr = ['#18bc37', 'red', '#fff'];
+
+      for (let i = 0; i < 96; i++) {
+        if(this.productionStatusArr[i] === undefined) {
+          this.productionStatusArr[i] = {operativeStatus: 2}
+        }
+        dataType.push({
+          name: i,
+          value: 1,
+          trueValue: i,
+          itemStyle: {
+            normal: {
+              color: arr[this.productionStatusArr[i]]
+            }
+          }
+        })
+      }
+      
+      this.$set(this.roundOp.series[0], 'data', dataType);
+      this.$set(this.roundOp.series[1].data[0],'value', gethour);
+      this.$set(this.roundOp.series[2].data[0],'value', getminutes);
+      
+      var myChart = echarts.init(document.getElementById('roundMain'));
+      myChart.setOption(this.roundOp);
     }
   },
 };
@@ -472,6 +696,11 @@ export default {
 #main, #main1 {
   width: 1260px;
   height: 300px;
+}
+#roundMain {
+  margin: 0 auto;
+  width: 580px;
+  height: 580px;
 }
 
 .tableTitle {
