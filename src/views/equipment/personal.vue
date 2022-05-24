@@ -619,7 +619,7 @@ export default {
   pointer-events: none;
 }
 #main {
-  width: 600px;
-  height: 600px;
+  width: 580px;
+  height: 580px;
 }
 </style>
