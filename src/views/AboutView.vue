@@ -2,7 +2,11 @@
   <div class="about">
     <el-container>
       <el-header>VOCs数智哨兵系统(企业版)</el-header>
-      <div class="title">( {{companyName}} )</div>
+      <div class="title-exit">
+        <div class="title">( {{companyName}} )</div>
+        <el-button class="exit" type="primary" icon="el-icon-user" size="mini" @click.native="loginOut">退出</el-button>
+      </div>
+
       <el-container>
         <el-aside width="200px">
           <NavMenu />
@@ -17,6 +21,7 @@
 
 <script>
 import NavMenu from "../components/Navmenu/NavMenu.vue";
+import { loginGetOut } from "../assets/js/Login";
 
 export default {
   name: "AboutView",
@@ -31,6 +36,15 @@ export default {
   components: {
     NavMenu,
   },
+  methods:{
+    async loginOut(){
+      const res = await loginGetOut();
+      if (res.code == "1") {
+        sessionStorage.removeItem("userInfo", JSON.stringify(res.data))
+        this.$router.push('/')
+      }
+    }
+  }
 };
 </script>
 
@@ -46,7 +60,14 @@ export default {
     font-size: 20px;
     letter-spacing: 2px;
   }
+  .title-exit{
+    display: flex;
+    .exit{
+      margin-right: 20px;
+    }
+  }
   .title{
+    width: 100%;
     text-align: center;
   }
   .el-aside {

@@ -7,3 +7,10 @@ export function loginGet(data) {
         data,
     });
 }
+
+export function loginGetOut() {
+    return request({
+        method: "get",
+        url: "/user/logout",
+    });
+}
