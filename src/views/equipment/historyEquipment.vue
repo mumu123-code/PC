@@ -587,10 +587,10 @@ export default {
 
           const {  gvocs, nvocs, gtemperature, ntemperature, gwindspeed } = item;
 
-          this.roomVocsArr.push(gvocs);
-          this.ductVocsArr.push(nvocs);
-          this.roomTemArr.push(gtemperature);
-          this.ductTemArr.push(ntemperature);
+          this.roomVocsArr.push(nvocs);
+          this.ductVocsArr.push(gvocs);
+          this.roomTemArr.push(ntemperature);
+          this.ductTemArr.push(gtemperature);
           this.windArr.push(gwindspeed);
 
           /**
