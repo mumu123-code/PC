@@ -85,6 +85,11 @@ const routes = [
         component: () => import("../views/standing/material.vue"),
       },
       {
+        path: "/activatedCarbon", // 活性炭台账
+        name: "activatedCarbon",
+        component: () => import("../views/activatedCarbon/index.vue"),
+      },
+      {
         path: "/historyChart", // 历史台账
         name: "historyChart",
         component: () => import("../views/standing/historyChart.vue"),

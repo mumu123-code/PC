@@ -5,11 +5,12 @@
      <div class="historyType">
        <el-form>
           <el-row>
-            <el-col :span="6">
+            <el-col :span="8">
               <el-form-item label="台账类型：">
                 <el-radio-group v-model="listInfo.ledgerType" @change="selectType()">
                   <el-radio :label="1">原辅料台账</el-radio>
                   <el-radio :label="2">耗材台账</el-radio>
+                  <!-- <el-radio :label="3">活性炭台账</el-radio> -->
                 </el-radio-group>
               </el-form-item>
             </el-col>
@@ -30,13 +31,21 @@
                           </download-excel>
                       </template>
                 </div>
-                <div class="out" v-if="listInfo.ledgerType != 1">
-                      <template>
-                          <download-excel class="export-excel-wrapper" :data="vocsData" :fields="consumption" name="耗材台账.xls" >
-                              <!-- 上面可以自定义自己的样式，还可以引用其他组件button -->
-                              <el-button type="success" size="small">导出台账</el-button>
-                          </download-excel>
-                      </template>
+                <div class="out" v-if="listInfo.ledgerType == 2">
+                    <template>
+                        <download-excel class="export-excel-wrapper" :data="vocsData" :fields="consumption" name="耗材台账.xls" >
+                            <!-- 上面可以自定义自己的样式，还可以引用其他组件button -->
+                            <el-button type="success" size="small">导出台账</el-button>
+                        </download-excel>
+                    </template>
+                </div>
+                <div class="out" v-if="listInfo.ledgerType == 3">
+                    <template>
+                        <download-excel class="export-excel-wrapper" :data="activatedCarbonData" :fields="activatedCarbon" name="活性炭吸附设施运行维护台账.xls" >
+                            <!-- 上面可以自定义自己的样式，还可以引用其他组件button -->
+                            <el-button type="success" size="small">导出台账</el-button>
+                        </download-excel>
+                    </template>
                 </div>
              </el-col>
           </el-row>
@@ -58,7 +67,7 @@
             </el-table>
 
             <!-- 耗材台账 -->
-            <el-table v-if="listInfo.ledgerType != 1" :data="vocsData" style="width: 100%,margon-top:20px" max-height="750" :header-cell-style="{'background':'#F5F3F2'}">
+            <el-table v-if="listInfo.ledgerType == 2" :data="vocsData" style="width: 100%,margon-top:20px" max-height="750" :header-cell-style="{'background':'#F5F3F2'}">
               <el-table-column prop="consumablesType" label="耗材种类" width="260"></el-table-column>
               <el-table-column prop="replacementAmount" label="更换量(kg)" width="260"></el-table-column>
               <el-table-column prop="replacementTime" label="更换时间" width="260"></el-table-column>
@@ -66,6 +75,14 @@
               <el-table-column prop="handleTime" label="处置时间"></el-table-column>
             </el-table>
 
+            <!-- 活性炭台账 -->
+            <el-table v-if="listInfo.ledgerType == 3" :data="activatedCarbonData" style="width: 100%" max-height="750" :header-cell-style="{'background':'#F5F3F2'}">
+              <el-table-column prop="handleTime" label="开启时间"></el-table-column>
+              <el-table-column prop="handleTime" label="关停时间"></el-table-column>
+              <el-table-column prop="handleTime" label="更换时间"></el-table-column>
+              <el-table-column prop="handleTime" label="活性炭种类"></el-table-column>
+              <el-table-column prop="handleTime" label="装填数量(kg)"></el-table-column>
+            </el-table>
             <!-- 分页 -->
             <el-pagination background layout="prev, pager, next" :total="total" @current-change="selectPage"></el-pagination>
           </div>
@@ -75,12 +92,14 @@
 
 <script>
 import { getHistory } from "../../assets/js/standing";
+import { getActivatedCarbon } from '../../assets/js/common';
 export default {
   name: "historyChart",
   data() {
     return {
       val:['',''],
       vocsData: [],
+      activatedCarbonData:[],
       listInfo: {
           ledgerType: 1,
           pageNum: 0,
@@ -89,6 +108,8 @@ export default {
           startDate: "",
           endDate: ""
       },
+      
+      //原辅料
       material: {
         "含VOCs材料名称":'materialName',
         "采购量(kg)":'purchaseQuantity',
@@ -98,6 +119,8 @@ export default {
         "回收方式":'recoverType',
         "回收量":'recoverAmount', 
       },
+
+      //耗材
       consumption:{
         "耗材种类":'consumablesType',
         "更换量(kg)":'replacementAmount',
@@ -105,8 +128,16 @@ export default {
         "处置情况":'handleType',
         "处置时间":'handleTime', 
       },
+
+      //活性炭
+      activatedCarbon:{
+        "开启时间":"",
+        "关闭时间":"",
+        "更换时间":"",
+        "活性炭种类":"",
+        "装填数量(kg)":"",
+      },
       total:0,
-      
     };
   },
   created(){
@@ -122,7 +153,12 @@ export default {
         this.listInfo.startDate=this.val[0] + " 00:00:00";
         this.listInfo.endDate=this.val[1] + " 23:59:59";
       }
-      this.getMaterial()
+      // this.getMaterial()
+      if(this.listInfo.ledgerType == 3){
+        this.getActivatedCarbonList();
+        return;
+      }
+      this.getMaterial();
     },
     selectPage(val){
       this.listInfo.pageNum = val - 1;
@@ -132,8 +168,11 @@ export default {
     selectType(){
       this.vocsData.length = 0;
       this.listInfo.pageNum = 0;
+      if(this.listInfo.ledgerType == 3){
+        this.getActivatedCarbonList();
+        return;
+      }
       this.getMaterial();
-      console.log(this.listInfo.ledgerType)
     },
     //获取原辅材料和耗材台账
     async getMaterial(){
@@ -154,7 +193,13 @@ export default {
         }
       }
     },
-
+    //获取活性炭台账
+    async getActivatedCarbonList(){
+      const res = await getActivatedCarbon();
+      if(res?.code == "1"){
+        this.activatedCarbonData = res.data;
+      }
+    },
   },
 };
 </script>

@@ -48,11 +48,56 @@ export function getFileDetail(data){
     })
 }
 
-//固废台账列表
-export function getWasteParameter(data){
+//固废台账列表(月)
+export function getMonthWasteParameter(data){
     return request({
         method:"post",
         url:"/waste/pageList",
+        data
+    })
+}
+
+//固废月台账导出数据    
+export function getExportMonthWasteParameter(data){
+    return request({
+        method:"post",
+        url:"/waste/listToXSSF",
+        data
+    })
+}
+
+//固废台账列表(年)
+export function getYearsWasteParameter(data){
+    return request({
+        method:"post",
+        url:"/waste/pageMonthList",
+        data
+    })
+}
+
+//固废年台账导出数据
+export function getExportYearsWasteParameter(data){
+    return request({
+        method:"post",
+        url:"/waste/monthListToXSSF",
+        data
+    })
+}
+
+//获取活性炭列表
+export function getActivatedCarbon(data){
+    return request({
+        method:"post",
+        url:"",
+        data
+    })
+}
+
+//添加活性炭数据
+export function addActivatedCarbon(data){
+    return request({
+        method:"post",
+        url:"",
         data
     })
 }

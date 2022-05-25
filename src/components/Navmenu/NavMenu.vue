@@ -24,6 +24,7 @@
         <el-menu-item-group>
           <el-menu-item index="/material">原辅材料台账</el-menu-item>
           <el-menu-item index="/consumablesChart">耗材台账</el-menu-item>
+          <el-menu-item index="/activatedCarbon">活性炭台账</el-menu-item>
           <el-menu-item index="/historyChart">历史台账</el-menu-item>
         </el-menu-item-group>
       </el-submenu>
