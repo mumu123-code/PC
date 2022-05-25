@@ -493,9 +493,6 @@ export default {
     // 获取最大值方法
     calMax(arr) {
       var max = Math.max.apply(Math, arr); // 获取最大值方法
-
-      console.log(max, '你好最大值');
-
       var maxint = Math.ceil(max / 5); // 向上以5的倍数取整
       var maxval = maxint * 5 + 5; // 最终设置的最大值
       return maxval; // 输出最大值
@@ -520,8 +517,6 @@ export default {
       // 企业治污措施图表
       const ductTemMax = calMax(this.ductTemArr);
       const windMax = calMax(this.windArr);
-
-      console.log(this.ductTemArr, windMax, '最大值');
 
       this.$set(this.options1.yAxis[0], 'max', ductTemMax);
       this.$set(this.options1.yAxis[0], 'interval', (ductTemMax / 6));
@@ -700,7 +695,7 @@ export default {
   }
 }
 #main, #main1 {
-  width: 1260px;
+  width: 1060px;
   height: 300px;
 }
 #roundMain {

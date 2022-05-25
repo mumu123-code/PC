@@ -54,6 +54,7 @@ export default {
     height: 90vh;
   }
   .el-main {
+    width: calc(100% - 200px);
     background-color: #fff;
     height: 90vh;
   }
