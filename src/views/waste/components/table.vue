@@ -151,7 +151,7 @@ export default{
             },
             preMonthTime:"",
             preYearTime:"",
-            activeTab:"years",
+            activeTab:"month",
             total:0,
             yearsTotal:0,
         }

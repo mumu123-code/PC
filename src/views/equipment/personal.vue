@@ -132,7 +132,7 @@
     </div>
     <!-- 颜色提示 e -->
 
-    <div class="charts-box">
+    <!-- <div class="charts-box">
       <div class="line">
         <div
           v-for="(item, index) in productionStatusArr"
@@ -149,11 +149,17 @@
           ]"
         ></div>
       </div>
+    </div> -->
+    <div class="mainBg">
+      <div id="main"></div>
     </div>
+    
+  
   </div>
 </template>
 
 <script>
+import * as echarts from 'echarts';
 import {
   getProductionStatus,
   getReport,
@@ -171,6 +177,171 @@ export default {
       roomName: '', // 房间名称
       productionObj: {}, // 设备信息数据
       doorArr: [], // 门的数据
+      data:[],
+      option: {
+        series: [{ // 时钟外圈颜色状态
+          type: "pie",
+          name: 'pie',
+          radius: ["70%", "85%"],
+          center: ["50%", "50%"],
+          hoverAnimation: true,
+          z: 10,
+          itemStyle: {
+            normal: {
+              borderWidth: 1,
+              borderColor: "#c3c3c3"
+            }
+          },
+          label: {
+            show: false
+          },
+          data: [],
+          labelLine: {
+            show: false
+          }
+        },
+          { ///大表盘时针
+            name: '小时',
+            type: 'gauge',
+            radius: '70%', //仪表盘半径
+            min: 0,
+            max: 24,
+            startAngle: 90,
+            endAngle: -269.9999,
+            splitNumber: 24,
+            animation: 0,
+            pointer: { //仪表盘指针
+              length: '0%',
+              width: '0%'
+            },
+            itemStyle: { //仪表盘指针样式
+              normal: {
+                color: '#fff',
+                shadowColor: 'rgba(0, 0, 0, 0.5)',
+                shadowBlur: 10,
+                shadowOffsetX: 2,
+                shadowOffsetY: 2
+              }
+            },
+            axisLine: { //仪表盘轴线样式
+              lineStyle: {
+                width: 1,
+              }
+            },
+            axisTick: { //仪表盘刻度样式
+              distance: 0,
+              length: '3%',
+              splitNumber: 4, //分隔线之间分割的刻度数
+              lineStyle: {
+                color: '#ccc',
+                width: 1
+              }
+            },
+            splitLine: { //分割线样式
+              distance: 0,
+              length: '5%',
+              lineStyle: {
+                color: '#ccc',
+                width: 5
+              }
+            },
+            axisLabel: {
+              show: true,
+              formatter: function(param) {
+                if (param !== 0) {
+                  return param
+                } else {
+                  return null
+                }
+              },
+              color: '#333',
+              fontSize: 18,
+              distance: 5,
+            },
+            title: {
+              show: 0
+            }, //仪表盘标题
+            detail: {
+              show: 0
+            }, //仪表盘显示数据
+            data: [{
+              value: null
+            }]
+          }, { ///大表盘分针
+            name: '分钟',
+            type: 'gauge',
+            radius: '0%', //仪表盘半径
+            min: 0,
+            max: 60,
+            startAngle: 90,
+            endAngle: -269.9999,
+            splitNumber: 12,
+            animation: 0,
+            pointer: { //仪表盘指针
+              length: '85%',
+              width: '3%'
+            },
+            itemStyle: { //仪表盘指针样式
+              normal: {
+                color: '#fff',
+                shadowColor: 'rgba(0, 0, 0, 0.5)',
+                shadowBlur: 10,
+                shadowOffsetX: 2,
+                shadowOffsetY: 2
+              }
+            },
+            axisLine: { //仪表盘轴线样式
+              lineStyle: {
+                width: 1,
+              }
+            },
+            splitLine: { //分割线样式
+              show: false,
+            },
+            axisTick: { //仪表盘刻度样式
+              show: false,
+ 
+            },
+            axisLabel: {
+              show: false,
+            }, //刻度标签
+            title: {
+              show: 0
+            }, //仪表盘标题
+            detail: {
+              show: 0
+            }, //仪表盘显示数据
+            data: [{
+              value: null
+            }]
+          },
+          { //指针内环
+            type: 'pie',
+            hoverAnimation: false,
+            legendHoverLink: false,
+            radius: ['0%', '5%'],
+            z: 10,
+            label: {
+              normal: {
+                show: false
+              }
+            },
+            labelLine: {
+              normal: {
+                show: false
+              }
+            },
+            data: [{
+              value: 10,
+              itemStyle: {
+                normal: {
+                  color: "#FFFFFF"
+                }
+              }
+            }]
+          }
+        ]
+      }
     };
   },
   mounted() {
@@ -195,6 +366,8 @@ export default {
       const res = await getProductionStatus(form);
       if (res.code == "1") {
         this.productionStatusArr = res.data;
+        // echarts 初始化
+        this.drawClockChart();
       }
     },
     // 获取生产状态，治污措施数据
@@ -208,7 +381,6 @@ export default {
         this.productionObj = res.data[0];
         const { door1Value,door2Value,door3Value,door4Value,door5Value,door6Value } = res.data[0];
         this.doorArr = [door1Value,door2Value,door3Value,door4Value,door5Value,door6Value];
-
       }
     },
     // 跳转到历史数据查看页
@@ -224,6 +396,76 @@ export default {
     isType(i) {
       const arr = ['大气压','微正压','微负压'];
       return arr[i*1];
+    },
+    // echarts 初始化
+    init() {
+      const arr = ['#ccc', '#18bc37', '#1890ff', 'red'];
+      this.productionStatusArr.forEach(item => {
+        const { startTime } = item;
+        const timeArr = startTime.split(' ')[1].split(':');
+        this.data.push({
+          name: `${timeArr[0]}:${timeArr[1]}`,
+          itemStyle: {
+            color: arr[item.operativeStatus]
+          },
+          label: {
+            fontSize: 20,
+            fongWeight: 'bold'
+          },
+          value: 1
+        })
+      });
+
+     
+
+      var myChart = echarts.init(document.getElementById('main'));
+      var myChart1 = echarts.init(document.getElementById('main1'));
+      let option1 = Object.assign({},this.option, {});
+
+      this.$set(this.option.series, 'data', this.data.slice(0,48));       
+      myChart.setOption(this.option);
+      option1 && myChart1.setOption(option1);
+    },
+    drawClockChart() {
+      var datetime = new Date();
+      var h = datetime.getHours();
+      var m = datetime.getMinutes();
+      var s = datetime.getSeconds();
+      var minutes = m + s / 60;
+      var hours_24 = h + m / 60;
+      var hours_12;
+      if (hours_24 > 12) {
+        hours_12 = hours_24 - 12;
+      } else {
+        hours_12 = hours_24;
+      }
+      var gethour = (hours_12).toFixed(2);
+      var getminutes = (minutes).toFixed(2);
+      var dataType = []
+      const arr = ['#ccc', '#18bc37', '#1890ff', 'red', '#fff'];
+
+      for (let i = 0; i < 96; i++) {
+        if(this.productionStatusArr[i] === undefined) {
+          this.productionStatusArr[i] = {operativeStatus: 4}
+        }
+        dataType.push({
+          name: i,
+          value: 1,
+          trueValue: i,
+          itemStyle: {
+            normal: {
+              color: arr[this.productionStatusArr[i].operativeStatus]
+            }
+          }
+        })
+      }
+      
+      this.$set(this.option.series[0], 'data', dataType);
+      this.$set(this.option.series[1].data[0],'value', gethour);
+      this.$set(this.option.series[2].data[0],'value', getminutes);
+      
+      var myChart = echarts.init(document.getElementById('main'));
+      myChart.setOption(this.option);
     }
   },
 };
@@ -370,5 +612,14 @@ export default {
     font-size: 20px;
     font-weight: bold;
   }
+}
+.mainBg {
+  display: flex;
+  justify-content: space-around;
+  pointer-events: none;
+}
+#main {
+  width: 580px;
+  height: 580px;
 }
 </style>
