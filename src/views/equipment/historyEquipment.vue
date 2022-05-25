@@ -205,7 +205,7 @@ export default {
         legend: [
           {
             top: "0%",
-            left: "8%",
+            right: "8%",
             textStyle: {
               fontSize: 12, // 字体大小
               color: "#", // 字体颜色（图例与图例文字配色保持一致）
@@ -218,7 +218,7 @@ export default {
           },
           {
             top: "0%",
-            right: "8%",
+            left: "8%",
             textStyle: {
               fontSize: 12, // 字体大小
               color: "#", // 字体颜色（图例与图例文字配色保持一致）
@@ -493,6 +493,9 @@ export default {
     // 获取最大值方法
     calMax(arr) {
       var max = Math.max.apply(Math, arr); // 获取最大值方法
+
+      console.log(max, '你好最大值');
+
       var maxint = Math.ceil(max / 5); // 向上以5的倍数取整
       var maxval = maxint * 5 + 5; // 最终设置的最大值
       return maxval; // 输出最大值
@@ -517,6 +520,9 @@ export default {
       // 企业治污措施图表
       const ductTemMax = calMax(this.ductTemArr);
       const windMax = calMax(this.windArr);
+
+      console.log(this.ductTemArr, windMax, '最大值');
+
       this.$set(this.options1.yAxis[0], 'max', ductTemMax);
       this.$set(this.options1.yAxis[0], 'interval', (ductTemMax / 6));
       this.$set(this.options1.yAxis[1], 'max', windMax);
@@ -598,7 +604,7 @@ export default {
            */
           const indexNum = index % 12;
           if(!indexNum) {
-            if(gwindspeed && gwindspeed > 0.5) {
+            if(gwindspeed && gwindspeed > 0.05) {
               this.productionStatusArr.push(0);
             } else {
               this.productionStatusArr.push(1);
@@ -626,7 +632,7 @@ export default {
 
         // 设置企业治污图表数据
         const { series: series1 } = this.options1;
-        this.$set(series1[0], 'data', this.roomTemArr);
+        this.$set(series1[0], 'data', this.ductTemArr);
         this.$set(series1[1], 'data', this.windArr);
         this.$set(this.options1.xAxis, 'data', this.getTime());
 
