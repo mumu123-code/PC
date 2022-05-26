@@ -131,7 +131,7 @@ export default {
         yAxis: [
            {
             type: 'value',
-            name: "VOCs值",
+            name: "VOCs值（mg/m³）",
             nameTextStyle: {
               padding: [0,0,0,0]
             },
@@ -147,7 +147,7 @@ export default {
           },
           {
             type: 'value',
-            name: "温度值",
+            name: "温度值（℃）",
             nameTextStyle: {
               padding: [0,0,0,0]
             },
@@ -245,7 +245,7 @@ export default {
         yAxis: [
            {
             type: 'value',
-            name: "湿度值",
+            name: "湿度值（%）",
             nameTextStyle: {
               padding: [0,0,0,0]
             },
@@ -261,7 +261,7 @@ export default {
           },
           {
             type: 'value',
-            name: "风速值",
+            name: "风速值（m/s）",
             nameTextStyle: {
               padding: [0,0,0,0]
             },
@@ -691,6 +691,7 @@ export default {
 @import "../../../static/css/number.css";
 
 .equipment {
+  width: 1080px;
   .equipment-search {
     padding: 0 28px;
     .searchBut {
