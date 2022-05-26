@@ -18,10 +18,8 @@
     <!-- 搜索 e -->
 
     <!-- 图表 s -->
-    <div class="tableTitle">企业生产车间</div>
+    <div class="tableTitle">企业智能车间</div>
     <div id="main"></div>
-
-    <div class="tableTitle">企业治污措施</div>
     <div id="main1"></div>
 
     <!-- 颜色提示 s -->
@@ -225,7 +223,7 @@ export default {
             },
             data: [
               {
-                name: "温度值",
+                name: "湿度值",
               }
             ]
           }
@@ -247,7 +245,7 @@ export default {
         yAxis: [
            {
             type: 'value',
-            name: "温度值",
+            name: "湿度值",
             nameTextStyle: {
               padding: [0,0,0,0]
             },
@@ -280,7 +278,7 @@ export default {
         ],
         series: [
           {
-            name: '温度值',
+            name: '湿度值',
             type: "line",
             color: ["#1890FF"],
             symbol: 'none',
@@ -299,6 +297,7 @@ export default {
         ],
       },
       windArr: [], // 企业治污措施风速数据
+      humidityArr: [], // 企业治污措施湿度数据
       productionStatusArr: [], // 企业治污措施数据
       roundOp: {
         series: [ // 时钟外圈颜色状态
@@ -515,11 +514,11 @@ export default {
 
 
       // 企业治污措施图表
-      const ductTemMax = calMax(this.ductTemArr);
+      const humidityMax = calMax(this.humidityArr);
       const windMax = calMax(this.windArr);
 
-      this.$set(this.options1.yAxis[0], 'max', ductTemMax);
-      this.$set(this.options1.yAxis[0], 'interval', (ductTemMax / 6));
+      this.$set(this.options1.yAxis[0], 'max', humidityMax);
+      this.$set(this.options1.yAxis[0], 'interval', (humidityMax / 6));
       this.$set(this.options1.yAxis[1], 'max', windMax);
       this.$set(this.options1.yAxis[1], 'interval', (windMax / 6));
 
@@ -547,6 +546,7 @@ export default {
       this.productionStatusArr = [];
       this.temperatureArr = [];
       this.windArr = [];
+      this.humidityArr = [];
 
       // 开启loading
       const loading = this.$loading({
@@ -572,34 +572,36 @@ export default {
                 nvocs: 0, 
                 gtemperature: 0, 
                 ntemperature: 0, 
-                gwindspeed: 0
+                gwindspeed: 0,
+                ghumidity: 0
               }
             } else {
-              const { gvocs, nvocs, gtemperature, ntemperature, gwindspeed } = obj;
+              const { gvocs, nvocs, gtemperature, ntemperature, gwindspeed, ghumidity } = obj;
               item = {
                 gvocs, 
                 nvocs, 
                 gtemperature, 
                 ntemperature, 
-                gwindspeed
+                gwindspeed,
+                ghumidity
               }
             }
           }
 
-          const {  gvocs, nvocs, gtemperature, ntemperature, gwindspeed } = item;
+          const {  gvocs, nvocs, gtemperature, ntemperature, gwindspeed, ghumidity } = item;
 
           this.roomVocsArr.push(nvocs);
           this.ductVocsArr.push(gvocs);
           this.roomTemArr.push(ntemperature);
           this.ductTemArr.push(gtemperature);
           this.windArr.push(gwindspeed);
-
+          this.humidityArr.push(ghumidity);
           /**
-           * 每个小时取六个点,取8点到24点的数据
+           * 每个小时取4个点
            */
-          const indexNum = index % 12;
+          const indexNum = index % 15;
           if(!indexNum) {
-            if(gwindspeed && gwindspeed > 0.05) {
+            if(gwindspeed > 0.05) {
               this.productionStatusArr.push(0);
             } else {
               this.productionStatusArr.push(1);
@@ -671,6 +673,8 @@ export default {
           }
         })
       }
+
+      console.log(this.productionStatusArr, 'productionStatusArr');
       
       this.$set(this.roundOp.series[0], 'data', dataType);
       this.$set(this.roundOp.series[1].data[0],'value', gethour);
