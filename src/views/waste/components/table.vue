@@ -172,6 +172,8 @@ export default{
     },
     methods:{
         selectTable(){ 
+            this.fromYearsInfo.pageNum = 0;
+            this.fromInfo.pageNum = 0;
              if(this.activeTab == "years"){
                 this.getYearsList();
                 return;
