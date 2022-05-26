@@ -74,8 +74,8 @@
                             </div>
                         </el-col>
                     </el-row>
-                     <div class="table">
-                    <el-table :data="yearsList" style="width: 100%" :header-cell-style="{'background':'#F5F3F2'}">
+                    <div class="table">
+                        <el-table :data="yearsList" style="width: 100%" :header-cell-style="{'background':'#F5F3F2'}">
                             <el-table-column prop="companyName" label="企业名称" width="350"></el-table-column>
                             <el-table-column prop="timeStr" label="台账时间" width="200"></el-table-column>
                             <el-table-column prop="wasteCode" label="废物代码" width="200"></el-table-column>
@@ -172,6 +172,8 @@ export default{
     },
     methods:{
         selectTable(){ 
+            this.fromYearsInfo.pageNum = 0;
+            this.fromInfo.pageNum = 0;
              if(this.activeTab == "years"){
                 this.getYearsList();
                 return;
