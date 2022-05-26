@@ -1,7 +1,9 @@
 <template>
   <div class="about">
     <el-container>
-      <el-header>VOCs数智哨兵系统(企业版)</el-header>
+      <el-header>
+        VOCs数智哨兵系统(企业版)
+      </el-header>
       <div class="title-exit">
         <div class="title">( {{companyName}} )</div>
         <el-button class="exit" type="primary" icon="el-icon-user" size="mini" @click.native="loginOut">退出</el-button>
@@ -52,32 +54,45 @@ export default {
 .about {
   color: #333;
   .el-header {
-    background-color: #fff;
+    // background-color: #fff;
+    color: #f0f0f0;
     text-align: center;
-    height: 60px;
-    line-height: 60px;
+    height: 40px !important;
+    line-height: 52px;
     font-weight: bold;
     font-size: 20px;
     letter-spacing: 2px;
+    text-align: left;
+    // 背景颜色
+    background: #242F41;
   }
   .title-exit{
     display: flex;
+    background: #242F41;
+    color: #F0F0F0;
     .exit{
+      position: fixed;
+      top: 20px;
+      right: 32px;
       margin-right: 20px;
     }
   }
   .title{
+    margin-left: 32px;
+    margin-bottom: 14px;
     width: 100%;
-    text-align: center;
+    text-align: left;
   }
   .el-aside {
-    background-color: #fff;
-    height: 90vh;
+    background-color: #324158;
+    height: calc(100vh - 80px);
   }
   .el-main {
     width: calc(100% - 200px);
     background-color: #fff;
     height: 90vh;
+    overflow-x: hidden;
+    background-color: #F0F0F0;
   }
 }
 </style>

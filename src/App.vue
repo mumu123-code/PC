@@ -9,6 +9,7 @@
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background-color: #F0F0F0;
 }
 * {
   margin: 0;
@@ -32,7 +33,6 @@ i {
 
 ::-webkit-scrollbar-track {
   -webkit-box-shadow: inset006pxrgba(0, 0, 0, 0.3);
-
   border-radius: 10px;
 }
 

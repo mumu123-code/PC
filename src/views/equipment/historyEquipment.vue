@@ -18,7 +18,7 @@
     <!-- 搜索 e -->
 
     <!-- 图表 s -->
-    <div class="tableTitle">企业智能车间</div>
+    <div class="tableTitle">企业智能车间数据</div>
     <div id="main"></div>
     <div id="main1"></div>
 
