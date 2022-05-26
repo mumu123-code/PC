@@ -8,13 +8,13 @@
                 <el-tab-pane label="月台账统计" name="month">
                     <el-row>
                         <el-form ref="form" label-width="100px">
-                            <el-col :span="5">
+                            <el-col :md="8" :xl="5">
                                 <el-form-item label="废物代码：">
                                     <el-input v-model="fromInfo.wasteCode" size="small"></el-input>
                                 </el-form-item>
                             </el-col>
                         </el-form>
-                        <el-col :span="1" style="padding-top:3px;padding-left:20px;">
+                        <el-col :md="2" :xl="1" style="padding-top:3px;padding-left:20px;">
                             <el-button type="primary" @click="selectTable" size="small">查询</el-button>    
                         </el-col>
                         <el-col :span="2" style="padding-top:3px;padding-left:20px;">
@@ -30,8 +30,10 @@
                      <div class="table">
                     <el-table :data="data" style="width: 100%" :header-cell-style="{'background':'#F5F3F2'}">
                             <el-table-column prop="companyName" label="企业名称" width="350"></el-table-column>
-                            <el-table-column prop="timeStr" label="台账时间" width="200"></el-table-column>
+                            <el-table-column prop="time" label="台账时间" width="200"></el-table-column>
                             <el-table-column prop="wasteCode" label="废物代码" width="200"></el-table-column>
+                            <el-table-column prop="inQuantity" label="入库数量(吨)" width="200"></el-table-column>
+                            <el-table-column prop="outQuantity" label="出库数量(吨)" width="200"></el-table-column>
                             <el-table-column prop="disposalDestination" label="危废处置去向" width="200">
                                 <template slot-scope="scope">
                                     {{ isType(scope.row.disposalDestination) }}
@@ -53,13 +55,13 @@
                 <el-tab-pane label="年台账统计" name="years">
                     <el-row>
                         <el-form ref="form" label-width="100px">
-                            <el-col :span="5">
+                            <el-col :md="8" :xl="5">
                                 <el-form-item label="废物代码：">
                                     <el-input v-model="fromYearsInfo.wasteCode" size="small"></el-input>
                                 </el-form-item>
                             </el-col>
                         </el-form>
-                        <el-col :span="1" style="padding-top:3px;padding-left:20px;">
+                        <el-col :md="2" :xl="1" style="padding-top:3px;padding-left:20px;">
                             <el-button type="primary" @click="selectTable" size="small">查询</el-button>    
                         </el-col>
                         <el-col :span="2" style="padding-top:3px;padding-left:20px;">
@@ -77,6 +79,8 @@
                             <el-table-column prop="companyName" label="企业名称" width="350"></el-table-column>
                             <el-table-column prop="timeStr" label="台账时间" width="200"></el-table-column>
                             <el-table-column prop="wasteCode" label="废物代码" width="200"></el-table-column>
+                            <el-table-column prop="inSumQuantity" label="入库数量(吨)" width="200"></el-table-column>
+                            <el-table-column prop="outSumQuantity" label="出库数量(吨)" width="200"></el-table-column>
                             <el-table-column prop="disposalDestination" label="危废处置去向" width="200">
                                 <template slot-scope="scope">
                                     {{ isType(scope.row.disposalDestination) }}
@@ -87,10 +91,10 @@
                                     {{ isUnit(scope.row.destinationUnit) }}
                                 </template>
                             </el-table-column>
-                            <el-table-column prop="storageQuantity" label="累计贮存数量(吨)" width="200"></el-table-column>
-                            <el-table-column prop="preparerIn" label="入库人"></el-table-column>
+                            <el-table-column prop="storageSumQuantity" label="累计贮存数量(吨)" width="200"></el-table-column>
+                            <!-- <el-table-column prop="preparerIn" label="入库人"></el-table-column>
                             <el-table-column prop="preparerOut" label="出库人"></el-table-column>
-                            <el-table-column prop="remarks" label="备注" width="400"></el-table-column>
+                            <el-table-column prop="remarks" label="备注" width="400"></el-table-column> -->
                         </el-table>
                     </div>
                     <el-pagination background layout="prev, pager, next" :total="total" @current-change="selectPage"></el-pagination>
@@ -111,7 +115,7 @@ export default{
             exportMonthList:[],
             parameterXLS:{
                 "企业名称":'companyName',
-                "台账时间":'timeStr',
+                "台账时间":'time',
                 "废物代码":'wasteCode',
                 // "危废类别":'hazardousWasteCategory',
                 "入库数量(吨)":'inQuantity',
@@ -128,14 +132,14 @@ export default{
                 "台账时间":'timeStr',
                 "废物代码":'wasteCode',
                 // "危废类别":'hazardousWasteCategory',
-                "入库数量(吨)":'inQuantity',
-                "出库数量(吨)":'outQuantity',
+                "入库数量(吨)":'inSumQuantity',
+                "出库数量(吨)":'outSumQuantity',
                 "危废处置去向":'disposalDestination', 
                 "危废处置去向单位":'destinationUnit',
-                "累计贮存数量(吨)":'storageQuantity',
-                "入库人":'preparerIn',
-                "出库人":'preparerOut',
-                 "备注":'remarks',
+                "累计贮存数量(吨)":'storageSumQuantity',
+                // "入库人":'preparerIn',
+                // "出库人":'preparerOut',
+                //  "备注":'remarks',
             },
             fromInfo:{ 
                 preTime:"",
