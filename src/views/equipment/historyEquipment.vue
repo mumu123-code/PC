@@ -493,7 +493,6 @@ export default {
         }
       }
       if(end == 24) arr.push('23.59');
-      console.log(arr, 'arr');
       return arr;
     },
 
@@ -615,16 +614,11 @@ export default {
           this.ductTemArr.push(gtemperature);
           this.windArr.push(gwindspeed);
           this.humidityArr.push(ghumidity);
-          /**
-           * 每个小时取4个点
-           */
-          const indexNum = index % 15;
-          if(!indexNum) {
-            if(gwindspeed > 0.05) {
-              this.productionStatusArr.push(0);
-            } else {
-              this.productionStatusArr.push(1);
-            }
+          // 所有的风速
+          if(gwindspeed > 0.05) {
+            this.productionStatusArr.push(0);
+          } else {
+            this.productionStatusArr.push(1);
           }
         });
 
@@ -636,6 +630,20 @@ export default {
           this.ductTemArr = this.ductTemArr.splice(0, num);
           this.windArr = this.windArr.splice(0, num);
           this.productionStatusArr = this.productionStatusArr.splice(0, num);
+        }
+
+        /**
+         * 处理 productionStatusArr 数据
+         * 每一个小时有360条数据，只取其中的4条
+         */
+        if(this.productionStatusArr.length > 8639 || this.time == year) {
+          let arr = [];
+          this.productionStatusArr.forEach((item,index) => {
+            if(!(index % 90)) arr.push(item);
+          });
+          this.productionStatusArr = arr;
+          // 执行圆环
+          this.drawClockChart();
         }
 
         // 设置图表数据
@@ -655,11 +663,11 @@ export default {
         // 关闭loading
         loading.close();
         this.initChart(); 
-        this.drawClockChart();
       }
     },
     // 绘画时钟
     drawClockChart() {
+      console.log(this.productionStatusArr, 'nihao')
       var datetime = new Date();
       var h = datetime.getHours();
       var m = datetime.getMinutes();

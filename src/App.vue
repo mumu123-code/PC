@@ -68,5 +68,8 @@ i {
 .noneMinute .el-scrollbar:nth-of-type(2) {
   display: none !important;
 }
+.noneMinute .el-picker-panel__link-btn:nth-of-type(1)  span {
+  display: none !important;
+}
 
 </style>
