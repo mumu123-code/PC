@@ -43,7 +43,9 @@ export default {
       },
     };
   },
-  created() {},
+  created() {
+    sessionStorage.clear();
+  },
   methods: {
     async login() {
       const res = await loginGet(this.loginForm);
