@@ -7,13 +7,18 @@
       <el-row :gutter="10">
         <el-col :span="1" class="font14 l-h-32 text-right">类型筛选:</el-col>
         <el-col :span="5" class="selectType">
-          <el-select class="w-100" v-model="fromInfo.alarmType" filterable placeholder="请选择" size="small"> 
-              <el-option v-for="item in typeData" :key="item.value" :label="item.name" :value="item.value"> </el-option>
+            <el-select class="w-100" v-model="alarmTypeArr" multiple placeholder="请选择" size="small">
+            <el-option
+              v-for="(item,index) in typeData"
+              :key="item.value"
+              :label="(index !== 0 ? index +'、' : '') +item.name"
+              :value="item.value">
+            </el-option>
           </el-select>
         </el-col>
         <el-col :span="1" class="font14 l-h-32 text-right">选择日期:</el-col>
         <el-col :span="4">
-          <el-date-picker class="w-100" v-model="selectTime" type="date" size="small" placeholder="选择日期" value-format="yyyy-MM-dd"></el-date-picker> 
+          <el-date-picker class="w-100" v-model="selectTime" type="date" size="small" placeholder="选择日期" value-format="yyyy-MM-dd" :clearable="false"></el-date-picker> 
         </el-col>
         <el-col :span="1" class="font14 l-h-32 text-right">房间筛选:</el-col>
         <el-col :span="4">
@@ -71,6 +76,7 @@ export default {
             alarmType:"",
             installationLocation:"",
         },
+        alarmTypeArr: [],
         selectTime:"",
         typeData:[],
         roomData:[],
@@ -100,11 +106,13 @@ export default {
         this.fromInfo.startDate = this.selectTime + " 00:00:00";
         this.fromInfo.endDate = this.selectTime + " 23:59:59";
       }
-        const res = await getAbnormalList(this.fromInfo);
-        if(res?.code == "1"){
-          this.tableData = res.data.list;
-          this.total = res.data.total;
-        }
+      console.log(this.fromInfo.alarmType)
+      this.fromInfo.alarmType = this.alarmTypeArr && this.alarmTypeArr.join(',');
+      const res = await getAbnormalList(this.fromInfo);
+      if(res?.code == "1"){
+        this.tableData = res.data.list;
+        this.total = res.data.total;
+      }
     },
     selectPage(val){
       this.fromInfo.pageNum = val - 1;
@@ -143,5 +151,9 @@ export default {
 }
 /deep/ .el-date-editor--date, /deep/ .el-select--small {
   width: 130px;
+}
+
+.text-right {
+  min-width: 74px;
 }
 </style>

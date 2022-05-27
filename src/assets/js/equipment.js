@@ -33,3 +33,11 @@ export function getReport(data) {
         data,
     })
 }
+// 设备界面数据查看（每小时历史数据）
+export function getListSecond(data) {
+    return request({
+        method: "post",
+        url: "/sensorData/listSecond",
+        data,
+    })
+}

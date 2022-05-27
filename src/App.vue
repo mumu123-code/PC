@@ -4,11 +4,12 @@
   </div>
 </template>
 
-<style lang="less">
+<style>
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background-color: #F0F0F0;
 }
 * {
   margin: 0;
@@ -32,7 +33,6 @@ i {
 
 ::-webkit-scrollbar-track {
   -webkit-box-shadow: inset006pxrgba(0, 0, 0, 0.3);
-
   border-radius: 10px;
 }
 
@@ -61,4 +61,15 @@ i {
 .w-100{
   width: 100% !important;
 }
+
+.noneMinute .el-scrollbar:nth-of-type(1) {
+  width:100% !important;
+}
+.noneMinute .el-scrollbar:nth-of-type(2) {
+  display: none !important;
+}
+.noneMinute .el-picker-panel__link-btn:nth-of-type(1)  span {
+  display: none !important;
+}
+
 </style>

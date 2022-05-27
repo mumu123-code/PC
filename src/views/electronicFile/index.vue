@@ -157,7 +157,6 @@ export default {
     border-radius: 4px;
   }
   .bg-purple {
-    // border:1px solid #d3dce6;
     background-color: #f9fafc;
   }
   .grid-content {
