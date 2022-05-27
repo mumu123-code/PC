@@ -4,7 +4,7 @@
   </div>
 </template>
 
-<style lang="less">
+<style>
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -61,4 +61,12 @@ i {
 .w-100{
   width: 100% !important;
 }
+
+.noneMinute .el-scrollbar:nth-of-type(1) {
+  width:100% !important;
+}
+.noneMinute .el-scrollbar:nth-of-type(2) {
+  display: none !important;
+}
+
 </style>

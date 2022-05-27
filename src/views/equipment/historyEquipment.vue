@@ -5,13 +5,16 @@
       <span>日期：</span>
       <el-date-picker
         v-model="time"
-        type="date"
-        :editable="false"
-        :clearable="false"
-        value-format="yyyy-MM-dd"
-        placeholder="选择日期">
+        type="datetimerange"
+        range-separator="至"
+        start-placeholder="开始日期"
+        format="yyyy-MM-dd HH"
+        value-format="yyyy-MM-dd HH"
+        popper-class="noneMinute"
+        end-placeholder="结束日期">
       </el-date-picker>
-      <el-button type="primary" :loading="butShow" class="searchBut" @click="getHistoryData"
+
+      <el-button type="primary" :loading="butShow" class="searchBut" @click="getListSecond"
         >查询</el-button
       >
     </div>
@@ -59,7 +62,7 @@ import * as echarts from 'echarts';
 import moment from "moment";
 
 
-import { getReportDetail } from '../../assets/js/equipment';
+import { getListSecond } from '../../assets/js/equipment';
 
 export default {
   name: "historyEquipment",
@@ -125,7 +128,7 @@ export default {
             padding: [0,0,20,50]
           },
           axisLabel: {
-            interval: 59
+            interval: 359,
           }
         },
         yAxis: [
@@ -239,7 +242,7 @@ export default {
             padding: [0,0,20,50]
           },
           axisLabel: {
-            interval: 59
+            interval: 359
           }
         },
         yAxis: [
@@ -471,21 +474,26 @@ export default {
     this.time = moment(new Date()).subtract(1, 'd').format('YYYY-MM-DD');
     // 获取id
     this.formInfo.deviceId = this.$route.query.id;
-    await this.getHistoryData();
+    await this.getListSecond('day');
   },
   methods: {
     // 获取日期分类
-    getTime() {
+    getTime(start,end) {
+      if(!start) start = 0;
+      if(!end) end = 24;
       let arr = [];
-      for (let i = 0; i < 24; i++) {
+      for (let i = start; i < end; i++) {
         for (let k = 0; k < 60; k++) {
-          let a,b;
-          i < 10 ? (a = `0${i}`) : (a = i);
-          k < 10 ? (b = `0${k}`) : (b = k);
-          arr.push(`${a}:${b}`);
+          for(let n = 0; n < 6; n++) {
+            let a,b;
+            i < 10 ? (a = `0${i}`) : (a = i);
+            k < 10 ? (b = `0${k}`) : (b = k);
+            arr.push(`${a}:${b}`);
+          }
         }
       }
-      arr.push('23:59');
+      if(end == 24) arr.push('23.59');
+      console.log(arr, 'arr');
       return arr;
     },
 
@@ -531,13 +539,24 @@ export default {
       myChart.setOption(this.options);
       myChart1.setOption(this.options1);
     },
-    // 获取设备信息
-    async getHistoryData() {
-      if(this.time) {
+    // 设备界面数据查看（每小时历史数据）
+    async getListSecond(type) {
+      // 开始、结束的时间
+      let start,end;
+      if(type !== 'day') {
+        this.formInfo.startDate = `${this.time[0]}:00:00`;
+        this.formInfo.endDate = `${this.time[1]}:00:00`;
+        
+        const startArr = this.time[0].split(' ')[1].split('');
+        const endArr = this.time[1].split(' ')[1].split('');
+        console.log(endArr, 'endArr')
+        startArr[0] !== '0' ? (start = startArr.join('') * 1) : (start = startArr[1] * 1);
+        endArr[0] !== '0' ? (end = endArr.join('') * 1) : (end = endArr[1] * 1);
+      } else {
         this.formInfo.startDate = `${this.time} 00:00:00`;
         this.formInfo.endDate = `${this.time} 23:59:59`;
       }
-
+      
       // 清空数据
       this.roomVocsArr = [];
       this.ductVocsArr = [];
@@ -556,7 +575,7 @@ export default {
         background: 'rgba(0, 0, 0, 0.7)'
       });
 
-      const res = await getReportDetail(this.formInfo);
+      const res = await getListSecond(this.formInfo);
       if(res.code == '1') {
         /** 获取当前时间，每分钟一条 */
         var minutes = moment().format('m');
@@ -625,13 +644,13 @@ export default {
         this.$set(series[1], 'data', this.ductVocsArr);
         this.$set(series[2], 'data', this.roomTemArr);
         this.$set(series[3], 'data', this.ductTemArr);
-        this.$set(this.options.xAxis, 'data', this.getTime());
+        this.$set(this.options.xAxis, 'data', this.getTime(start,end));
 
         // 设置企业治污图表数据
         const { series: series1 } = this.options1;
         this.$set(series1[0], 'data', this.ductTemArr);
         this.$set(series1[1], 'data', this.windArr);
-        this.$set(this.options1.xAxis, 'data', this.getTime());
+        this.$set(this.options1.xAxis, 'data', this.getTime(start,end));
 
         // 关闭loading
         loading.close();
@@ -673,8 +692,6 @@ export default {
           }
         })
       }
-
-      console.log(this.productionStatusArr, 'productionStatusArr');
       
       this.$set(this.roundOp.series[0], 'data', dataType);
       this.$set(this.roundOp.series[1].data[0],'value', gethour);
