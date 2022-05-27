@@ -34,16 +34,17 @@
                             <el-table-column prop="wasteCode" label="废物代码" width="200"></el-table-column>
                             <el-table-column prop="inQuantity" label="入库数量(吨)" width="200"></el-table-column>
                             <el-table-column prop="outQuantity" label="出库数量(吨)" width="200"></el-table-column>
-                            <el-table-column prop="disposalDestination" label="危废处置去向" width="200">
+                            <el-table-column prop="disposalDestination" label="危废处置类型" width="200">
                                 <template slot-scope="scope">
                                     {{ isType(scope.row.disposalDestination) }}
                                 </template>
                             </el-table-column>
-                            <el-table-column prop="destinationUnit" label="危废处置去向单位" width="200">
+                            <el-table-column prop="destination" label="危废处置去向" width="200">
                                 <template slot-scope="scope">
-                                    {{ isUnit(scope.row.destinationUnit) }}
+                                    {{ isUnit(scope.row.destination) }}
                                 </template>
                             </el-table-column>
+                            <el-table-column prop="destinationUnit" label="危废处置去向单位" width="350"></el-table-column>
                             <el-table-column prop="storageQuantity" label="累计贮存数量(吨)" width="200"></el-table-column>
                             <el-table-column prop="preparerIn" label="入库人"></el-table-column>
                             <el-table-column prop="preparerOut" label="出库人"></el-table-column>
@@ -81,16 +82,17 @@
                             <el-table-column prop="wasteCode" label="废物代码" width="200"></el-table-column>
                             <el-table-column prop="inSumQuantity" label="入库数量(吨)" width="200"></el-table-column>
                             <el-table-column prop="outSumQuantity" label="出库数量(吨)" width="200"></el-table-column>
-                            <el-table-column prop="disposalDestination" label="危废处置去向" width="200">
+                            <el-table-column prop="disposalDestination" label="危废处置类型" width="200">
                                 <template slot-scope="scope">
                                     {{ isType(scope.row.disposalDestination) }}
                                 </template>
                             </el-table-column>
-                            <el-table-column prop="destinationUnit" label="危废处置去向单位" width="200">
+                            <el-table-column prop="destination" label="危废处置去向" width="200">
                                 <template slot-scope="scope">
-                                    {{ isUnit(scope.row.destinationUnit) }}
+                                    {{ isUnit(scope.row.destination) }}
                                 </template>
                             </el-table-column>
+                            <el-table-column prop="destinationUnit" label="危废处置去向单位" width="350"></el-table-column>
                             <el-table-column prop="storageSumQuantity" label="累计贮存数量(吨)" width="200"></el-table-column>
                             <!-- <el-table-column prop="preparerIn" label="入库人"></el-table-column>
                             <el-table-column prop="preparerOut" label="出库人"></el-table-column>
@@ -120,7 +122,8 @@ export default{
                 // "危废类别":'hazardousWasteCategory',
                 "入库数量(吨)":'inQuantity',
                 "出库数量(吨)":'outQuantity',
-                "危废处置去向":'disposalDestination', 
+                "危废处置类型":'disposalDestination', 
+                "危废处置去向":'destination',
                 "危废处置去向单位":'destinationUnit',
                 "累计贮存数量(吨)":'storageQuantity',
                 "入库人":'preparerIn',
@@ -134,7 +137,8 @@ export default{
                 // "危废类别":'hazardousWasteCategory',
                 "入库数量(吨)":'inSumQuantity',
                 "出库数量(吨)":'outSumQuantity',
-                "危废处置去向":'disposalDestination', 
+                "危废处置类型":'disposalDestination', 
+                "危废处置去向":'destination',
                 "危废处置去向单位":'destinationUnit',
                 "累计贮存数量(吨)":'storageSumQuantity',
                 // "入库人":'preparerIn',
