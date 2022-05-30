@@ -75,7 +75,7 @@ export default {
         startDate: '', // 开始时间
         endDate: '', // 结束时间
         pageNum: 1,
-        pageSize: 1440,
+        pageSize: 2147483647,
       },
       dateArr: [], // 存放xaxis轴得时间刻度
       roomVocsArr: [], // 房间内Vocs值
