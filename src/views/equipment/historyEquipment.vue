@@ -583,7 +583,13 @@ export default {
 
         res.data.list.map((item,index) => {
           if(!item) {
-            const obj = res.data.list[index - 1];
+            let obj = null;
+            for (let i = 1; i < 9; i++) {
+              if(!obj){
+                obj = res.data.list[index - i];
+              }
+            }
+
             if(!obj) {
               item = {
                 gvocs: 0, 

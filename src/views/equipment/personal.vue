@@ -131,25 +131,6 @@
       <label>喷漆</label>
     </div>
     <!-- 颜色提示 e -->
-
-    <!-- <div class="charts-box">
-      <div class="line">
-        <div
-          v-for="(item, index) in productionStatusArr"
-          :key="index"
-          :class="[
-            'line-item',
-            'br',
-            {
-              offline: item.operativeStatus == 3,
-              idle: item.operativeStatus == 0,
-              varnish: item.operativeStatus == 1,
-              paint: item.operativeStatus == 2,
-            },
-          ]"
-        ></div>
-      </div>
-    </div> -->
     <div class="mainBg">
       <div id="main"></div>
     </div>
@@ -378,9 +359,10 @@ export default {
 
       const res = await getReport(formInfo);
       if (res.code == "1" && res.data.length > 0) {
-        this.productionObj = res.data[0];
-        const { door1Value,door2Value,door3Value,door4Value,door5Value,door6Value } = res.data[0];
+        const { door1Value,door2Value,door3Value,door4Value,door5Value,door6Value,gwindspeed } = res.data[0];
         this.doorArr = [door1Value,door2Value,door3Value,door4Value,door5Value,door6Value];
+        if(gwindspeed < 0.05) res.data[0].gwindspeed = 0;
+        this.productionObj = res.data[0];
       }
     },
     // 跳转到历史数据查看页
@@ -415,9 +397,7 @@ export default {
           value: 1
         })
       });
-
-     
-
+      
       var myChart = echarts.init(document.getElementById('main'));
       var myChart1 = echarts.init(document.getElementById('main1'));
       let option1 = Object.assign({},this.option, {});

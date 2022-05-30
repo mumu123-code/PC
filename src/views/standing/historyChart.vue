@@ -190,6 +190,8 @@ export default {
               this.vocsData.push(val);
             })
           });
+        } else {
+          this.vocsData = [];
         }
       }
     },
