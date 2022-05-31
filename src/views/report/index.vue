@@ -22,7 +22,7 @@
       <el-table :data="reportData" style="width: 100%,margon-top:20px" :header-cell-style="{'background':'#F5F3F2'}">
         <el-table-column prop="reportData.rectificationStatus" label="整改内容">
           <template slot-scope="scope">
-            {{ scope.row.rectificationContent }}
+            您的企业累计报警{{ scope.row.rectificationContent }}次，请及时整改并反馈。
           </template>
         </el-table-column>
         <el-table-column prop="reportData.rectificationStatus" label="整改状态">
