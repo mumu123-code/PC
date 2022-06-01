@@ -46,7 +46,6 @@
                             </el-table-column>
                             <el-table-column prop="destinationUnit" label="危废处置去向单位" width="350"></el-table-column>
                             <el-table-column prop="storageQuantity" label="累计贮存数量(吨)" width="200"></el-table-column>
-                            <el-table-column prop="preparerIn" label="入库人"></el-table-column>
                             <el-table-column prop="preparerOut" label="出库人"></el-table-column>
                             <el-table-column prop="remarks" label="备注" width="400"></el-table-column>
                         </el-table>
@@ -126,9 +125,8 @@ export default{
                 "危废处置去向":'destination',
                 "危废处置去向单位":'destinationUnit',
                 "累计贮存数量(吨)":'storageQuantity',
-                "入库人":'preparerIn',
                 "出库人":'preparerOut',
-                 "备注":'remarks',
+                "备注":'remarks',
             },
             parameterYsersXLS:{
                 "企业名称":'companyName',
