@@ -27,12 +27,12 @@
           </el-select>
         </el-col>
         <el-col :span="1">
-           <el-button type="primary" size="small" @click="selectFunc">查询</el-button>
+           <el-button type="primary" size="small" @click="selectFunc('查询')">查询</el-button>
         </el-col>
       </el-row>
     </div>
     <div class="list">
-      <el-table :data="tableData" style="width: 100%" :header-cell-style="{'background':'#F5F3F2'}">
+      <el-table :data="tableData" style="width: 100%" :header-cell-style="{'background':'#F5F3F2'}" :max-height="430">
         <el-table-column prop="installationLocation" label="安装位置">
             <template slot-scope="scope">
               {{ isInstallationPosition(scope.row.installationLocation) }}
@@ -101,7 +101,9 @@ export default {
     isAdvice(type){
       return isType.isAdvice(type);
     },
-    async selectFunc(){
+    async selectFunc(type){
+      if(type == '查询') this.fromInfo.pageNum = 1;
+
       if(this.selectTime != ""){
         this.fromInfo.startDate = this.selectTime + " 00:00:00";
         this.fromInfo.endDate = this.selectTime + " 23:59:59";

@@ -10,7 +10,8 @@
         start-placeholder="开始日期"
         format="yyyy-MM-dd HH"
         value-format="yyyy-MM-dd HH"
-        popper-class="noneMinute"
+        popper-class="noneMinute" 
+        :clearable="false"
         end-placeholder="结束日期">
       </el-date-picker>
 
@@ -75,7 +76,7 @@ export default {
         startDate: '', // 开始时间
         endDate: '', // 结束时间
         pageNum: 1,
-        pageSize: 1440,
+        pageSize: 2147483647,
       },
       dateArr: [], // 存放xaxis轴得时间刻度
       roomVocsArr: [], // 房间内Vocs值
@@ -226,7 +227,10 @@ export default {
             },
             data: [
               {
-                name: "湿度值",
+                name: "风管内湿度",
+              },
+              {
+                name: "房间内湿度",
               }
             ]
           }
@@ -281,9 +285,17 @@ export default {
         ],
         series: [
           {
-            name: '湿度值',
+            name: '风管内湿度',
             type: "line",
             color: ["#1890FF"],
+            symbol: 'none',
+            smooth: true,
+            data: [],
+          },
+          {
+            name: '房间内湿度',
+            type: "line",
+            color: ["#F8C657"],
             symbol: 'none',
             smooth: true,
             data: [],
@@ -300,7 +312,8 @@ export default {
         ],
       },
       windArr: [], // 企业治污措施风速数据
-      humidityArr: [], // 企业治污措施湿度数据
+      humidityArr: [], // 企业治污措施风管湿度数据
+      nhumidityArr: [], // 企业治污措施房间湿度数据
       productionStatusArr: [], // 企业治污措施数据
       roundOp: {
         series: [ // 时钟外圈颜色状态
@@ -313,7 +326,7 @@ export default {
             z: 10,
             itemStyle: {
               normal: {
-                borderWidth: 1,
+                borderWidth: 0,
                 borderColor: "#c3c3c3"
               }
             },
@@ -356,7 +369,7 @@ export default {
             axisTick: { //仪表盘刻度样式
               distance: 0,
               length: '3%',
-              splitNumber: 4, //分隔线之间分割的刻度数
+              splitNumber: 1, //分隔线之间分割的刻度数
               lineStyle: {
                 color: '#ccc',
                 width: 1
@@ -367,7 +380,7 @@ export default {
               length: '5%',
               lineStyle: {
                 color: '#ccc',
-                width: 5
+                width: 1
               }
             },
             axisLabel: {
@@ -545,10 +558,15 @@ export default {
       if(type !== 'day') {
         this.formInfo.startDate = `${this.time[0]}:00:00`;
         this.formInfo.endDate = `${this.time[1]}:00:00`;
+
+        const tomorrow = moment(new Date()).add(1, 'd').format('YYYY-MM-DD');
+        if(this.time[1].split(' ')[0] == tomorrow) {
+          this.formInfo.endDate = moment(new Date()).format('YYYY-MM-DD HH:mm:ss');
+        }
         
         const startArr = this.time[0].split(' ')[1].split('');
         const endArr = this.time[1].split(' ')[1].split('');
-        console.log(endArr, 'endArr')
+        
         startArr[0] !== '0' ? (start = startArr.join('') * 1) : (start = startArr[1] * 1);
         endArr[0] !== '0' ? (end = endArr.join('') * 1) : (end = endArr[1] * 1);
       } else {
@@ -565,6 +583,7 @@ export default {
       this.temperatureArr = [];
       this.windArr = [];
       this.humidityArr = [];
+      this.nhumidityArr = [];
 
       // 开启loading
       const loading = this.$loading({
@@ -579,11 +598,16 @@ export default {
         /** 获取当前时间，每分钟一条 */
         var minutes = moment().format('m');
         var hours_24 = moment().format('H');
-        var year = moment().format('YYYY-MM-DD');
+        var year = moment().add(1, 'd').format('YYYY-MM-DD');
 
         res.data.list.map((item,index) => {
           if(!item) {
-            const obj = res.data.list[index - 1];
+            let obj = null;
+            for (let i = 1; i < 9; i++) {
+              if(!obj){
+                obj = res.data.list[index - i];
+              }
+            }
             if(!obj) {
               item = {
                 gvocs: 0, 
@@ -591,57 +615,69 @@ export default {
                 gtemperature: 0, 
                 ntemperature: 0, 
                 gwindspeed: 0,
-                ghumidity: 0
+                ghumidity: 0,
+                nhumidity: 0
               }
             } else {
-              const { gvocs, nvocs, gtemperature, ntemperature, gwindspeed, ghumidity } = obj;
+              const { gvocs, nvocs, gtemperature, ntemperature, gwindspeed, ghumidity, nhumidity } = obj;
               item = {
                 gvocs, 
                 nvocs, 
                 gtemperature, 
                 ntemperature, 
                 gwindspeed,
-                ghumidity
+                ghumidity,
+                nhumidity
               }
             }
           }
 
-          const {  gvocs, nvocs, gtemperature, ntemperature, gwindspeed, ghumidity } = item;
-
+          let { gvocs, nvocs, gtemperature, ntemperature, gwindspeed, ghumidity, nhumidity } = item;
           this.roomVocsArr.push(nvocs);
           this.ductVocsArr.push(gvocs);
           this.roomTemArr.push(ntemperature);
           this.ductTemArr.push(gtemperature);
-          this.windArr.push(gwindspeed);
+          
           this.humidityArr.push(ghumidity);
+          this.nhumidityArr.push(nhumidity);
           // 所有的风速
           if(gwindspeed > 0.05) {
             this.productionStatusArr.push(0);
           } else {
             this.productionStatusArr.push(1);
           }
+          this.windArr.push(gwindspeed);
         });
 
-        if(this.time == year) {
-          const num = hours_24 * 60 + minutes * 1;
+        if(this.time[1].split(' ')[0] == year) {
+          const num = (hours_24 * 60 + minutes * 1) * 6;
+          console.log(num, 'num');
           this.roomVocsArr = this.roomVocsArr.splice(0, num);
           this.ductVocsArr = this.ductVocsArr.splice(0, num);
           this.roomTemArr = this.roomTemArr.splice(0, num);
           this.ductTemArr = this.ductTemArr.splice(0, num);
           this.windArr = this.windArr.splice(0, num);
+          this.nhumidityArr = this.nhumidityArr.splice(0, num);
           this.productionStatusArr = this.productionStatusArr.splice(0, num);
         }
-
         /**
          * 处理 productionStatusArr 数据
-         * 每一个小时有360条数据，只取其中的4条
+         * 每一分钟一条
          */
-        if(this.productionStatusArr.length > 8639 || this.time == year) {
+        if(this.productionStatusArr.length > 8639 || this.time[1].split(' ')[0] == year) {
           let arr = [];
           this.productionStatusArr.forEach((item,index) => {
-            if(!(index % 90)) arr.push(item);
+            if(!(index % 6)) arr.push(item);
           });
           this.productionStatusArr = arr;
+          
+          if(this.productionStatusArr.length < 1440) {
+            // 剩余的用 undefined 补充
+            const lastNum = 1440 - this.productionStatusArr.length;
+            for (let i = 0; i < lastNum; i++) {
+              this.productionStatusArr.push(2);
+            }
+          }
           // 执行圆环
           this.drawClockChart();
         }
@@ -657,7 +693,8 @@ export default {
         // 设置企业治污图表数据
         const { series: series1 } = this.options1;
         this.$set(series1[0], 'data', this.ductTemArr);
-        this.$set(series1[1], 'data', this.windArr);
+        this.$set(series1[1], 'data', this.nhumidityArr);
+        this.$set(series1[2], 'data', this.windArr);
         this.$set(this.options1.xAxis, 'data', this.getTime(start,end));
 
         // 关闭loading
@@ -667,7 +704,6 @@ export default {
     },
     // 绘画时钟
     drawClockChart() {
-      console.log(this.productionStatusArr, 'nihao')
       var datetime = new Date();
       var h = datetime.getHours();
       var m = datetime.getMinutes();
@@ -685,21 +721,21 @@ export default {
       var dataType = []
       const arr = ['#18bc37', 'red', '#fff'];
 
-      for (let i = 0; i < 96; i++) {
-        if(this.productionStatusArr[i] === undefined) {
-          this.productionStatusArr[i] = {operativeStatus: 2}
+      this.productionStatusArr.filter((item,index) => {
+        if(item === undefined) {
+          item = 2;
         }
         dataType.push({
-          name: i,
+          name: index,
           value: 1,
-          trueValue: i,
+          trueValue: index,
           itemStyle: {
             normal: {
-              color: arr[this.productionStatusArr[i]]
+              color: arr[item]
             }
           }
         })
-      }
+      });
       
       this.$set(this.roundOp.series[0], 'data', dataType);
       this.$set(this.roundOp.series[1].data[0],'value', gethour);

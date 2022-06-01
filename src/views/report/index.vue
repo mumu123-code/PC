@@ -6,7 +6,7 @@
     <div class="selectRow">
       <el-row class="w-100" type="flex" justify="start">
          <el-col :xl="5" :md="5" :lg="7">
-          选择日期：<el-date-picker v-model="selectTime" type="date" size="small" placeholder="选择日期" value-format="yyyy-MM-dd"></el-date-picker> 
+          选择日期：<el-date-picker v-model="selectTime" type="date" size="small" :clearable="false" placeholder="选择日期" value-format="yyyy-MM-dd"></el-date-picker> 
         </el-col>
         <el-col :xl="5" :md="5" :lg="7">
           选择状态：<el-select v-model="listFromInfo.rectificationStatus" filterable placeholder="请选择" size="small"> 
@@ -14,7 +14,7 @@
                   </el-select>
         </el-col>
         <el-col :xl="1" :md="8" :lg="2">
-           <el-button type="primary" size="small" @click="selectFunc">查询</el-button>
+           <el-button type="primary" size="small" @click="selectFunc('查询')">查询</el-button>
         </el-col>
       </el-row>
     </div>
@@ -22,7 +22,7 @@
       <el-table :data="reportData" style="width: 100%,margon-top:20px" :header-cell-style="{'background':'#F5F3F2'}">
         <el-table-column prop="reportData.rectificationStatus" label="整改内容">
           <template slot-scope="scope">
-            {{ scope.row.rectificationContent }}
+            您的企业累计报警{{ scope.row.rectificationContent }}次，请及时整改并反馈。
           </template>
         </el-table-column>
         <el-table-column prop="reportData.rectificationStatus" label="整改状态">
@@ -143,7 +143,7 @@ export default {
               viewTime: "2022-4-7 00:00:00",
               alarmCountRectificationList: [
                 {
-                  deviceId: 0,
+                  deviceId: 1,
                   bakingRoom: "第三号烤漆房",
                   roomName: "连微科技",
                   installationLocation: 1,
@@ -151,7 +151,7 @@ export default {
                   alarmCount: 0
                 },
                 {
-                  deviceId: 0,
+                  deviceId: 2,
                   bakingRoom: "第三号烤漆房",
                   roomName: "连微科技",
                   installationLocation: 1,
@@ -159,7 +159,7 @@ export default {
                   alarmCount: 0
                 },
                 {
-                  deviceId: 0,
+                  deviceId: 3,
                   bakingRoom: "第三号烤漆房",
                   roomName: "紫金港",
                   installationLocation: 1,
@@ -199,30 +199,56 @@ export default {
     isAdvice(type){
       return isType.isAdvice(type);
     },
-    selectFunc(){
-        this.listFromInfo.startDate = this.selectTime + " 00:00:00";
-        this.listFromInfo.endDate = this.selectTime + " 23:59:59";
-        this.getList();
+    selectFunc(type){
+      if(type == '查询') this.fromInfo.pageNum = 1; 
+      this.listFromInfo.startDate = this.selectTime + " 00:00:00";
+      this.listFromInfo.endDate = this.selectTime + " 23:59:59";
+      this.getList();
     },
     //显示详情
     showDetail(val){
-       console.log(val)
-      this.detailInfo = val;
-      this.editStateId = "";
-      if(val.state == 0){
-          // this.editState(val.id);
-          this.editStateId = val.id;
-      }
-      let arr = val.alarmCountRectificationList;
-      if(arr == null){
-         this.$message({
+      if(!val.alarmCountRectificationList) {
+        this.$message({
           message: '暂无详情内容',
           type: 'warning'
         });
-        return;
+        // 演示使用
+        const alarmCountRectificationList = [
+                {
+                  deviceId: 1,
+                  bakingRoom: "第三号烤漆房",
+                  roomName: "连微科技",
+                  installationLocation: 1,
+                  alarmType: 9,
+                  alarmCount: 0
+                },
+                {
+                  deviceId: 2,
+                  bakingRoom: "第三号烤漆房",
+                  roomName: "连微科技",
+                  installationLocation: 1,
+                  alarmType: 9,
+                  alarmCount: 0
+                },
+                {
+                  deviceId: 3,
+                  bakingRoom: "第三号烤漆房",
+                  roomName: "紫金港",
+                  installationLocation: 1,
+                  alarmType: 9,
+                  alarmCount: 0
+                }
+              ]
+        val.alarmCountRectificationList = alarmCountRectificationList;
+        // return;
       };
+      this.detailInfo = val;
+      this.editStateId = "";
+      if(val.state == 0){
+          this.editStateId = val.id;
+      }
+      let arr = val.alarmCountRectificationList;
       this.detailModel = true;
-      console.log(val.alarmCountRectificationList)
       if (val.rectificationPicture != "") {
         this.imgData=val.rectificationPicture.split(";");
         console.log(this.imgData)
@@ -239,7 +265,6 @@ export default {
           data:[],
         })
       })
-      console.log(roomData)
       list.forEach((item)=>{
         arr.forEach((el)=>{
           if(item.name == el.roomName){
@@ -247,17 +272,7 @@ export default {
           }
         })
       })
-      console.log(list)
       this.list = list;
-      
-
-      // console.log(this.detailInfo.alarmCountRectificationList)
-
-      // array.forEach(el => {
-      //   roomList.push(el.roomName)
-      // });
-      // console.log(roomList)
-      
     },
     
     async editState(id){
