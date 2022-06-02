@@ -83,14 +83,14 @@
                   {{ scope.row.openStartTime }} ~ {{ scope.row.openEndTime }}
                 </template>
               </el-table-column>
-              <el-table-column prop="handleTime" label="关停时间">
+              <el-table-column prop="shutdownStartTime" label="关停时间">
                 <template slot-scope="scope">
                   {{ scope.row.shutdownStartTime }} ~ {{ scope.row.shutdownEndTime }}
                 </template>
               </el-table-column>
-              <el-table-column prop="handleTime" label="更换时间"></el-table-column>
-              <el-table-column prop="handleTime" label="活性炭种类"></el-table-column>
-              <el-table-column prop="handleTime" label="装填数量(kg)"></el-table-column>
+              <el-table-column prop="replacementTime" label="更换时间"></el-table-column>
+              <el-table-column prop="activatedCarbonType" label="活性炭种类"></el-table-column>
+              <el-table-column prop="loadQuantity" label="装填数量(kg)"></el-table-column>
             </el-table>
             <!-- 分页 -->
             <el-pagination background layout="prev, pager, next" :total="total" @current-change="selectPage" v-if="listInfo.ledgerType != 3"></el-pagination>
