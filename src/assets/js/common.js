@@ -85,10 +85,11 @@ export function getExportYearsWasteParameter(data){
 }
 
 //获取活性炭列表
-export function getActivatedCarbon(){
+export function getActivatedCarbon(data){
     return request({
-        method:"get",
-        url:"/activatedCarbonLedger/oneDayData",
+        method:"post",
+        url:"/activatedCarbonLedger/threeDayData",
+        data
     })
 }
 
@@ -98,5 +99,13 @@ export function addActivatedCarbon(data){
         method:"post",
         url:"/activatedCarbonLedger/update",
         data
+    })
+}
+
+//获取设备列表
+export function getDeviceList(){
+    return request({
+        method:"get",
+        url:"/device/list"
     })
 }

@@ -77,7 +77,7 @@
             </el-table>
 
             <!-- 活性炭台账 -->
-            <el-table v-if="listInfo.ledgerType == 3" :data="activatedCarbonData" height="530" style="width: 100%" max-height="750" :header-cell-style="{'background':'#F5F3F2'}">
+            <el-table v-if="listInfo.ledgerType == 3" :data="activatedCarbonData" style="width: 100%" max-height="750" :header-cell-style="{'background':'#F5F3F2'}">
               <el-table-column prop="openStartTime" label="开启时间">
                 <template slot-scope="scope">
                   {{ scope.row.openStartTime }} ~ {{ scope.row.openEndTime }}
@@ -97,7 +97,7 @@
           </div>
         </div>
   </div>
-</template>
+</template> 
 
 <script>
 import { getHistory } from "../../assets/js/standing";
@@ -120,8 +120,8 @@ export default {
       fromInfo:{
         startDate: "",
         endDate: "",
-        pageNum: 0,
-        pageSize: 10,
+        // pageNum: 0,
+        // pageSize: 10,
       },
       //原辅料
       material: {
@@ -175,8 +175,9 @@ export default {
       }
       // this.getMaterial()
       if(this.listInfo.ledgerType == 3){
-        this.fromInfo.endDate = this.fromInfo.startDate + " 23:59:59"
-        this.fromInfo.startDate = this.fromInfo.startDate + " 00:00:00"
+        console.log(this.fromInfo)
+        this.fromInfo.endDate = this.fromInfo.startDate + " 23:59:59";
+        this.fromInfo.startDate = this.fromInfo.startDate + " 00:00:00";
         this.getActivatedCarbonList();
         return;
       }
@@ -192,6 +193,8 @@ export default {
     },
     //类型筛选
     selectType(){
+      this.vocsData = [];
+      this.activatedCarbonData = [];
       this.vocsData.length = 0;
       this.listInfo.pageNum = 0;
       if(this.listInfo.ledgerType == 3){
@@ -226,6 +229,7 @@ export default {
       const res = await getActivatedCarbon(this.fromInfo);
       if(res?.code == "1"){
         this.activatedCarbonData = res.data;
+        console.log(this.activatedCarbonData)
       }
     },
   },
