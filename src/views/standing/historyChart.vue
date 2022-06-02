@@ -16,8 +16,8 @@
             </el-col>
             <el-col :span="10">
               <el-form-item label="时间选择：">
-                <el-date-picker v-if="listInfo.ledgerType == 3" style="width:60%" v-model="fromInfo.startDate" type="date" placeholder="选择日期" size="small" value-format="yyyy-MM-dd"></el-date-picker>
-                <el-date-picker v-if="listInfo.ledgerType != 3" v-model="val" type="daterange" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期" value-format="yyyy-MM-dd" size="small"></el-date-picker>
+                <!-- <el-date-picker v-if="listInfo.ledgerType == 3" style="width:60%" v-model="fromInfo.startDate" type="date" placeholder="选择日期" size="small" value-format="yyyy-MM-dd"></el-date-picker> -->
+                <el-date-picker v-model="val" type="daterange" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期" value-format="yyyy-MM-dd" size="small"></el-date-picker>
               </el-form-item>
             </el-col>
             <el-col :span="1" style="padding-top:3px;">
@@ -93,7 +93,7 @@
               <el-table-column prop="handleTime" label="装填数量(kg)"></el-table-column>
             </el-table>
             <!-- 分页 -->
-            <el-pagination background layout="prev, pager, next" :total="total" @current-change="selectPage"></el-pagination>
+            <el-pagination background layout="prev, pager, next" :total="total" @current-change="selectPage" v-if="listInfo.ledgerType != 3"></el-pagination>
           </div>
         </div>
   </div>
@@ -164,20 +164,20 @@ export default {
     queryForm(state){
       if(state == "search"){
         this.listInfo.pageNum = 0;
-        this.fromInfo.pageNum = 0;
+        // this.fromInfo.pageNum = 0;
       }
       if(this.val.length == 0){
         this.listInfo.startDate="";
         this.listInfo.endDate="";
       }else{ 
-        this.listInfo.startDate=this.val[0] + " 00:00:00";
-        this.listInfo.endDate=this.val[1] + " 23:59:59";
+        this.listInfo.startDate = this.val[0] + " 00:00:00";
+        this.listInfo.endDate = this.val[1] + " 23:59:59";
       }
       // this.getMaterial()
       if(this.listInfo.ledgerType == 3){
         console.log(this.fromInfo)
-        this.fromInfo.endDate = this.fromInfo.startDate + " 23:59:59";
-        this.fromInfo.startDate = this.fromInfo.startDate + " 00:00:00";
+        this.fromInfo.startDate = this.val[0] + " 00:00:00";
+        this.fromInfo.endDate = this.val[1] + " 23:59:59";
         this.getActivatedCarbonList();
         return;
       }
@@ -187,7 +187,7 @@ export default {
       if(this.listInfo.ledgerType != 3){
         this.listInfo.pageNum = val - 1;
       }else{
-        this.fromInfo.pageNum = val - 1;
+        // this.fromInfo.pageNum = val - 1;
       }
       this.queryForm('page');
     },
