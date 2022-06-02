@@ -6,6 +6,7 @@
 
 <script>
 import * as echarts from 'echarts';
+import moment from 'moment';
 
 export default {
   name: 'chartsView',
@@ -266,11 +267,16 @@ export default {
             },
           ]
         }
-      }
+      },
+      timeArr: [1,0,0,0,0,0,0,1,0,0,1,0,0,1,1,0,1,1,0,1,0,0,1,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,0,0,1,0,1,0,1],
+      num: 0,
+      start: 0,
+      end: 0
     }
   },
   mounted(){
     this.drawClockChart();
+    this.dataArr();
   },
   methods: {
     init() {
@@ -484,6 +490,33 @@ export default {
       };
       var myChart = echarts.init(document.getElementById('main'));
       myChart.setOption(option);
+    },
+    dataArr() {
+      // setInterval(()=>{
+      //   let time = moment().format('HH:mm:ss');
+      //   let obj = {
+      //     time,
+      //   }
+      //   this.num++;
+      //   if(this.num%2 == 0 || this.num%5 == 0) {
+      //     obj.num = 0;
+      //   } else {
+      //     obj.num = 1;
+      //   }
+      //   this.timeArr.push(obj);
+      // },1000);
+
+      /**
+       * 十五分钟内出现五次 1 就报警
+       */
+      let aaNum = 0;
+      this.timeArr.forEach((el,index) => {
+        const aaNum = index - this.start;
+        if() {
+
+        }
+      });
+
     }
   }
 }
