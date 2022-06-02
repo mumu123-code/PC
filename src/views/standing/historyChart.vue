@@ -10,17 +10,18 @@
                 <el-radio-group v-model="listInfo.ledgerType" @change="selectType()">
                   <el-radio :label="1">原辅料台账</el-radio>
                   <el-radio :label="2">耗材台账</el-radio>
-                  <!-- <el-radio :label="3">活性炭台账</el-radio> -->
+                  <el-radio :label="3">活性炭台账</el-radio>
                 </el-radio-group>
               </el-form-item>
             </el-col>
             <el-col :span="10">
-              <el-form-item label="时间段：">
-                <el-date-picker v-model="val" type="daterange" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期" value-format="yyyy-MM-dd" size="small"></el-date-picker>
+              <el-form-item label="时间选择：">
+                <el-date-picker v-if="listInfo.ledgerType == 3" style="width:60%" v-model="fromInfo.startDate" type="date" placeholder="选择日期" size="small" value-format="yyyy-MM-dd"></el-date-picker>
+                <el-date-picker v-if="listInfo.ledgerType != 3" v-model="val" type="daterange" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期" value-format="yyyy-MM-dd" size="small"></el-date-picker>
               </el-form-item>
             </el-col>
             <el-col :span="1" style="padding-top:3px;">
-              <el-button type="primary" @click="queryForm" size="small">查询</el-button>    
+              <el-button type="primary" @click="queryForm('search')" size="small">查询</el-button>    
             </el-col>
              <el-col :span="2" style="padding-top:3px;padding-left:20px;">
                <div class="out" v-if="listInfo.ledgerType == 1">
@@ -76,9 +77,17 @@
             </el-table>
 
             <!-- 活性炭台账 -->
-            <el-table v-if="listInfo.ledgerType == 3" :data="activatedCarbonData" style="width: 100%" max-height="750" :header-cell-style="{'background':'#F5F3F2'}">
-              <el-table-column prop="handleTime" label="开启时间"></el-table-column>
-              <el-table-column prop="handleTime" label="关停时间"></el-table-column>
+            <el-table v-if="listInfo.ledgerType == 3" :data="activatedCarbonData" height="530" style="width: 100%" max-height="750" :header-cell-style="{'background':'#F5F3F2'}">
+              <el-table-column prop="openStartTime" label="开启时间">
+                <template slot-scope="scope">
+                  {{ scope.row.openStartTime }} ~ {{ scope.row.openEndTime }}
+                </template>
+              </el-table-column>
+              <el-table-column prop="handleTime" label="关停时间">
+                <template slot-scope="scope">
+                  {{ scope.row.shutdownStartTime }} ~ {{ scope.row.shutdownEndTime }}
+                </template>
+              </el-table-column>
               <el-table-column prop="handleTime" label="更换时间"></el-table-column>
               <el-table-column prop="handleTime" label="活性炭种类"></el-table-column>
               <el-table-column prop="handleTime" label="装填数量(kg)"></el-table-column>
@@ -108,7 +117,12 @@ export default {
           startDate: "",
           endDate: ""
       },
-      
+      fromInfo:{
+        startDate: "",
+        endDate: "",
+        pageNum: 0,
+        pageSize: 10,
+      },
       //原辅料
       material: {
         "含VOCs材料名称":'materialName',
@@ -131,11 +145,13 @@ export default {
 
       //活性炭
       activatedCarbon:{
-        "开启时间":"",
-        "关闭时间":"",
-        "更换时间":"",
-        "活性炭种类":"",
-        "装填数量(kg)":"",
+        "开启开始时间":"openStartTime",
+        "开启结束时间":"openEndTime",
+        "关停开始时间":"shutdownStartTime",
+        "关停结束时间":"shutdownEndTime",
+        "更换时间":"replacementTime",
+        "活性炭种类":"activatedCarbonType",
+        "装填数量(kg)":"loadQuantity",
       },
       total:0,
     };
@@ -145,7 +161,11 @@ export default {
   },
   methods: {
     //查询
-    queryForm(){
+    queryForm(state){
+      if(state == "search"){
+        this.listInfo.pageNum = 0;
+        this.fromInfo.pageNum = 0;
+      }
       if(this.val.length == 0){
         this.listInfo.startDate="";
         this.listInfo.endDate="";
@@ -155,14 +175,20 @@ export default {
       }
       // this.getMaterial()
       if(this.listInfo.ledgerType == 3){
+        this.fromInfo.endDate = this.fromInfo.startDate + " 23:59:59"
+        this.fromInfo.startDate = this.fromInfo.startDate + " 00:00:00"
         this.getActivatedCarbonList();
         return;
       }
       this.getMaterial();
     },
     selectPage(val){
-      this.listInfo.pageNum = val - 1;
-      this.queryForm();
+      if(this.listInfo.ledgerType != 3){
+        this.listInfo.pageNum = val - 1;
+      }else{
+        this.fromInfo.pageNum = val - 1;
+      }
+      this.queryForm('page');
     },
     //类型筛选
     selectType(){
@@ -197,7 +223,7 @@ export default {
     },
     //获取活性炭台账
     async getActivatedCarbonList(){
-      const res = await getActivatedCarbon();
+      const res = await getActivatedCarbon(this.fromInfo);
       if(res?.code == "1"){
         this.activatedCarbonData = res.data;
       }
