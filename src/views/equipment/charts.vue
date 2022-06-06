@@ -6,7 +6,6 @@
 
 <script>
 import * as echarts from 'echarts';
-import moment from 'moment';
 
 export default {
   name: 'chartsView',
@@ -268,7 +267,7 @@ export default {
           ]
         }
       },
-      timeArr: [1,0,0,0,0,0,0,1,0,0,1,0,0,1,1,0,1,1,0,1,0,0,1,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,0,0,1,0,1,0,1],
+      timeArr: [],
       num: 0,
       start: 0,
       end: 0
@@ -492,31 +491,47 @@ export default {
       myChart.setOption(option);
     },
     dataArr() {
-      // setInterval(()=>{
-      //   let time = moment().format('HH:mm:ss');
-      //   let obj = {
-      //     time,
-      //   }
-      //   this.num++;
-      //   if(this.num%2 == 0 || this.num%5 == 0) {
-      //     obj.num = 0;
-      //   } else {
-      //     obj.num = 1;
-      //   }
-      //   this.timeArr.push(obj);
-      // },1000);
-
-      /**
-       * 十五分钟内出现五次 1 就报警
-       */
-      let aaNum = 0;
-      this.timeArr.forEach((el,index) => {
-        const aaNum = index - this.start;
-        if() {
-
+      for (let i = 0; i < 60; i++) {
+        if(i%2 == 0 || i%5 == 0) {
+          this.timeArr.push({
+            createdTime: i,
+            num: 0,
+          });
+        } else {
+          this.timeArr.push({
+            createdTime: i,
+            num: 1,
+          })
+        }
+      }
+      this.screening(); 
+    },
+    screening() {
+      let stateArr = [];
+      this.timeArr.filter((item,index) => {
+        const {num,createdTime} = item;
+        if(index > 0) {
+          1 0 
+          if(num !== this.timeArr[index - 1].num) {
+            if(num == 1) {
+              stateArr.push({
+                createdTime,
+                state: '开'
+              })
+            }
+          }
         }
       });
 
+      stateArr.filter((el,i) => {
+        if(i > 1) {
+          const { createdTime } = el;
+          const start = stateArr[i + 5].createdTime * 1;
+          if(createdTime*1 - start == 2) {
+            console.log('我报警');
+          }
+        }
+      });
     }
   }
 }
