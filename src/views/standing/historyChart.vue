@@ -72,7 +72,11 @@
               <el-table-column prop="consumablesType" label="耗材种类" width="260"></el-table-column>
               <el-table-column prop="replacementAmount" label="更换量(kg)" width="260"></el-table-column>
               <el-table-column prop="replacementTime" label="更换时间" width="260"></el-table-column>
-              <el-table-column prop="handleType" label="处置情况" width="260"></el-table-column>
+              <el-table-column prop="handleType" label="处置情况" width="260">
+                 <template slot-scope="scope">
+                  {{ scope.row.handleType == 1 ? "危废间暂存" : "委外处置" }} 
+                </template>
+              </el-table-column>
               <el-table-column prop="handleTime" label="处置时间"></el-table-column>
             </el-table>
 
