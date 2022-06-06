@@ -10,6 +10,14 @@
                          台账填写
                      </div>
                      <div class="card-con">
+                        <div class="list-title">选择设备：</div>
+                        <div class="list-time">
+                             <el-select v-model="fromInfo.deviceId" placeholder="请选择" style="width:100%">
+                                <el-option v-for="(item,i) in equipmentData" :key="i" :label="item.deviceNumber" :value="item.id"></el-option>
+                            </el-select>
+                        </div>
+                     </div>
+                     <div class="card-con">
                         <div class="list-title">更换时间：</div>
                         <div class="list-time">
                             <el-date-picker style="width:100%" v-model="fromInfo.replacementTime" type="date" placeholder="选择日期" size="small" value-format="yyyy-MM-dd HH:mm:ss"></el-date-picker>
@@ -18,7 +26,7 @@
                      <div class="card-con">
                         <div class="list-title">活性炭种类：</div>
                         <div class="list-time">
-                            <el-input v-model="fromInfo.recoverType" placeholder="请输入" size="small"></el-input>
+                            <el-input v-model="fromInfo.activatedCarbonType" placeholder="请输入" size="small"></el-input>
                         </div>
                      </div>
                      <div class="card-con">
@@ -36,14 +44,16 @@
     </div>
 </template>
 <script>
-import { addActivatedCarbon } from '../../assets/js/common';
+import { addActivatedCarbon,getDeviceList } from '../../assets/js/common';
 export default{
     name:"activatedCarbon",
     data(){
         return{
+            equipmentData:[],
             fromInfo:{
+                deviceId:"",
                 replacementTime:"",
-                recoverType:"",
+                activatedCarbonType:"",
                 loadQuantity:"",
             }
         }
@@ -51,10 +61,26 @@ export default{
     created(){
         let date = new Date();
         this.time = date.getFullYear() + "-" + (date.getMonth() + 1) + date.getDay();
+        this.getEquipmentList();
     },
     methods:{
+        //获取设备列表
+        async getEquipmentList(){
+            const res = await getDeviceList();
+            if(res?.code == "1"){
+                this.equipmentData = res.data;
+            }
+        },
         //保存活性炭数据
         async addList(){
+            if(this.fromInfo.deviceId == ""){
+                this.$message({
+                    showClose: true,
+                    message: '请选择设备',
+                    type: 'error'
+                });
+                return;
+            }
             if(this.fromInfo.replacementTime == ""){
                 this.$message({
                     showClose: true,
@@ -63,7 +89,7 @@ export default{
                 });
                 return;
             }
-            if(this.fromInfo.recoverType == ""){
+            if(this.fromInfo.activatedCarbonType == ""){
                 this.$message({
                     showClose: true,
                     message: '请填写活性炭种类',
@@ -79,12 +105,18 @@ export default{
                 });
                 return;
             }
+            console.log(this.fromInfo)
             const res = await addActivatedCarbon(this.fromInfo);
             if(res?.code == "1"){
-                this.fromInfo.recoverType = "";
+                this.fromInfo.deviceId = "";
+                this.fromInfo.activatedCarbonType = "";
                 this.fromInfo.loadQuantity = "";
                 this.fromInfo.replacementTime = "";
-                console.log("提交成功")
+                this.$message({
+                    showClose: true,
+                    message: '提交成功',
+                    type: 'success'
+                });
             }else{
                  this.$message({
                     showClose: true,
