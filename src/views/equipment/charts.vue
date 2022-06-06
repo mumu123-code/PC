@@ -505,33 +505,6 @@ export default {
         }
       }
       this.screening(); 
-    },
-    screening() {
-      let stateArr = [];
-      this.timeArr.filter((item,index) => {
-        const {num,createdTime} = item;
-        if(index > 0) {
-          1 0 
-          if(num !== this.timeArr[index - 1].num) {
-            if(num == 1) {
-              stateArr.push({
-                createdTime,
-                state: '开'
-              })
-            }
-          }
-        }
-      });
-
-      stateArr.filter((el,i) => {
-        if(i > 1) {
-          const { createdTime } = el;
-          const start = stateArr[i + 5].createdTime * 1;
-          if(createdTime*1 - start == 2) {
-            console.log('我报警');
-          }
-        }
-      });
     }
   }
 }
