@@ -164,7 +164,7 @@ export default{
             float: left;
         }
         .list-time{
-            width: 500px;
+            width: 40%;
             float: left;
         }
     }
@@ -175,6 +175,15 @@ export default{
         text-align: center;
         .btn-submit{
             letter-spacing: 4px;
+        }
+    }
+    @media screen and (min-width:1000px) and (max-width: 1350px) {
+        .list-title{
+            margin-left: 0% !important;
+
+        }
+        .list-time{
+            width: 70% !important;
         }
     }
 </style>
