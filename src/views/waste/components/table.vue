@@ -32,8 +32,8 @@
                             <el-table-column prop="companyName" label="企业名称" width="350"></el-table-column>
                             <el-table-column prop="time" label="台账时间" width="200"></el-table-column>
                             <el-table-column prop="wasteCode" label="废物代码" width="200"></el-table-column>
-                            <el-table-column prop="inQuantity" label="入库数量(吨)" width="200"></el-table-column>
-                            <el-table-column prop="outQuantity" label="出库数量(吨)" width="200"></el-table-column>
+                            <el-table-column prop="inQuantity" label="入库数量(kg)" width="200"></el-table-column>
+                            <el-table-column prop="outQuantity" label="出库数量(kg)" width="200"></el-table-column>
                             <el-table-column prop="disposalDestination" label="危废处置类型" width="200">
                                 <template slot-scope="scope">
                                     {{ isType(scope.row.disposalDestination) }}
@@ -45,7 +45,7 @@
                                 </template>
                             </el-table-column>
                             <el-table-column prop="destinationUnit" label="危废处置去向单位" width="350"></el-table-column>
-                            <el-table-column prop="storageQuantity" label="累计贮存数量(吨)" width="200"></el-table-column>
+                            <el-table-column prop="storageQuantity" label="累计贮存数量(kg)" width="200"></el-table-column>
                             <el-table-column prop="preparerOut" label="出库人"></el-table-column>
                             <el-table-column prop="remarks" label="备注" width="400"></el-table-column>
                         </el-table>
@@ -79,8 +79,8 @@
                             <el-table-column prop="companyName" label="企业名称" width="350"></el-table-column>
                             <el-table-column prop="timeStr" label="台账时间" width="200"></el-table-column>
                             <el-table-column prop="wasteCode" label="废物代码" width="200"></el-table-column>
-                            <el-table-column prop="inSumQuantity" label="入库数量(吨)" width="200"></el-table-column>
-                            <el-table-column prop="outSumQuantity" label="出库数量(吨)" width="200"></el-table-column>
+                            <el-table-column prop="inSumQuantity" label="入库数量(kg)" width="200"></el-table-column>
+                            <el-table-column prop="outSumQuantity" label="出库数量(kg)" width="200"></el-table-column>
                             <el-table-column prop="disposalDestination" label="危废处置类型" width="200">
                                 <template slot-scope="scope">
                                     {{ isType(scope.row.disposalDestination) }}
@@ -92,7 +92,7 @@
                                 </template>
                             </el-table-column>
                             <el-table-column prop="destinationUnit" label="危废处置去向单位" width="350"></el-table-column>
-                            <el-table-column prop="storageSumQuantity" label="累计贮存数量(吨)" width="200"></el-table-column>
+                            <el-table-column prop="storageSumQuantity" label="累计贮存数量(kg)" width="200"></el-table-column>
                             <!-- <el-table-column prop="preparerIn" label="入库人"></el-table-column>
                             <el-table-column prop="preparerOut" label="出库人"></el-table-column>
                             <el-table-column prop="remarks" label="备注" width="400"></el-table-column> -->
@@ -119,12 +119,12 @@ export default{
                 "台账时间":'time',
                 "废物代码":'wasteCode',
                 // "危废类别":'hazardousWasteCategory',
-                "入库数量(吨)":'inQuantity',
-                "出库数量(吨)":'outQuantity',
+                "入库数量(kg)":'inQuantity',
+                "出库数量(kg)":'outQuantity',
                 "危废处置类型":'disposalDestination', 
                 "危废处置去向":'destination',
                 "危废处置去向单位":'destinationUnit',
-                "累计贮存数量(吨)":'storageQuantity',
+                "累计贮存数量(kg)":'storageQuantity',
                 "出库人":'preparerOut',
                 "备注":'remarks',
             },
@@ -133,12 +133,12 @@ export default{
                 "台账时间":'timeStr',
                 "废物代码":'wasteCode',
                 // "危废类别":'hazardousWasteCategory',
-                "入库数量(吨)":'inSumQuantity',
-                "出库数量(吨)":'outSumQuantity',
+                "入库数量(kg)":'inSumQuantity',
+                "出库数量(kg)":'outSumQuantity',
                 "危废处置类型":'disposalDestination', 
                 "危废处置去向":'destination',
                 "危废处置去向单位":'destinationUnit',
-                "累计贮存数量(吨)":'storageSumQuantity',
+                "累计贮存数量(kg)":'storageSumQuantity',
                 // "入库人":'preparerIn',
                 // "出库人":'preparerOut',
                 //  "备注":'remarks',
