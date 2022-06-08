@@ -8,7 +8,7 @@
             <div class="list-title">{{item.name}}</div>
             <el-row>
               <el-col :span="6" :offset="6">
-                 <el-upload class="upload-up" action="https://api.elianwei.com/company/base/aly/oss/upload" :limit="1" :on-exceed="handleExceed" :on-success="handleAvatarSuccess">
+                <el-upload class="upload-up" action="https://api.elianwei.com/company/base/aly/oss/upload" :limit="1" :on-exceed="handleExceed" :on-success="handleAvatarSuccess">
                   <el-button size="small" type="primary"  @click="selectFileType(item.type)">点击上传</el-button>
                 </el-upload>
               </el-col>
