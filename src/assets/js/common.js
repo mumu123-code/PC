@@ -109,3 +109,32 @@ export function getDeviceList(){
         url:"/device/list"
     })
 }
+
+//获取危废代码列表
+export function getWasteInfo(data){
+    return request({
+        method:"post",
+        url:"/waste/wasteCompanyInitPageList",
+        data
+    })
+}
+
+//获取附件台账Word文档导出
+export function getFileParameter(data){
+    return request({
+        method:"post",
+        url:"/waste/exportGroupOutList",
+        responseType: 'blob',
+        data,
+    })
+}
+
+//获取出库记录Word文档导出
+export function getFileRecord(data){
+    return request({
+        method:"post",
+        url:"/waste/exportOutList",
+        responseType: 'blob',
+        data
+    })
+}

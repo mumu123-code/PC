@@ -81,7 +81,7 @@
             </el-table>
 
             <!-- 活性炭台账 -->
-            <el-table v-if="listInfo.ledgerType == 3" :data="activatedCarbonData" style="width: 100%" max-height="750" :header-cell-style="{'background':'#F5F3F2'}">
+            <el-table v-if="listInfo.ledgerType == 3" :data="activatedCarbonData" style="width: 100%" max-height="500" :header-cell-style="{'background':'#F5F3F2'}">
               <el-table-column prop="openStartTime" label="开启时间">
                 <template slot-scope="scope">
                   {{ scope.row.openStartTime }} ~ {{ scope.row.openEndTime }}
@@ -100,6 +100,7 @@
             <el-pagination background layout="prev, pager, next" :total="total" @current-change="selectPage" v-if="listInfo.ledgerType != 3"></el-pagination>
           </div>
         </div>
+        
   </div>
 </template> 
 
@@ -233,7 +234,6 @@ export default {
       const res = await getActivatedCarbon(this.fromInfo);
       if(res?.code == "1"){
         this.activatedCarbonData = res.data;
-        console.log(this.activatedCarbonData)
       }
     },
   },
@@ -249,7 +249,7 @@ export default {
     letter-spacing:5px;
   }
   .historyType{
-    width: 1280px;
+    min-width: 1280px;
     .el-form{
       margin-top: 20px;
     }  
@@ -263,4 +263,5 @@ export default {
       float: right;
     }
 }
+
 </style>
