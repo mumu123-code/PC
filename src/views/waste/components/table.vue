@@ -409,4 +409,10 @@ export default{
 .m-top{
     margin-top: 20px;
 }
+ /*滚动条样式*/
+ // 滚动条的宽度
+  /deep/ .el-table__body-wrapper::-webkit-scrollbar {
+    width: 16px; // 横向滚动条
+    height: 16px; // 纵向滚动条 必写
+  }
 </style>
