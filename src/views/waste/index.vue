@@ -12,10 +12,10 @@
                 <el-aside width="260px">
                     <el-menu :default-active="$route.path" class="el-menu-vertical-demo" @select="handleSelect" @open="handleOpen" background-color="#545c64" text-color="#fff" active-text-color="#ffd04b" >
                         <el-menu-item index="/statistics">
-                            <span slot="title">数据统计</span>
+                            <span slot="title">仓库状态</span>
                         </el-menu-item>
                         <el-menu-item index="/wasteParameter">
-                            <span slot="title">台账记录</span>
+                            <span slot="title">电子台账</span>
                         </el-menu-item>
                         <el-submenu index="/wastePrevention">
                             <template slot="title">
