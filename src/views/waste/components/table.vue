@@ -196,8 +196,8 @@ export default{
             attachmentInfo:{
                 wasteCode:"",
                 preTime:"",
-                pageNum:0,
-                pageSize:1000000,
+                // pageNum:0,
+                // pageSize:1000000,
             },
             wasteList:[],
         }
@@ -330,24 +330,41 @@ export default{
                 })
                 return;
             }
-            let res = "";
             if(type == "num"){
-                res = await getFileParameter({pageNum:0,pageSize:200});
+                const resList = await getFileParameter(this.attachmentInfo);
+                if(resList?.code == "1"){
+                   this.downWordFile(resList.data,type);
+                }else{
+                    this.$message({
+                        message: resList.msg,
+                        type: 'error'
+                    })
+                }
             } else {
-                res = await getFileRecord({pageNum:0,pageSize:200});
-            } 
-            const link = document.createElement('a')
-            let blob = new Blob([res], {type: 'application/vnd.ms-doc'})
-            link.style.display = 'none'
-            link.href = URL.createObjectURL(blob)
+                const resa = await getFileRecord(this.attachmentInfo);
+                 if(resa?.code == "1"){
+                   this.downWordFile(resa.data,type);
+                }else{
+                    this.$message({
+                        message: resa.msg,
+                        type: 'error'
+                    })
+                }
+            }
+        },
+        //下载Word文件
+        downWordFile(url,type){
+            console.log(type)
+            let link = document.createElement("a");
+            link.href = url;
             if(type == "num"){
-               link.download = "浙江省工业危险废物管理台帐附件" //下载的文件名
+               link.download = "浙江省工业危险废物管理台帐附件.doc" //下载的文件名
             } else {
-               link.download = "浙江省工业危险废物管理记录附件" //下载的文件名
+               link.download = "浙江省工业危险废物管理记录附件.doc" //下载的文件名
             } 
-            document.body.appendChild(link)
-            link.click()
-            document.body.removeChild(link)
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
         },
     }
 }

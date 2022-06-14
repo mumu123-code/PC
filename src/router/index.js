@@ -120,6 +120,11 @@ const routes = [
         name:"wasteParameter",
         component:()=>import("../views/waste/components/reference.vue"),
       },
+      {
+        path:"/statistics",
+        name:"statistics",
+        component:()=>import("../views/waste/components/statistics.vue"),
+      },
     ]
   },
  

@@ -124,7 +124,7 @@ export function getFileParameter(data){
     return request({
         method:"post",
         url:"/waste/exportGroupOutList",
-        responseType: 'blob',
+        // responseType: 'blob',
         data,
     })
 }
@@ -134,7 +134,15 @@ export function getFileRecord(data){
     return request({
         method:"post",
         url:"/waste/exportOutList",
-        responseType: 'blob',
+        // responseType: 'blob',
         data
+    })
+}
+
+//获取数据统计数据
+export function getStatistical(){
+    return request({
+        method:"get",
+        url:"/waste/androidShow"
     })
 }

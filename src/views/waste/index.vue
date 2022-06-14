@@ -10,7 +10,10 @@
             
             <el-container>
                 <el-aside width="260px">
-                    <el-menu :default-active="$route.path" class="el-menu-vertical-demo" @select="handleSelect" @open="handleOpen" >
+                    <el-menu :default-active="$route.path" class="el-menu-vertical-demo" @select="handleSelect" @open="handleOpen" background-color="#545c64" text-color="#fff" active-text-color="#ffd04b" >
+                        <el-menu-item index="/statistics">
+                            <span slot="title">数据统计</span>
+                        </el-menu-item>
                         <el-menu-item index="/wasteParameter">
                             <span slot="title">台账记录</span>
                         </el-menu-item>
@@ -46,7 +49,7 @@ export default{
     },
     created(){
         this.companyName = JSON.parse(sessionStorage.getItem('userInfo')).companyName;
-        this.handleSelect("/wasteParameter");
+        this.handleSelect("/statistics");
     },
     methods:{
         handleOpen(key) {
@@ -117,6 +120,17 @@ export default{
     .el-aside {
         background-color: #324158;
         height: 92vh;
+    }
+    .el-menu{
+        background: #324158;
+        color: #F0F0F0;
+    }
+    .el-menu-item,.el-submenu__title span{
+        color: #fff;
+    }
+    .is-active{
+        color: #000;
+        // background: #eee;
     }
     .el-main {
         background-color: #fff;
