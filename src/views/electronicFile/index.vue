@@ -138,6 +138,7 @@ export default {
   .list{
     margin-top: 20px;
     margin-bottom: 40px;
+    max-height: 200px;
     .list-title{
       padding: 20px;
       text-align: center;
