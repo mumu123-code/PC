@@ -2,7 +2,18 @@
   <div class="personal">
     <!-- 顶部编号、历史数据查看 s -->
     <div class="personal-top">
-      <div class="personalTop-name">房间名：{{roomName}}</div>
+      <div class="personalTop-name">房间名：
+        <!-- {{roomName}} -->
+        <el-select v-model="activeId" placeholder="请选择" size="small">
+          <el-option
+            v-for="(item,i) in roomData"
+            :key="i"
+            :label="item.roomName"
+            :value="item.id"
+          >
+          </el-option>
+        </el-select>
+        </div>
       <el-button type="info" size="mini" round @click="toGo">
         历史数据查看 <i class="el-icon-arrow-right"></i>
       </el-button>
@@ -144,6 +155,7 @@ import * as echarts from 'echarts';
 import {
   getProductionStatus,
   getReport,
+  deviceList,
 } from "../../assets/js/equipment";
 
 import { getNowTime } from "./isType";
@@ -152,6 +164,7 @@ export default {
   name: "personalView",
   data() {
     return {
+      roomData:[],//房间名称数组
       productionStatusArr: [], // 设备生产状态数据
       time: "",
       activeId: 0, // 设备id
@@ -327,16 +340,30 @@ export default {
   },
   mounted() {
     // 上个页面传值下来的id
-    this.activeId = this.$route.query.id;
-    this.roomName = this.$route.query.roomName;
+    // this.activeId = this.$route.query.id;
+    // this.roomName = this.$route.query.roomName;
     // 设置当天日期
     this.time = getNowTime();
-    // 获取设备生产状态
-    this.getProductStatus();
-    // 获取设备信息
-    this.getReportDetail();
+    
+    // 获取总设备列表
+    this.getDeviceList();
   },
   methods: {
+     // 获取总设备列表
+    async getDeviceList() {
+      const res = await deviceList();
+      if (res.code == "1" && res.data.length > 0) {
+        this.roomData = res.data;
+        this.activeId = this.roomData[0].id;
+        this.roomName = this.roomData[0].roomName;
+        // 赋值总长度
+        // this.tableNum = res.data.length;
+        // 获取设备生产状态
+        this.getProductStatus();
+        // 获取设备信息
+        this.getReportDetail();
+      }
+    },
     // 获取设备状态
     async getProductStatus() {
       const form = {
