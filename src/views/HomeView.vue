@@ -49,10 +49,10 @@ export default {
   },
   methods: {
     jump(state) {
-      let path = "/equipment";
+      let path = "/personal";
       switch(state){
         case "gas":
-          path="/equipment";
+          path="/personal";
           break;
         case "waste":
           path="/waste";

@@ -27,8 +27,8 @@
                             </div>
                         </el-col>
                     </el-row>
-                     <div class="table">
-                    <el-table :data="data" style="width: 100%" :header-cell-style="{'background':'#F5F3F2'}">
+                    <div class="table">
+                        <el-table :data="data" style="width: 100%" :header-cell-style="{'background':'#F5F3F2'}">
                             <el-table-column prop="companyName" label="企业名称" width="350"></el-table-column>
                             <el-table-column prop="time" label="台账时间" width="200"></el-table-column>
                             <el-table-column prop="wasteCode" label="废物代码" width="200"></el-table-column>
@@ -101,19 +101,52 @@
                     <el-pagination background layout="prev, pager, next" :total="total" @current-change="selectPage"></el-pagination>
                 </el-tab-pane> 
             </el-tabs>
+            <div class="nav-type nav-two">附件</div>
+            <div class="attachment">
+                <el-row>
+                    <el-col :span="2" class="write-title">废物代码：</el-col>
+                    <el-col :span="4">
+                        <el-select v-model="attachmentInfo.wasteCode" placeholder="请选择" size="small" class="w-100">
+                            <el-option
+                            v-for="(item,i) in wasteList"
+                            :key="i"
+                            :label="item.wasteCode"
+                            :value="item.wasteCode">
+                            </el-option>
+                        </el-select>
+                    </el-col>
+                    <el-col :span="2" class="write-title">日期选择：</el-col>
+                    <el-col :span="4">
+                        <el-date-picker size="small"
+                        v-model="attachmentInfo.preTime"
+                        type="month" value-format="yyyy-MM-dd 00:00:00"
+                        placeholder="选择时间" @change="selectTime">
+                        </el-date-picker>
+                    </el-col>
+                </el-row>
+                <el-row class="m-top">
+                    <el-col :span="4" :offset="1">
+                        <el-button type="primary" @click.native="downFile('num')" size="small">浙江省工业危险废物管理台帐附件</el-button>
+                    </el-col>
+                     <el-col :span="4">
+                        <el-button type="primary" @click.native="downFile('record')" size="small">浙江省工业危险废物管理记录附件</el-button>
+                    </el-col>
+                </el-row>
+            </div>
         </div>  
     </div>
 </template>
 <script>
-import { getMonthWasteParameter,getYearsWasteParameter } from '../../../assets/js/common'
+import { getMonthWasteParameter,getYearsWasteParameter,getWasteInfo,getFileParameter,getFileRecord } from '../../../assets/js/common'
 export default{
     name:"parameterTable",
     data(){
-        return{
+        return{ 
             data:[],
             yearsList:[],
             exportYearsList:[],
             exportMonthList:[],
+            numData:[],
             parameterXLS:{
                 "企业名称":'companyName',
                 "台账时间":'time',
@@ -160,6 +193,13 @@ export default{
             activeTab:"month",
             total:0,
             yearsTotal:0,
+            attachmentInfo:{
+                wasteCode:"",
+                preTime:"",
+                // pageNum:0,
+                // pageSize:1000000,
+            },
+            wasteList:[],
         }
     },
     created(){
@@ -171,6 +211,7 @@ export default{
         this.getExportMonthList();
         this.getExportYearsList();
         this.getList();
+        this.getWasteList();
     },
     methods:{
         selectTable(){ 
@@ -261,7 +302,70 @@ export default{
             if(res?.code == "1"){
                 this.exportMonthList = res.data.list;
             }
-        }
+        },
+        //获取危废列表
+        async getWasteList(){
+            const res = await getWasteInfo({pageNum:0,pageSize:200});
+            if(res?.code == "1"){
+                this.wasteList = res.data.list;
+            }
+        },
+        //选择日期
+        selectTime(){
+            console.log(this.attachmentInfo.preTime)
+        },
+        //下载附件
+        async downFile(type){
+            if(this.attachmentInfo.wasteCode == ""){
+                this.$message({
+                    message: '请选择废物代码',
+                    type: 'error'
+                })
+                return;
+            }
+            if(this.attachmentInfo.preTime == ""){
+                this.$message({
+                    message: '请选择日期',
+                    type: 'error'
+                })
+                return;
+            }
+            if(type == "num"){
+                const resList = await getFileParameter(this.attachmentInfo);
+                if(resList?.code == "1"){
+                   this.downWordFile(resList.data,type);
+                }else{
+                    this.$message({
+                        message: resList.msg,
+                        type: 'error'
+                    })
+                }
+            } else {
+                const resa = await getFileRecord(this.attachmentInfo);
+                 if(resa?.code == "1"){
+                   this.downWordFile(resa.data,type);
+                }else{
+                    this.$message({
+                        message: resa.msg,
+                        type: 'error'
+                    })
+                }
+            }
+        },
+        //下载Word文件
+        downWordFile(url,type){
+            console.log(type)
+            let link = document.createElement("a");
+            link.href = url;
+            if(type == "num"){
+               link.download = "浙江省工业危险废物管理台帐附件.doc" //下载的文件名
+            } else {
+               link.download = "浙江省工业危险废物管理记录附件.doc" //下载的文件名
+            } 
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        },
     }
 }
 </script>
@@ -286,4 +390,29 @@ export default{
 .el-pagination{
     float:right;
 } 
+.nav-type{
+  background-color: #eee;
+  width: 100%;
+  margin-top: 20px;
+  height: 30px;
+  line-height: 30px;
+  padding-left: 10px;
+  font-size: 14px;
+  color: rgb(143, 141, 141);
+  margin-bottom: 10px;
+}
+.write-title{
+    text-align: right;
+    font-size: 14px;
+    line-height: 34px;
+}
+.m-top{
+    margin-top: 20px;
+}
+ /*滚动条样式*/
+ // 滚动条的宽度
+  /deep/ .el-table__body-wrapper::-webkit-scrollbar {
+    width: 16px; // 横向滚动条
+    height: 16px; // 纵向滚动条 必写
+  }
 </style>

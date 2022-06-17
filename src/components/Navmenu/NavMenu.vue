@@ -9,7 +9,7 @@
       text-color="#fff"
       active-text-color="#ffd04b"
     >
-      <el-menu-item index="/equipment">
+      <el-menu-item index="/personal">
         <template slot="title">
           <span>总设备</span>
         </template>
