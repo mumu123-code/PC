@@ -91,39 +91,44 @@ const routes = [
     component: () => import("../views/waste/index.vue"),
     children:[
       {
-        path:"/wasteParameter",
+        path:"/wasteParameter", //电子台账
         name:"wasteParameter",
         component:()=>import("../views/waste/components/table.vue"),
       },
       {
-        path:"/wasteNetIn",
+        path:"/wasteNetIn", //政策解读
         name:"wasteParameter",
         component:()=>import("../views/waste/components/netIn.vue"),
       },
       {
-        path:"/wasteManagement",
+        path:"/wasteManagement", //政策解读
         name:"wasteParameter",
         component:()=>import("../views/waste/components/management.vue"),
       },
       {
-        path:"/wastePlan",
+        path:"/wastePlan", //政策解读
         name:"wasteParameter",
         component:()=>import("../views/waste/components/plan.vue"),
       },
       {
-        path:"/wastePrevention",
+        path:"/wastePrevention", //政策解读
         name:"wasteParameter",
         component:()=>import("../views/waste/components/prevention.vue"),
       },
       {
-        path:"/wasteReference",
+        path:"/wasteReference", //政策解读
         name:"wasteParameter",
         component:()=>import("../views/waste/components/reference.vue"),
       },
       {
-        path:"/statistics",
+        path:"/statistics", //数据统计
         name:"statistics",
         component:()=>import("../views/waste/components/statistics.vue"),
+      },
+      {
+        path:"/addInfo",  //信息填写
+        name:"addInfo", 
+        component:()=>import("../views/waste/components/addInfo.vue"),
       },
     ]
   },
