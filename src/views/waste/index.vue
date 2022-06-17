@@ -14,6 +14,9 @@
                         <el-menu-item index="/statistics">
                             <span slot="title">仓库状态</span>
                         </el-menu-item>
+                        <el-menu-item index="/addInfo">
+                            <span slot="title">配置信息</span>
+                        </el-menu-item>
                         <el-menu-item index="/wasteParameter">
                             <span slot="title">电子台账</span>
                         </el-menu-item>
