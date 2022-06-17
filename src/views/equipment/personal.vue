@@ -103,7 +103,7 @@
             <img
               src="https://zjlianweihoss.oss-cn-hangzhou.aliyuncs.com/file/1649909506601-arrow.png"
             />
-            {{ productionObj.gwindpressure !== null ? productionObj.gwindpressure : "-" }} kPa
+            {{ (productionObj.gwindpressure ? productionObj.gwindpressure : '0') || "-" }} kPa
           </span>
           <span>
             <img
