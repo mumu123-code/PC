@@ -136,11 +136,17 @@ const router = new VueRouter({
   routes,
 });
 
+let userInfo = {
+  token: ''
+};
+userInfo.token = window.location.href.split('?')[1].split('=')[1];
+sessionStorage.setItem("userInfo", JSON.stringify(userInfo));
+
 // 路由守卫
 router.beforeEach((to,from,next) => {
-  const userInfo = sessionStorage.getItem('userInfo');
+  const user = sessionStorage.getItem('userInfo');
 
-  let isLogin = userInfo ? true : false;
+  let isLogin = user ? true : false;
   if(to.path == '/login' || to.path == '/') {
     next();
   } else {
