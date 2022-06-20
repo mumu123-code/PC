@@ -177,24 +177,24 @@ function getDate(type) {
 
 
 //时间 计算当前时间所属区间阶段 15分钟为一个区间
-function areaTime(){
-	 let timeObj = "";
-	 let time = new Date().getMinutes();
-	 let day = new Date();
-	 day = day.toLocaleDateString() + " " +day.getHours() + ":";
-	 let reg = new RegExp( '/' , "g" );
-	 day = day.replace(reg,"-");
-	 if(0 > time || time < 15){
-		timeObj = day + "00:00" +"&"+ day + "15:00";
-	 }else if(15 > time ||time < 30){
-		timeObj = day + "15:00" +"&"+ day + "30:00";
-	 }else if(30 > time || time < 45){
-		timeObj = day + "30:00" +"&"+ day + "45:00";
-	 }else{
-		timeObj = day + "45:00" +"&"+ day + "59:59";
-	 }
-	 return timeObj;
- }	
+// function areaTime(){
+// 	 let timeObj = "";
+// 	 let time = new Date().getMinutes();
+// 	 let day = new Date();
+// 	 day = day.toLocaleDateString() + " " +day.getHours() + ":";
+// 	 let reg = new RegExp( '/' , "g" );
+// 	 day = day.replace(reg,"-");
+// 	 if(0 > time || time < 15){
+// 		timeObj = day + "00:00" +"&"+ day + "15:00";
+// 	 }else if(15 > time ||time < 30){
+// 		timeObj = day + "15:00" +"&"+ day + "30:00";
+// 	 }else if(30 > time || time < 45){
+// 		timeObj = day + "30:00" +"&"+ day + "45:00";
+// 	 }else{
+// 		timeObj = day + "45:00" +"&"+ day + "59:59";
+// 	 }
+// 	 return timeObj;
+//  }	
  //判断安装位置
  function isInstallationPosition(type){
 	 let typeName = "";
@@ -236,7 +236,7 @@ module.exports = {
 	typeData,
 	isAdvice,
 	getDate,
-	areaTime,
+	// areaTime,
 	isInstallationPosition,
     roomData,
 	openFile
