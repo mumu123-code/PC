@@ -146,3 +146,21 @@ export function getStatistical(){
         url:"/waste/androidShow"
     })
 }
+
+//获取配置信息列表
+export function getConfigurationInfoList(data){
+    return request({
+        method:"post",
+        url:"/waste/wasteCompanyInitPageList",
+        data
+    })
+}
+
+//修改配置信息
+export function editConfigurationInfo(data){
+    return request({
+        method:"post",
+        url:"/waste/saveOrUpdateWasteCompanyInit",
+        data
+    })
+}

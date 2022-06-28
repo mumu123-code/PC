@@ -14,11 +14,14 @@
                         <el-menu-item index="/statistics">
                             <span slot="title">仓库状态</span>
                         </el-menu-item>
-                        <!-- <el-menu-item index="/addInfo">
+                        <el-menu-item index="/addInfo">
                             <span slot="title">配置信息</span>
-                        </el-menu-item> -->
+                        </el-menu-item>
                         <el-menu-item index="/wasteParameter">
                             <span slot="title">电子台账</span>
+                        </el-menu-item>
+                        <el-menu-item index="/moveVideo">
+                            <span slot="title">视频教程</span>
                         </el-menu-item>
                         <el-submenu index="/wastePrevention">
                             <template slot="title">

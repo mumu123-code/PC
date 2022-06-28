@@ -96,6 +96,11 @@ const routes = [
         component:()=>import("../views/waste/components/table.vue"),
       },
       {
+        path:"/moveVideo", //视频教程
+        name:"moveVideo",
+        component:()=>import("../views/waste/components/moveVideo.vue"),
+      },
+      {
         path:"/wasteNetIn", //政策解读
         name:"wasteParameter",
         component:()=>import("../views/waste/components/netIn.vue"),
@@ -126,7 +131,7 @@ const routes = [
         component:()=>import("../views/waste/components/statistics.vue"),
       },
       {
-        path:"/addInfo",  //信息填写
+        path:"/addInfo",  //配置信息
         name:"addInfo", 
         component:()=>import("../views/waste/components/addInfo.vue"),
       },
