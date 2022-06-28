@@ -8,7 +8,7 @@
 
     <div class="materialContent">
       <el-table :data="vocsData" style="width: 100%" :header-cell-style="{'background':'#F5F3F2'}">
-        <el-table-column prop="vocsData.materialName" label="含VOCs材料名称" width="200">
+        <el-table-column prop="materialName" label="含VOCs材料名称" width="200">
             <template slot-scope="scope">
               <el-select
               v-model="scope.row.materialName"
@@ -25,22 +25,22 @@
             </el-select>
           </template>
         </el-table-column>
-        <el-table-column prop="vocsData.purchaseQuantity" label="采购量(kg)" width="200">
+        <el-table-column prop="purchaseQuantity" label="采购量(kg)" width="200">
           <template slot-scope="scope">
             <el-input v-model="scope.row.purchaseQuantity" placeholder="请输入"></el-input>
           </template>
         </el-table-column>
-        <el-table-column prop="vocsData.usageThisWeek" label="本周使用量(kg)" width="200">
+        <el-table-column prop="usageThisWeek" label="本周使用量(kg)" width="200">
           <template slot-scope="scope">
             <el-input v-model="scope.row.usageThisWeek" placeholder="请输入"></el-input>
           </template>
         </el-table-column>
-        <el-table-column prop="vocsData.inventoryThisWeek" label="剩余库存量(kg)" width="200">
+        <el-table-column prop="inventoryThisWeek" label="剩余库存量(kg)" width="200">
           <template slot-scope="scope">
             <el-input v-model="scope.row.inventoryThisWeek" placeholder="请输入"></el-input>
           </template>
         </el-table-column>
-        <el-table-column prop="vocsData.vocsContent" label="VOCs含量(%)" width="200">
+        <el-table-column prop="vocsContent" label="VOCs含量(%)" width="200">
           <template slot-scope="scope">
             <el-input v-model="scope.row.vocsContent" placeholder="请输入"></el-input>
           </template>
