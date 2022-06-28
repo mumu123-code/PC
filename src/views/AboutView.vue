@@ -6,7 +6,10 @@
       </el-header>
       <div class="title-exit">
         <div class="title">( {{companyName}} )</div>
-        <el-button class="exit" type="primary" icon="el-icon-user" size="mini" @click.native="loginOut">退出</el-button>
+        <div class="exit">
+          <el-button type="primary" size="mini" @click.native="loginHome">首页</el-button>
+          <el-button type="primary" icon="el-icon-user" size="mini" @click.native="loginOut">退出</el-button>
+        </div>
       </div>
 
       <el-container>
@@ -45,6 +48,12 @@ export default {
         sessionStorage.removeItem("userInfo", JSON.stringify(res.data))
         this.$router.push('/')
       }
+    },
+    loginHome() {
+      // 登录成功跳转到首页
+      this.$router.push({
+        path: "/home",
+      });
     }
   }
 };
