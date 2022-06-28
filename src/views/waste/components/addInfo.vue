@@ -63,7 +63,7 @@
                     </el-col>
                 </el-row>
                 <el-row class="m-top">
-                     <el-button type="primary" size="small" @click.native="addInfo">保存</el-button>
+                    <el-button type="primary" size="small" @click.native="addInfo">保存</el-button>
                 </el-row>
             </div>
         </el-card>
