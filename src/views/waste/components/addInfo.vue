@@ -1,8 +1,8 @@
 <template>
     <div class="addInfoCon">
-        <div class="title">配置信息</div>
+        <div class="title">标签配置信息</div>
         <el-card>
-            <div class="card-title">配置信息填写</div>
+            <div class="card-title">标签信息填写</div>
             <div class="info-list">
                 <el-row class="info-detail">
                     <el-col :span="3" class="info-title">废物代码和废物名称：</el-col>
@@ -68,7 +68,7 @@
             </div>
         </el-card>
         <el-card>
-            <div class="card-title">配置信息列表</div>
+            <div class="card-title">标签信息列表</div>
             <div class="info-list">
                 <el-row class="table">
                     <el-table :data="addInfoTableData" style="width: 100%" :header-cell-style="{ background: '#F5F3F2' }">
