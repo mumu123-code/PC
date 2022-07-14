@@ -12,7 +12,7 @@
                      <div class="card-con">
                         <div class="list-title">选择设备：</div>
                         <div class="list-time">
-                             <el-select v-model="fromInfo.deviceId" placeholder="请选择" style="width:100%">
+                             <el-select v-model="fromInfo.deviceId" placeholder="请选择" style="width:100%" size="small">
                                 <el-option v-for="(item,i) in equipmentData" :key="i" :label="item.deviceNumber" :value="item.id"></el-option>
                             </el-select>
                         </div>
@@ -20,7 +20,7 @@
                      <div class="card-con">
                         <div class="list-title">更换时间：</div>
                         <div class="list-time">
-                            <el-date-picker style="width:100%" v-model="fromInfo.replacementTime" type="date" placeholder="选择日期" size="small" value-format="yyyy-MM-dd HH:mm:ss"></el-date-picker>
+                            <el-date-picker style="width:100%" v-model="fromInfo.replacementTime" disabled type="date" placeholder="选择日期" size="small" value-format="yyyy-MM-dd HH:mm:ss"></el-date-picker>
                         </div>
                      </div>
                      <div class="card-con">
@@ -52,7 +52,7 @@ export default{
             equipmentData:[],
             fromInfo:{
                 deviceId:"",
-                replacementTime:"",
+                replacementTime:new Date(),
                 activatedCarbonType:"",
                 loadQuantity:"",
             }
@@ -110,7 +110,6 @@ export default{
                 this.fromInfo.deviceId = "";
                 this.fromInfo.activatedCarbonType = "";
                 this.fromInfo.loadQuantity = "";
-                this.fromInfo.replacementTime = "";
                 this.$message({
                     showClose: true,
                     message: '提交成功',
