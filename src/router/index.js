@@ -131,9 +131,19 @@ const routes = [
         component:()=>import("../views/waste/components/statistics.vue"),
       },
       {
-        path:"/addInfo",  //配置信息
+        path:"/companyInfo",
+        name:"companyInfo",
+        component:()=>import("../views/waste/components/company.vue"),
+      },
+      {
+        path:"/addInfo",  //标签配置信息
         name:"addInfo", 
         component:()=>import("../views/waste/components/addInfo.vue"),
+      },
+      {
+        path:"/storageTank",  //储罐配置信息
+        name:"storageTank",
+        component:()=>import("../views/waste/components/storageTank.vue"),
       },
     ]
   },

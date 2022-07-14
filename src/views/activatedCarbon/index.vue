@@ -105,7 +105,6 @@ export default{
                 });
                 return;
             }
-            console.log(this.fromInfo)
             const res = await addActivatedCarbon(this.fromInfo);
             if(res?.code == "1"){
                 this.fromInfo.deviceId = "";

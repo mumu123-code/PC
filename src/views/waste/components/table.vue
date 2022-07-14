@@ -230,7 +230,7 @@ export default{
                     state = "自行处置";
                     break;
                 case 1:
-                    state = "利用";
+                    state = "委外利用";
                     break;
                 case 2:
                     state = "委外处置";

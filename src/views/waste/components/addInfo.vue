@@ -6,60 +6,35 @@
             <div class="info-list">
                 <el-row class="info-detail">
                     <el-col :span="3" class="info-title">废物代码和废物名称：</el-col>
-                    <el-col :span="5">
+                    <el-col :span="10">
                         <el-input size="small" v-model="addInfoForm.wasteCode"></el-input>
                     </el-col>
-                    <el-col :span="2" class="info-title">主要成分：</el-col>
-                    <el-col :span="5">
+                </el-row>
+                <el-row class="info-detail">
+                    <el-col :span="3" class="info-title">危废协议生效时间：</el-col>
+                    <el-col :span="10">
+                        <el-date-picker v-model="addInfoForm.effectiveTime" size="small" style="width:100%" type="date" value-format="yyyy-MM-dd 00:00:00" placeholder="选择日期"></el-date-picker>
+                        <!-- <el-input size="small" v-model="addInfoForm.chemicalComposition"></el-input> -->
+                    </el-col>
+                </el-row>
+                <el-row class="info-detail">
+                    <el-col :span="3" class="info-title">主要成分：</el-col>
+                    <el-col :span="10">
                         <el-input size="small" v-model="addInfoForm.mainComponents"></el-input>
                     </el-col>
-                    <el-col :span="2" class="info-title">化学成分：</el-col>
-                    <el-col :span="5">
-                        <el-input size="small" v-model="addInfoForm.chemicalComposition"></el-input>
-                    </el-col>
                 </el-row>
                 <el-row class="info-detail">
-                    <el-col :span="3" class="info-title">批次：</el-col>
-                    <el-col :span="5">
-                        <el-input size="small" v-model="addInfoForm.batch"></el-input>
-                    </el-col>
-                    <el-col :span="2" class="info-title">数量：</el-col>
-                    <el-col :span="5">
-                        <el-input size="small" v-model="addInfoForm.quantity"></el-input>
-                    </el-col>
-                    <el-col :span="2" class="info-title">危险情况：</el-col>
-                    <el-col :span="5">
-                        <el-input size="small" v-model="addInfoForm.dangerousSituation"></el-input>
-                    </el-col>
-                </el-row>
-                <el-row class="info-detail">
-                    <el-col :span="3" class="info-title">废物产生单位：</el-col>
-                    <el-col :span="5">
-                        <el-input size="small" v-model="addInfoForm.generatingUnit"></el-input>
-                    </el-col>
-                    <el-col :span="2" class="info-title">联系人：</el-col>
-                    <el-col :span="5">
-                        <el-input size="small" v-model="addInfoForm.contacts"></el-input>
-                    </el-col>
-                    <el-col :span="2" class="info-title">电话：</el-col>
-                    <el-col :span="5">
-                        <el-input size="small" v-model="addInfoForm.telephone"></el-input>
+                    <el-col :span="3" class="info-title">危险情况：</el-col>
+                    <el-col :span="18" style="padding-top:5px;">
+                        <el-checkbox-group v-model="dangerousSituation">
+                            <el-checkbox v-for="(item,i) in multData" :key="i" :label="item.text" name="type"></el-checkbox> 
+                        </el-checkbox-group>
                     </el-col>
                 </el-row>
                 <el-row class="info-detail">
                     <el-col :span="3" class="info-title">安全措施：</el-col>
-                    <el-col :span="5">
+                    <el-col :span="10">
                         <el-input size="small" v-model="addInfoForm.safetyMeasures"></el-input>
-                    </el-col>
-                    <el-col :span="2" class="info-title">出厂日期：</el-col>
-                    <el-col :span="5">
-                         <el-date-picker v-model="addInfoForm.productionDate" size="small" style="width:100%" type="date" value-format="yyyy-MM-dd HH:mm:ss" placeholder="选择日期"></el-date-picker>
-                    </el-col>
-                </el-row>
-                <el-row class="info-detail">
-                    <el-col :span="3" class="info-title">地址：</el-col>
-                    <el-col :span="19">
-                        <el-input size="small" v-model="addInfoForm.address" type="textarea"></el-input>
                     </el-col>
                 </el-row>
                 <el-row class="m-top">
@@ -72,19 +47,15 @@
             <div class="info-list">
                 <el-row class="table">
                     <el-table :data="addInfoTableData" style="width: 100%" :header-cell-style="{ background: '#F5F3F2' }">
-                        <el-table-column prop="wasteCode" label="废物代码和废物名称" width="400"></el-table-column>
-                        <el-table-column prop="companyName" label="企业名称" width="400"></el-table-column>
+                        <el-table-column prop="wasteCode" label="废物代码和废物名称" width="230"></el-table-column>
+                        <el-table-column prop="companyName" label="企业名称" width="300"></el-table-column>
+                        <el-table-column prop="effectiveTime" label="危废协议生效时间" width="200"></el-table-column>
                         <el-table-column prop="mainComponents" label="主要成分" width="200"></el-table-column>
-                        <el-table-column prop="chemicalComposition" label="化学成分" width="200"></el-table-column>
-                        <el-table-column prop="dangerousSituation" label="危险情况" width="200"></el-table-column>
+                        <el-table-column prop="wasteCode" label="化学成分" width="200"></el-table-column>
+                        <el-table-column prop="dangerousSituation" label="危险情况" width="300"></el-table-column>
                         <el-table-column prop="safetyMeasures" label="安全措施" width="200"></el-table-column>
-                        <el-table-column prop="generatingUnit" label="废物产生单位" width="400"></el-table-column>
-                        <el-table-column prop="batch" label="批次" width="100"></el-table-column>
-                        <el-table-column prop="quantity" label="数量" width="100"></el-table-column>
-                        <el-table-column prop="contacts" label="联系人" width="200"></el-table-column>
-                        <el-table-column prop="telephone" label="电话" width="200"></el-table-column>
-                        <el-table-column prop="productionDate" label="出厂日期" width="200"></el-table-column>
-                        <el-table-column prop="address" label="地址" width="400"></el-table-column>
+                        <el-table-column prop="managerName" label="联系人" width="100"></el-table-column>
+                        <el-table-column prop="phone" label="电话" width="200"></el-table-column>
                         <el-table-column prop="recoverAmount" label="修改" width="80">
                             <template slot-scope="scope">
                                 <el-button type="primary" size="small" @click.native="editInfo(scope.row)">修改</el-button>
@@ -98,45 +69,33 @@
         </el-card>
 
         <!-- 编辑弹框 -->
-        <el-dialog title="修改配置信息" :visible.sync="showModel" width="80%" :before-close="hideModel">
+        <el-dialog title="修改标签信息" :visible.sync="showModel" width="50%" :before-close="hideModel">
             <div class="model-con">
                 <el-row class="model-list">
-                    <el-col :span="3" class="info-title">废物代码和废物名称：</el-col>
-                    <el-col :span="20"><el-input size="small" v-model="editInfoForm.wasteCode"></el-input></el-col>
+                    <el-col :span="4" class="info-title">废物代码和废物名称：</el-col>
+                    <el-col :span="18"><el-input size="small" v-model="editInfoForm.wasteCode"></el-input></el-col>
                 </el-row>
                 <el-row class="model-list">
-                    <el-col :span="2" class="info-title">主要成分：</el-col>
-                    <el-col :span="9"><el-input size="small" v-model="editInfoForm.mainComponents"></el-input></el-col>
-                    <el-col :span="3" class="info-title">化学成分：</el-col>
-                    <el-col :span="9"><el-input size="small" v-model="editInfoForm.chemicalComposition"></el-input></el-col>
+                    <el-col :span="4" class="info-title">危废协议生效时间：</el-col>
+                    <el-col :span="18">
+                        <el-date-picker v-model="editInfoForm.effectiveTime" size="small" style="width:100%" type="date" value-format="yyyy-MM-dd 00:00:00" placeholder="选择日期"></el-date-picker>
+                    </el-col>
                 </el-row>
                 <el-row class="model-list">
-                    <el-col :span="2" class="info-title">危险情况：</el-col>
-                    <el-col :span="9"><el-input size="small" v-model="editInfoForm.dangerousSituation"></el-input></el-col>
-                    <el-col :span="3" class="info-title">安全措施：</el-col>
-                    <el-col :span="9"><el-input size="small" v-model="editInfoForm.safetyMeasures"></el-input></el-col>
+                    <el-col :span="4" class="info-title">主要成分：</el-col>
+                    <el-col :span="18"><el-input size="small" v-model="editInfoForm.mainComponents"></el-input></el-col> 
                 </el-row>
                 <el-row class="model-list">
-                    <el-col :span="2" class="info-title">批次：</el-col>
-                    <el-col :span="9"><el-input size="small" v-model="editInfoForm.batch"></el-input></el-col>
-                    <el-col :span="3" class="info-title">数量：</el-col>
-                    <el-col :span="9"><el-input size="small" type="number" v-model="editInfoForm.quantity"></el-input></el-col>
+                    <el-col :span="4" class="info-title">危险情况：</el-col>
+                    <el-col :span="18">
+                        <el-checkbox-group v-model="editDangerousSituation">
+                            <el-checkbox v-for="(item,i) in multData" :key="i" :label="item.text" name="type"></el-checkbox>
+                        </el-checkbox-group>
+                    </el-col>
                 </el-row>
                 <el-row class="model-list">
-                    <el-col :span="2" class="info-title">废物产生单位：</el-col>
-                    <el-col :span="9"><el-input size="small" v-model="editInfoForm.generatingUnit"></el-input></el-col>
-                    <el-col :span="3" class="info-title">出厂日期：</el-col>
-                    <el-col :span="9"><el-date-picker type="date" size="small" v-model="editInfoForm.productionDate" placeholder="选择日期" value-format="yyyy-MM-dd HH:mm:ss" class="w-100"></el-date-picker></el-col>
-                </el-row>
-                <el-row class="model-list">
-                    <el-col :span="2" class="info-title">联系人：</el-col>
-                    <el-col :span="9"><el-input size="small" v-model="editInfoForm.contacts"></el-input></el-col>
-                    <el-col :span="3" class="info-title">电话：</el-col>
-                    <el-col :span="9"><el-input size="small" v-model="editInfoForm.telephone"></el-input></el-col>
-                </el-row>
-                <el-row class="model-list">
-                    <el-col :span="2" class="info-title">地址：</el-col>
-                    <el-col :span="21"><el-input size="small" v-model="editInfoForm.address" type="textarea"></el-input></el-col>
+                    <el-col :span="4" class="info-title">安全措施：</el-col>
+                    <el-col :span="18"><el-input size="small" v-model="editInfoForm.safetyMeasures"></el-input></el-col>
                 </el-row>
             </div>
             <span slot="footer" class="dialog-footer">
@@ -155,27 +114,32 @@ export default {
         return {
             addInfoForm: {
                 wasteCode:"",
+                effectiveTime:"",
                 mainComponents:"",
-                chemicalComposition:"",
                 dangerousSituation:"",
                 safetyMeasures:"",
-                generatingUnit:"",
-                telephone:"",
-                contacts:"",
-                address:"",
-                batch:"",
-                quantity:"",
-                productionDate:"",
             }, //提交信息
             idx: 0,
             addInfoTableData: [{ id: 0, companyName: "名称" }], //信息列表
             showModel:false,
+            editDangerousSituation:[],
             editInfoForm:{},
             total:0,
             fromInfo:{
                 pageNum:1,
                 pageSize:10,
-            }
+            },
+            dangerousSituation:[], //选中危险情况
+            multData:[              //危险情况类型
+                {val:"爆炸性",text:"爆炸性"},
+                {val:"有毒",text:"有毒"},
+                {val:"易燃",text:"易燃"},
+                {val:"有害",text:"有害"},
+                {val:"助燃",text:"助燃"},
+                {val:"腐蚀性",text:"腐蚀性"},
+                {val:"刺激性",text:"刺激性"},
+                {val:"石棉",text:"石棉"},
+            ]
         };
     },
     mounted(){
@@ -190,6 +154,13 @@ export default {
         
         //保存信息
         async addInfo(){ 
+            if(this.dangerousSituation.length != 0){
+                let str = "";
+                this.dangerousSituation.forEach((item) => {
+                    str += item + ",";
+                })
+                this.addInfoForm.dangerousSituation = str.substring(0, str.length - 1);;
+            }
             if(!this.isFormValNull(this.addInfoForm)){
                 return;
             };
@@ -198,18 +169,12 @@ export default {
                 this.$message.success("添加成功");
                 this.addInfoForm = {
                     wasteCode:"",
+                    effectiveTime:"",
                     mainComponents:"",
                     chemicalComposition:"",
-                    dangerousSituation:"",
                     safetyMeasures:"",
-                    generatingUnit:"",
-                    telephone:"",
-                    contacts:"",
-                    address:"",
-                    batch:"",
-                    quantity:"",
-                    productionDate:"",
                 } 
+                this.dangerousSituation = [];
                 this.fromInfo.pageNum = 1;
                 this.getList();
             }else{
@@ -226,7 +191,6 @@ export default {
         async getList(){
             const res = await getConfigurationInfoList(this.fromInfo);
             if(res?.code == "1"){
-                console.log(res)
                 this.addInfoTableData = res.data.list;
                 this.total = res.data.total;
             }else{
@@ -237,6 +201,7 @@ export default {
         //修改信息
         editInfo(val) {
             this.editInfoForm = val;
+            this.editDangerousSituation = val.dangerousSituation.split(",");
             this.showModel = true;
         },
 
@@ -246,55 +211,34 @@ export default {
                 this.$message.error("废物代码和废物名称不能为空");
                 return false;
             }
+            if(state.effectiveTime == ""){
+                this.$message.error("危废协议生效时间不能为空");
+                return false;
+            }
             if(state.mainComponents == ""){
                 this.$message.error("主要成分不能为空");
                 return false;
             }
-            if(state.chemicalComposition == ""){
-                this.$message.error("化学成分不能为空");
-                return false;
-            }
             if(state.dangerousSituation == ""){
-                this.$message.error("危险情况不能为空");
+                this.$message.error("请选择危险情况");
                 return false;
             }
             if(state.safetyMeasures == ""){
                 this.$message.error("安全措施不能为空");
                 return false;
             }
-            if(state.batch == ""){
-                this.$message.error("批次不能为空");
-                return false;
-            }
-            if(state.quantity == ""){
-                this.$message.error("数量不能为空");
-                return false;
-            }
-            if(state.generatingUnit == ""){
-                this.$message.error("废物产生单位不能为空");
-                return false;
-            }
-            if(state.productionDate == ""){
-                this.$message.error("出厂日期不能为空");
-                return false;
-            }
-            if(state.contacts == ""){
-                this.$message.error("联系人不能为空");
-                return false;
-            }
-            if(state.telephone == ""){
-                this.$message.error("电话不能为空");
-                return false;
-            }
-            if(state.address == ""){
-                this.$message.error("地址不能为空");
-                return false;
-            } 
             return true;
         },
 
         //保存修改信息
         async addEditInfo(){ 
+            if(this.editDangerousSituation.length != 0){
+                let str = "";
+                this.editDangerousSituation.forEach((item) => {
+                    str += item + ",";
+                })
+                this.editInfoForm.dangerousSituation = str.substring(0, str.length - 1);;
+            }
             if(!this.isFormValNull(this.editInfoForm)){
                 return;
             };
@@ -352,7 +296,8 @@ export default {
     }
     .m-top{
         margin-top: 20px;
-        text-align: center;
+        padding-left: 30%;
+        // text-align: center;
         .el-button{
             width: 100px;
             font-size: 14px;

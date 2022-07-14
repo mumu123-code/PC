@@ -164,3 +164,46 @@ export function editConfigurationInfo(data){
         data
     })
 }
+
+//获取设备列表（储罐信息添加）
+export function getStorageDeviceList(){
+    return request({
+        method:"get",
+        url:"/waste/list"
+    })
+}
+
+//添加或修改储罐信息
+export function addAndEditStorageInfo(data){
+    return request({
+        method:"post",
+        url:"/storageTankDevice/addOrUpdate",
+        data
+    })
+}
+
+//获取储罐信息列表
+export function getStorageInfoList(data){
+    return request({
+        method:"post",
+        url:"/storageTankDevice/list",
+        data
+    })
+}
+
+//企业信息(固废)
+export function getCompanyInfo(){
+    return request({
+        method:"get",
+        url:"/user/getBasic"
+    })
+}
+
+//修改企业信息(固废)
+export function editCompanyInfo(data){
+    return request({
+        method:"post",
+        url:"/user/update",
+        data
+    })
+}
