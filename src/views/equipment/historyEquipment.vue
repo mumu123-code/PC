@@ -652,12 +652,13 @@ export default {
         if(this.time[1].split(' ')[0] == year) {
           const num = (hours_24 * 60 + minutes * 1) * 6;
           console.log(num, 'num');
-          this.roomVocsArr = this.roomVocsArr.splice(0, num);
-          this.ductVocsArr = this.ductVocsArr.splice(0, num);
-          this.roomTemArr = this.roomTemArr.splice(0, num);
-          this.ductTemArr = this.ductTemArr.splice(0, num);
-          this.windArr = this.windArr.splice(0, num);
-          this.nhumidityArr = this.nhumidityArr.splice(0, num);
+          this.roomVocsArr = this.roomVocsArr.splice(0, num); // 房间内VOCs
+          this.ductVocsArr = this.ductVocsArr.splice(0, num); // 风管内VOCs
+          this.roomTemArr = this.roomTemArr.splice(0, num); // 房间内温度值
+          this.ductTemArr = this.ductTemArr.splice(0, num); // 风管内温度值
+          this.windArr = this.windArr.splice(0, num); // 风速
+          this.nhumidityArr = this.nhumidityArr.splice(0, num); // 房间内湿度值
+          this.humidityArr = this.humidityArr.splice(0, num); // 风管内湿度值
           this.productionStatusArr = this.productionStatusArr.splice(0, num);
         }
         /**
@@ -692,7 +693,7 @@ export default {
 
         // 设置企业治污图表数据
         const { series: series1 } = this.options1;
-        this.$set(series1[0], 'data', this.ductTemArr);
+        this.$set(series1[0], 'data', this.humidityArr);
         this.$set(series1[1], 'data', this.nhumidityArr);
         this.$set(series1[2], 'data', this.windArr);
         this.$set(this.options1.xAxis, 'data', this.getTime(start,end));
