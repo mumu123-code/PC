@@ -18,11 +18,11 @@
                         <el-menu-item index="/statistics">
                             <span slot="title">仓库状态</span>
                         </el-menu-item>
-                        <el-menu-item index="/companyInfo">
-                            <span slot="title">企业信息</span>
-                        </el-menu-item>
                         <el-menu-item index="/storageTank">
                             <span slot="title">储罐配置信息</span>
+                        </el-menu-item>
+                        <el-menu-item index="/companyInfo">
+                            <span slot="title">企业信息</span>
                         </el-menu-item>
                         <el-menu-item index="/addInfo">
                             <span slot="title">标签配置信息</span>
