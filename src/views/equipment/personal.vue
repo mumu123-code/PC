@@ -56,7 +56,7 @@
         <span class="title">吸附过程控制APC系统</span>
         <div class="personalConPro-content">
           <div class="progress">
-            <el-progress type="dashboard" :percentage="10" color="#FFD966" 
+            <el-progress type="dashboard" :percentage="cumulativeTime" color="#FFD966" 
               :stroke-width="16" :format="(e)=>{ return e + ' mg/m³' }"></el-progress>
             <p class="progress-text">活性炭运行时间</p>
           </div>
@@ -72,11 +72,20 @@
 
     <!-- 活性炭状态 s -->
     <div class="carbonStatus">
+      <div class="carbonStatus-br"></div>
       <span>活性炭状态：</span>
-      | <span>穿透</span>
-      | <span>预警</span>
-      | <span>饱和</span>
-      | <span>失效</span> |
+      | <span>穿透
+        <span class="carbonStatus-triangle"></span>
+        </span>
+      | <span>预警
+        <span class="carbonStatus-triangle"></span>
+      </span>
+      | <span>饱和
+        <span class="carbonStatus-triangle"></span>
+      </span>
+      | <span>失效
+        <span class="carbonStatus-triangle"></span>
+        </span> |
     </div>
     <!-- 活性炭状态 e -->
     
@@ -90,6 +99,7 @@ import {
   getProductionStatus,
   getReport,
   deviceList,
+  loadCumulativeTime
 } from "../../assets/js/equipment";
 
 
@@ -104,6 +114,7 @@ export default {
       productionObj: {}, // 设备信息数据
       doorArr: [], // 门的数据
       data:[],
+      cumulativeTime: 0,
     };
   },
   mounted() {
@@ -129,8 +140,8 @@ export default {
     // 获取设备状态
     async getProductStatus() {
       const form = {
-        startDate: `${this.time} 00:00:00`,
-        endDate: `${this.time} 23:59:59`,
+        // startDate: `${this.time} 00:00:00`,
+        // endDate: `${this.time} 23:59:59`,
         deviceId: this.activeId,
       };
       const res = await getProductionStatus(form);
@@ -168,6 +179,13 @@ export default {
       const arr = ['大气压','微正压','微负压'];
       return arr[i*1];
     },
+    // 获取台账累计时间
+    async loadCumulativeTime() {
+      const res = loadCumulativeTime(this.activeId);
+      if(res?.code == '1' && res.data) {
+        this.cumulativeTime = res.data;
+      }
+    }
   },
 };
 </script>
@@ -180,13 +198,13 @@ export default {
     line-height: 28px;
   }
   .personal-content {
-    display: flex;
-    justify-content: space-around;
     margin-top: 28px;
     .personalCon-production,
     .personalCon-measure {
+      margin-top: 28px;
       padding: 14px;
       width: 48%;
+      min-width: 680px;
       height: 200px;
       border-radius: 14px;
       background: #f5f3f2;
@@ -232,17 +250,21 @@ export default {
   }
 }
 .carbonStatus {
+  position: relative;
   margin-top: 42px;
-  padding-left: 24px;
-  width: 600px;
-  height: 64px;
-  line-height: 64px;
+  width: 450px;
+  height: 49px;
+  line-height: 49px;
   font-size: 20px;
   font-weight: 600;
-  border-radius: 64px;
+  border-radius: 49px;
   background: #BDD7EE;
   span {
+    position: relative;
     margin: 0 4px;
+  }
+  span:nth-of-type(1) {
+    margin-left: 28px;
   }
   span:nth-of-type(2) {
     color: #04B157;
@@ -255,6 +277,45 @@ export default {
   }
   span:nth-of-type(5) {
     color: #FE0000;
+  }
+  .carbonStatus-br {
+    position: absolute;
+    top: -10px;
+    left: 0;
+    right: 0;
+    margin: auto;
+    width: 90%;
+    height: 2px;
+    background: #006CBA;
+  }
+  .carbonStatus-br::after {
+    content: "◉";
+    position: absolute;
+    top: -23px;
+    left: -16px;
+    font-size: 20px;
+    font-weight: 600;
+    color: #006CBA;
+  }
+  .carbonStatus-br::before {
+    content: "◉";
+    position: absolute;
+    top: -23px;
+    right: -16px;
+    font-size: 20px;
+    font-weight: 600;
+    color: #006CBA;
+  }
+  .carbonStatus-triangle {
+    position: absolute;
+    top: -14px;
+    left: -18px;
+    width: 0;
+    height: 0;
+    border-top: 23px solid #006CBA;
+    border-left: 11px solid transparent;
+    border-right: 11px solid transparent;
+    box-shadow: inset 0 0 10px rgba(0, 255, 0, .5);
   }
 }
 

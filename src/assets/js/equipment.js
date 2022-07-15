@@ -41,3 +41,11 @@ export function getListSecond(data) {
         data,
     })
 }
+
+// 获取台账累计时间
+export function loadCumulativeTime(deviceId) {
+    return request({
+        method: "get",
+        url: "/activatedCarbonLedger/loadCumulativeTime?deviceId=" + deviceId
+    })
+}
