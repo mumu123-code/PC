@@ -57,12 +57,12 @@
         <div class="personalConPro-content">
           <div class="progress">
             <el-progress type="dashboard" :percentage="cumulativeTime" color="#FFD966" 
-              :stroke-width="16" :format="(e)=>{ return e + ' mg/m³' }"></el-progress>
+              :stroke-width="16" :format="(e)=>{ return e + ' 小时' }"></el-progress>
             <p class="progress-text">活性炭运行时间</p>
           </div>
           <div class="progress">
             <el-progress type="dashboard" :percentage="20" color="#FFD966" 
-              :stroke-width="16" :format="(e)=>{ return e + ' m/s' }"></el-progress>
+              :stroke-width="16" :format="(e)=>{ return e + ' %' }"></el-progress>
             <p class="progress-text">活性炭寿命</p>
           </div>
         </div>
