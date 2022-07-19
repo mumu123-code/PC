@@ -140,15 +140,11 @@ export default {
     // 获取设备状态
     async getProductStatus() {
       const form = {
-        // startDate: `${this.time} 00:00:00`,
-        // endDate: `${this.time} 23:59:59`,
         deviceId: this.activeId,
       };
       const res = await getProductionStatus(form);
       if (res.code == "1") {
         this.productionStatusArr = res.data;
-        // echarts 初始化
-        this.drawClockChart();
       }
     },
     // 获取生产状态，治污措施数据
