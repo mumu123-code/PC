@@ -41,7 +41,7 @@
             <p class="progress-text">温度</p>
           </div>
           <div class="progress">
-            <el-progress type="dashboard" :percentage="50" color="#18BC37" 
+            <el-progress type="dashboard" :percentage="productionObj.ghumidity" color="#18BC37" 
               :stroke-width="16" :format="(e)=>{ return e + ' %RH' }"></el-progress>
             <p class="progress-text">湿度</p>
           </div>
@@ -61,7 +61,7 @@
             <p class="progress-text">活性炭运行时间</p>
           </div>
           <div class="progress">
-            <el-progress type="dashboard" :percentage="20" color="#FFD966" 
+            <el-progress type="dashboard" :percentage="carbonObj.carbonLife" color="#FFD966" 
               :stroke-width="16" :format="(e)=>{ return e + ' %' }"></el-progress>
             <p class="progress-text">活性炭寿命</p>
           </div>
@@ -75,16 +75,16 @@
       <div class="carbonStatus-br"></div>
       <span>活性炭状态：</span>
       | <span>穿透
-        <span class="carbonStatus-triangle"></span>
+        <span class="carbonStatus-triangle" v-if="carbonObj.carbonStatus == 1"></span>
         </span>
       | <span>预警
-        <span class="carbonStatus-triangle"></span>
+        <span class="carbonStatus-triangle" v-if="carbonObj.carbonStatus == 2"></span>
       </span>
       | <span>饱和
-        <span class="carbonStatus-triangle"></span>
+        <span class="carbonStatus-triangle" v-if="carbonObj.carbonStatus == 3"></span>
       </span>
       | <span>失效
-        <span class="carbonStatus-triangle"></span>
+        <span class="carbonStatus-triangle"  v-if="carbonObj.carbonStatus == 4"></span>
         </span> |
     </div>
     <!-- 活性炭状态 e -->
@@ -99,7 +99,8 @@ import {
   getProductionStatus,
   getReport,
   deviceList,
-  loadCumulativeTime
+  loadCumulativeTime,
+  loadCarbonObj
 } from "../../assets/js/equipment";
 
 
@@ -115,11 +116,14 @@ export default {
       doorArr: [], // 门的数据
       data:[],
       cumulativeTime: 0,
+      carbonObj:{},//活性炭寿命和状态
     };
   },
   mounted() {
     // 获取总设备列表
     this.getDeviceList();
+    // 活性炭信息
+    this.carbonInformation();
   },
   methods: {
      // 获取总设备列表
@@ -180,6 +184,13 @@ export default {
       const res = loadCumulativeTime(this.activeId);
       if(res?.code == '1' && res.data) {
         this.cumulativeTime = res.data;
+      }
+    },
+    //获取活性炭状态和寿命
+    async carbonInformation() {
+      const res = await loadCarbonObj(this.activeId);
+      if(res?.code == '1') {
+        this.carbonObj = res.data
       }
     }
   },

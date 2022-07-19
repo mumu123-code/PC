@@ -49,3 +49,11 @@ export function loadCumulativeTime(deviceId) {
         url: "/activatedCarbonLedger/loadCumulativeTime?deviceId=" + deviceId
     })
 }
+
+//获取活性炭寿命和状态
+export function loadCarbonObj(deviceId) {
+    return request({
+        method: "get",
+        url: "/activatedCarbonState/load?deviceId=" + deviceId
+    })
+}
