@@ -39,13 +39,13 @@ export function addArchives(data){
         data
     })
 }
-//查看电子档案
-export function getFileDetail(data){
-    return request({
-        method:"post",
-        url:"/electronicFile/list",
-        data,
-    })
+//查看电子档案列表
+export function getFile(data){
+	return request({
+		method:"post",
+		url:"/electronicFile/list",
+		data
+	})
 }
 
 //固废台账列表(月)

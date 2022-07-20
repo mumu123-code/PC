@@ -3,17 +3,18 @@
     <div class="electronicTitle">电子档案</div>
     <div v-for="(item,i) in listData" :key="i" class="electronicFile-item">
       <div class="list-title">{{item.name}}</div>
-      <el-upload class="upload-up" action="https://api.elianwei.com/company/base/aly/oss/upload" multiple :limit="9" 
-        :on-exceed="handleExceed" :on-success="handleAvatarSuccess" :on-preview="onPreview">
+      <el-upload class="upload-up" action="https://api.elianwei.com/company/base/aly/oss/upload" multiple :limit="5" 
+        :on-exceed="handleExceed" :on-success="handleAvatarSuccess" :show-file-list="false">
         <el-button size="small" type="primary"  @click="selectFileType(item.type)">点击上传</el-button>
       </el-upload>
+      <div class="fileList" v-for="val in item.fileUrlList" :key="val.fileUrl" @click="viewFile(val.fileUrl)">{{val.fileName}}</div>
     </div>
   </div>
 </template>
 
 <script>
-import { addArchives,getFileDetail } from '../../assets/js/common'
-import { openFile } from '../../../static/js/isType'
+import { addArchives,getFile } from '../../assets/js/common';
+import { openFile } from '../../../static/js/isType';
 export default {
   name: "electronicFile",
   data() {
@@ -22,42 +23,54 @@ export default {
         {
           name: '环评报告',
           type: 1,
+          fileUrlList: []
         },
         {
           name: '环评批复',
           type: 2,
+          fileUrlList: []
         },
         {
           name: '环评验收材料',
           type: 3,
+          fileUrlList: []
         },
         {
           name: '应急预案及备案意见',
           type: 4,
+          fileUrlList: []
         },
         {
           name: '排污许可证',
           type: 5,
+          fileUrlList: []
         },
         {
           name: '日常检测报告',
           type: 6,
+          fileUrlList: []
         },
         {
           name: '排污许可执行报告',
           type: 7,
+          fileUrlList: []
         },
         {
           name: '整治提升材料',
           type: 8,
+          fileUrlList: []
         },
         {
           name: '污染治理设施设计方案',
           type: 9,
+          fileUrlList: []
         },
       ],
       fileType:0,
     };
+  },
+  created() {
+    this.viewDetail();
   },
   methods: {
     handleAvatarSuccess(response, file, fileList){
@@ -86,10 +99,11 @@ export default {
     async addElectronicFile(fileUrlList){ 
       const res = await addArchives({electronicFileType:this.fileType,fileUrlList});
       if(res?.code == "1"){
-          this.$message({
-            message: '上传成功',
-            type: 'success'
-          });
+          // this.$message({
+          //   message: '上传成功',
+          //   type: 'success'
+          // });
+          this.viewDetail();
       }else{
           this.$message({
           showClose: true,
@@ -98,25 +112,20 @@ export default {
         });
       }
     },
-    //查看详情
+    //查看文件列表
     async viewDetail(electronicFileType){
-      const res = await getFileDetail({electronicFileType});
-      if(res?.code != "1"){
-        this.$message({
-          showClose: true,
-          message: '请先上传文件',
-          type: 'error'
+      const res = await getFile({electronicFileType});
+      if(res?.code == '1') {
+        res.data.forEach(item => {
+          const { electronicFileType, fileUrlList } = item;
+          if(fileUrlList) {
+            this.$set(this.listData[electronicFileType-1], 'fileUrlList', fileUrlList);
+          }
         });
-        return;
       }
-
-      // this.viewFile(fileData[0]);
     },
     viewFile(url){
       return openFile(url);
-    },
-    onPreview(file) {
-      console.log(file, 'file');
     }
   }
   }
@@ -141,13 +150,22 @@ export default {
     min-height: 150px;
     box-shadow: 0px 1px 4px rgba(0,0,0,0.3),
                   0px 0px 20px rgba(0,0,0,0.1) inset;
-    .upload-up {
-      margin: 0 auto;
-      width: 60%;
-    }
     .list-title {
       font-size: 24px;
       font-weight: 600;
+    }
+    .fileList {
+      margin: 0 auto;
+      width: 60%;
+      padding: 14px;
+      line-height: 0;
+    }
+    .fileList::after {
+      content: '√';
+      margin-left: 28px;
+      font-size: 24px;
+      font-weight: 600;
+      color: rgb(0, 255, 64);
     }
   }
 }
