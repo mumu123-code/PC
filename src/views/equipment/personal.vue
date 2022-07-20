@@ -3,7 +3,6 @@
     <!-- 顶部编号、历史数据查看 s -->
     <div class="personal-top">
       <div class="personalTop-name">房间名：
-        <!-- {{roomName}} -->
         <el-select v-model="activeId" placeholder="请选择" size="small">
           <el-option
             v-for="(item,i) in roomData"
@@ -75,16 +74,16 @@
       <div class="carbonStatus-br"></div>
       <span>活性炭状态：</span>
       | <span>穿透
-        <span class="carbonStatus-triangle" v-if="carbonObj.carbonStatus == 1"></span>
+        <span class="carbonStatus-triangle" v-if="carbonObj.carbonState == 1"></span>
         </span>
       | <span>预警
-        <span class="carbonStatus-triangle" v-if="carbonObj.carbonStatus == 2"></span>
+        <span class="carbonStatus-triangle" v-if="carbonObj.carbonState == 2"></span>
       </span>
       | <span>饱和
-        <span class="carbonStatus-triangle" v-if="carbonObj.carbonStatus == 3"></span>
+        <span class="carbonStatus-triangle" v-if="carbonObj.carbonState == 3"></span>
       </span>
       | <span>失效
-        <span class="carbonStatus-triangle"  v-if="carbonObj.carbonStatus == 4"></span>
+        <span class="carbonStatus-triangle"  v-if="carbonObj.carbonState == 4"></span>
         </span> |
     </div>
     <!-- 活性炭状态 e -->
@@ -110,8 +109,7 @@ export default {
     return {
       roomData:[],//房间名称数组
       productionStatusArr: [], // 设备生产状态数据
-      activeId: 0, // 设备id
-      roomName: '', // 房间名称
+      activeId: null, // 设备id
       productionObj: {}, // 设备信息数据
       doorArr: [], // 门的数据
       data:[],
@@ -119,11 +117,9 @@ export default {
       carbonObj:{},//活性炭寿命和状态
     };
   },
-  mounted() {
+  created() {
     // 获取总设备列表
     this.getDeviceList();
-    // 活性炭信息
-    this.carbonInformation();
   },
   methods: {
      // 获取总设备列表
@@ -132,13 +128,14 @@ export default {
       if (res.code == "1" && res.data.length > 0) {
         this.roomData = res.data;
         this.activeId = this.roomData[0].id;
-        this.roomName = this.roomData[0].roomName;
-        // 赋值总长度
-        // this.tableNum = res.data.length;
         // 获取设备生产状态
         this.getProductStatus();
         // 获取设备信息
         this.getReportDetail();
+        // 活性炭信息
+        this.carbonInformation();
+        // 活性炭运行时间
+        this.loadCumulativeTime();
       }
     },
     // 获取设备状态
@@ -163,6 +160,8 @@ export default {
         this.doorArr = [door1Value,door2Value,door3Value,door4Value,door5Value,door6Value];
         if(gwindspeed < 0.05) res.data[0].gwindspeed = 0;
         this.productionObj = res.data[0];
+      }else{
+        console.log("无数据")
       }
     },
     // 跳转到历史数据查看页
@@ -190,7 +189,7 @@ export default {
     async carbonInformation() {
       const res = await loadCarbonObj(this.activeId);
       if(res?.code == '1') {
-        this.carbonObj = res.data
+        this.carbonObj = res.data;
       }
     }
   },
