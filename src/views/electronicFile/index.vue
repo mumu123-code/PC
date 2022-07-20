@@ -4,8 +4,8 @@
     <div v-for="(item,i) in listData" :key="i" class="electronicFile-item">
       <div class="list-title">{{item.name}}</div>
       <el-upload class="upload-up" action="https://api.elianwei.com/company/base/aly/oss/upload" multiple :limit="5" 
-        :on-exceed="handleExceed" :on-success="handleAvatarSuccess" :show-file-list="false">
-        <el-button size="small" type="primary"  @click="selectFileType(item.type)">点击上传</el-button>
+        :on-exceed="handleExceed" :on-success="handleAvatarSuccess" :before-upload="()=>{beforeUpload(item.type)}" :show-file-list="false">
+        <el-button size="small" type="primary" :loading="loading == item.type" @click="selectFileType(item.type)">点击上传</el-button>
       </el-upload>
       <div class="fileList" v-for="val in item.fileUrlList" :key="val.fileUrl" @click="viewFile(val.fileUrl)">{{val.fileName}}</div>
     </div>
@@ -67,12 +67,16 @@ export default {
         },
       ],
       fileType:0,
+      loading: 0,
     };
   },
   created() {
     this.viewDetail();
   },
   methods: {
+    beforeUpload(type) {
+      this.loading = type;
+    },
     handleAvatarSuccess(response, file, fileList){
       let fileUrlList = [];
       fileList.forEach(el => {
@@ -103,6 +107,7 @@ export default {
           //   message: '上传成功',
           //   type: 'success'
           // });
+          this.loading = 0;
           this.viewDetail();
       }else{
           this.$message({
@@ -156,9 +161,10 @@ export default {
     }
     .fileList {
       margin: 0 auto;
-      width: 60%;
+      width: 90%;
       padding: 14px;
       line-height: 0;
+      cursor: pointer;
     }
     .fileList::after {
       content: '√';

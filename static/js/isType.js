@@ -238,6 +238,6 @@ module.exports = {
 	getDate,
 	// areaTime,
 	isInstallationPosition,
-    roomData,
+  roomData,
 	openFile
 }
