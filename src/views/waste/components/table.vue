@@ -111,7 +111,7 @@
                             </el-row>
                             <el-row class="m-top">
                                 <el-col :span="24" :offset="1">
-                                    <el-button type="primary" @click.native="downFile('num')" size="small" style="width:200px;">导出所选危废月汇总台账记录</el-button>
+                                    <el-button type="primary" @click.native="downFile('num')" size="small" style="width:200px;">导出所选危废年汇总台账记录</el-button>
                                 </el-col>
                             </el-row>
                         </div>
