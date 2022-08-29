@@ -25,6 +25,14 @@
                     </el-col>
                 </el-row>
                 <el-row class="info-detail">
+                    <el-col :md="4" :lg="3" :xl="2" class="info-title">储罐底面积：</el-col>
+                    <el-col :span="8">
+                        <el-input size="small" v-model="fromInfo.baseArea">
+                            <template slot="append">m³</template>
+                        </el-input>
+                    </el-col>
+                </el-row>
+                <el-row class="info-detail">
                     <el-col :md="4" :lg="3" :xl="2" class="info-title">密度：</el-col>
                     <el-col :span="8">
                         <el-input size="small" v-model="fromInfo.density">
@@ -52,6 +60,7 @@
                     <el-table-column prop="deviceId" label="设备"></el-table-column>
                     <el-table-column prop="storageTankNumber" label="储罐号"></el-table-column>
                     <el-table-column prop="wasteCode" label="废物代码和废物名称"></el-table-column>
+                    <el-table-column prop="baseArea" label="储罐底面积(m³)"></el-table-column>
                     <el-table-column prop="density" label="密度(kg/m³)"></el-table-column>
                     <el-table-column prop="recoverAmount" label="修改" align="center" width="80">
                         <template slot-scope="scope">
@@ -84,6 +93,14 @@
                         <el-input size="small" v-model="editFromInfo.wasteCode"></el-input>
                     </el-col>
                 </el-row>
+                 <el-row class="model-list">
+                    <el-col :md="11" :lg="10" :xl="8" class="info-title">储罐底面积：</el-col>
+                    <el-col :span="8">
+                        <el-input size="small" v-model="editFromInfo.baseArea">
+                            <template slot="append">m³</template>
+                        </el-input>
+                    </el-col>
+                </el-row>
                 <el-row class="model-list">
                     <el-col :md="11" :lg="10" :xl="8" class="info-title">密度：</el-col>
                     <el-col :span="8">
@@ -111,7 +128,8 @@ export default {
             deviceId:"",
             storageTankNumber:"",
             wasteCode:"",
-            density:""
+            density:"",
+            baseArea:""
         },
         tableData:[],
         showModel:false,
@@ -131,6 +149,14 @@ export default {
   methods: {
     //添加储罐信息
     async submitFunc(){
+        if(this.fromInfo.baseArea == ""){
+            this.$message.error("储罐底面积不能为空！");
+            return;
+        }
+        if(this.fromInfo.density == ""){
+            this.$message.error("密度不能为空！");
+            return;
+        }
         const res = await addAndEditStorageInfo(this.fromInfo);
         if(res?.code == "1"){
             this.$message.success("添加成功");
@@ -138,6 +164,7 @@ export default {
             this.fromInfo.storageTankNumber = "";
             this.fromInfo.wasteCode = "";
             this.fromInfo.density = ""; 
+            this.fromInfo.baseArea = ""; 
             this.getList();
         }else{
             this.$message.error("添加失败");
@@ -166,6 +193,14 @@ export default {
 
     //修改信息
     async addEditInfo(){
+        if(this.editFromInfo.baseArea == ""){
+            this.$message.error("储罐底面积不能为空！");
+            return;
+        }
+        if(this.editFromInfo.density == ""){
+            this.$message.error("密度不能为空！");
+            return;
+        }
         const res = await addAndEditStorageInfo(this.editFromInfo);
         if(res?.code == "1"){
             this.$message.success("修改成功");

@@ -7,17 +7,30 @@
             <el-tabs type="border-card" v-model="activeTab" @tab-click="switchTab">
                 <el-tab-pane label="月台账统计" name="month">
                     <el-row>
-                        <el-form ref="form" label-width="100px">
-                            <el-col :md="8" :xl="5">
-                                <el-form-item label="废物代码：">
-                                    <el-input v-model="fromInfo.wasteCode" size="small"></el-input>
-                                </el-form-item>
-                            </el-col>
-                        </el-form>
-                        <el-col :md="2" :xl="1" style="padding-top:3px;padding-left:20px;">
+                        <!-- <el-form ref="form" label-width="100px"> -->
+                        <el-col :md="3" :xl="2" class="write-title">废物代码：</el-col>
+                        <el-col :md="5" :xl="3">
+                            <!-- <el-form-item label="废物代码：">
+                                <el-input v-model="fromInfo.wasteCode" size="small"></el-input>
+                            </el-form-item> -->
+                            <el-select v-model="fromInfo.wasteCode" placeholder="请选择" size="small" class="w-100">
+                                <el-option
+                                v-for="(item,i) in wasteList"
+                                :key="i"
+                                :label="item.wasteCode"
+                                :value="item.wasteCode">
+                                </el-option>
+                            </el-select>
+                        </el-col>
+                        <!-- </el-form> -->
+                        <el-col :span="2" class="write-title">选择月份：</el-col>
+                        <el-col :md="5" :xl="4">
+                            <el-date-picker v-model="fromInfo.preTime" type="month" size="small" placeholder="选择月" value-format="yyyy-MM-dd HH:mm:ss" :clearable="false"></el-date-picker>
+                        </el-col>
+                        <el-col :md="3" :xl="2" style="padding-top:3px;">
                             <el-button type="primary" @click="selectTable" size="small">查询</el-button>    
                         </el-col>
-                        <el-col :span="2" style="padding-top:3px;padding-left:20px;">
+                        <!-- <el-col :span="2" style="padding-top:3px;padding-left:20px;">
                             <div class="out">
                                 <template>
                                     <download-excel class="export-excel-wrapper" :data="exportMonthList" :fields="parameterXLS" name="月台账.xls" >
@@ -25,10 +38,10 @@
                                     </download-excel>
                                 </template>
                             </div>
-                        </el-col>
+                        </el-col> -->
                     </el-row>
-                    <div class="table">
-                        <el-table :data="data" style="width: 100%" :header-cell-style="{'background':'#F5F3F2'}">
+                    <div class="table" style="margin-top:20px">
+                        <el-table :data="data" style="width: 100%;" height="550" :header-cell-style="{'background':'#F5F3F2'}">
                             <el-table-column prop="companyName" label="企业名称" width="350"></el-table-column>
                             <el-table-column prop="time" label="台账时间" width="200"></el-table-column>
                             <el-table-column prop="wasteCode" label="废物代码" width="200"></el-table-column>
@@ -52,87 +65,60 @@
                     </div>
                     <el-pagination background layout="prev, pager, next" :total="total" @current-change="selectPage"></el-pagination>
                 </el-tab-pane>
-                <el-tab-pane label="年台账统计" name="years">
-                    <el-row>
-                        <el-form ref="form" label-width="100px">
-                            <el-col :md="8" :xl="5">
-                                <el-form-item label="废物代码：">
-                                    <el-input v-model="fromYearsInfo.wasteCode" size="small"></el-input>
-                                </el-form-item>
-                            </el-col>
-                        </el-form>
-                        <el-col :md="2" :xl="1" style="padding-top:3px;padding-left:20px;">
-                            <el-button type="primary" @click="selectTable" size="small">查询</el-button>    
-                        </el-col>
-                        <el-col :span="2" style="padding-top:3px;padding-left:20px;">
-                            <div class="out">
-                                <template>
-                                    <download-excel class="export-excel-wrapper" :data="exportYearsList" :fields="parameterYsersXLS" name="年台账.xls" >
-                                        <el-button type="success" size="small">导出台账</el-button>
-                                    </download-excel>
-                                </template>
-                            </div>
-                        </el-col>
-                    </el-row>
-                    <div class="table">
-                        <el-table :data="yearsList" style="width: 100%" :header-cell-style="{'background':'#F5F3F2'}">
-                            <el-table-column prop="companyName" label="企业名称" width="350"></el-table-column>
-                            <el-table-column prop="timeStr" label="台账时间" width="200"></el-table-column>
-                            <el-table-column prop="wasteCode" label="废物代码" width="200"></el-table-column>
-                            <el-table-column prop="inSumQuantity" label="入库数量(kg)" width="200"></el-table-column>
-                            <el-table-column prop="outSumQuantity" label="出库数量(kg)" width="200"></el-table-column>
-                            <el-table-column prop="disposalDestination" label="危废处置类型" width="200">
-                                <template slot-scope="scope">
-                                    {{ isType(scope.row.disposalDestination) }}
-                                </template>
-                            </el-table-column>
-                            <el-table-column prop="destination" label="危废处置去向" width="200">
-                                <template slot-scope="scope">
-                                    {{ isUnit(scope.row.destination) }}
-                                </template>
-                            </el-table-column>
-                            <el-table-column prop="destinationUnit" label="危废处置去向单位" width="350"></el-table-column>
-                            <el-table-column prop="storageSumQuantity" label="累计贮存数量(kg)" width="200"></el-table-column>
-                            <!-- <el-table-column prop="preparerIn" label="入库人"></el-table-column>
-                            <el-table-column prop="preparerOut" label="出库人"></el-table-column>
-                            <el-table-column prop="remarks" label="备注" width="400"></el-table-column> -->
-                        </el-table>
+                <el-tab-pane label="历史台账下载" name="years">
+                    <div style="min-height:650px">
+                        <div class="nav-type nav-two">全部危废台账</div>
+                        <div class="out">
+                            <el-row class="m-top">
+                                <el-col :span="24" :offset="1">
+                                    <template>
+                                        <download-excel class="export-excel-wrapper" :data="exportYearsList" :fields="parameterYsersXLS" name="全部危废台账.xls" >
+                                            <el-button type="primary" style="width:200px;" size="small">导出全部危废台账</el-button>
+                                        </download-excel>
+                                    </template>
+                                </el-col>
+                            </el-row>
+                        </div>
+                        <div class="nav-type nav-two">选定危废台账</div>
+                        <div class="attachment">
+                            <el-row class="m-top">
+                                <el-col :span="3" class="write-title">1、请选择废物代码：</el-col>
+                                <el-col :span="4">
+                                    <el-select v-model="attachmentInfo.wasteCode" placeholder="请选择" size="small" class="w-100">
+                                        <el-option
+                                        v-for="(item,i) in wasteList"
+                                        :key="i"
+                                        :label="item.wasteCode"
+                                        :value="item.wasteCode">
+                                        </el-option>
+                                    </el-select>
+                                </el-col>
+                            </el-row>
+                            <el-row class="m-top">
+                                <el-col :span="3" class="write-title">2、请选择年/月时间：</el-col>
+                                <el-col :span="4">
+                                    <el-date-picker size="small" style="width:100%"
+                                    v-model="attachmentInfo.preTime"
+                                    type="month" value-format="yyyy-MM-dd 00:00:00"
+                                    placeholder="选择时间" @change="selectTime">
+                                    </el-date-picker>
+                                </el-col>
+                            </el-row>
+                            <el-row class="m-top">
+                                <el-col :span="24" :offset="1">
+                                    <el-button type="primary" @click.native="downFile('record')" size="small" style="width:200px;">导出所选危废月台账记录</el-button>
+                                </el-col>
+                            </el-row>
+                            <el-row class="m-top">
+                                <el-col :span="24" :offset="1">
+                                    <el-button type="primary" @click.native="downFile('num')" size="small" style="width:200px;">导出所选危废年汇总台账记录</el-button>
+                                </el-col>
+                            </el-row>
+                        </div>
                     </div>
-                    <el-pagination background layout="prev, pager, next" :total="total" @current-change="selectPage"></el-pagination>
                 </el-tab-pane> 
             </el-tabs>
-            <div class="nav-type nav-two">附件</div>
-            <div class="attachment">
-                <el-row>
-                    <el-col :span="2" class="write-title">废物代码：</el-col>
-                    <el-col :span="4">
-                        <el-select v-model="attachmentInfo.wasteCode" placeholder="请选择" size="small" class="w-100">
-                            <el-option
-                            v-for="(item,i) in wasteList"
-                            :key="i"
-                            :label="item.wasteCode"
-                            :value="item.wasteCode">
-                            </el-option>
-                        </el-select>
-                    </el-col>
-                    <el-col :span="2" class="write-title">日期选择：</el-col>
-                    <el-col :span="4">
-                        <el-date-picker size="small"
-                        v-model="attachmentInfo.preTime"
-                        type="month" value-format="yyyy-MM-dd 00:00:00"
-                        placeholder="选择时间" @change="selectTime">
-                        </el-date-picker>
-                    </el-col>
-                </el-row>
-                <el-row class="m-top">
-                    <el-col :span="4" :offset="1">
-                        <el-button type="primary" @click.native="downFile('num')" size="small">浙江省工业危险废物管理台帐附件</el-button>
-                    </el-col>
-                     <el-col :span="4">
-                        <el-button type="primary" @click.native="downFile('record')" size="small">浙江省工业危险废物管理记录附件</el-button>
-                    </el-col>
-                </el-row>
-            </div>
+            
         </div>  
     </div>
 </template>
@@ -182,8 +168,10 @@ export default{
                 pageSize:20,
                 wasteCode:"",
             },
+            yearsTime:[],
             fromYearsInfo:{
-                preTime:"",
+                startDate:"",
+                endDate:"",
                 pageNum:0,
                 pageSize:20,
                 wasteCode:"",
@@ -207,7 +195,7 @@ export default{
         this.preMonthTime =  time.getFullYear() + "-" + (time.getMonth() + 1) +"-01 00:00:00";
         this.fromInfo.preTime = this.preMonthTime;
         this.preYearTime =  time.getFullYear() +"-01-01 00:00:00";
-        this.fromYearsInfo.preTime = this.preYearTime;
+        // this.fromYearsInfo.preTime = this.preYearTime;
         this.getExportMonthList();
         this.getExportYearsList();
         this.getList();
@@ -218,9 +206,13 @@ export default{
             this.fromYearsInfo.pageNum = 0;
             this.fromInfo.pageNum = 0;
              if(this.activeTab == "years"){
+                
                 this.getYearsList();
                 return;
             };
+            if(this.fromInfo.wasteCode == "请选择"){
+                this.fromInfo.wasteCode = "";
+            }
             this.getList();
         },
         isType(type){
@@ -267,6 +259,8 @@ export default{
         switchTab(){
             this.total = 0;
             this.yearsTotal = 0;
+            this.fromInfo.preTime = "";
+            this.fromInfo.wasteCode = "";
             if(this.activeTab == "years"){
                 this.getYearsList();
                 return;
@@ -275,7 +269,11 @@ export default{
         },
         //获取年数据
         async getYearsList(){
-            console.log(this.fromYearsInfo)
+           
+            if(this.yearsTime.length != 0){
+                this.fromYearsInfo.startDate = this.yearsTime[0];
+                this.fromYearsInfo.endDate = this.yearsTime[1];
+            }
             const res = await getYearsWasteParameter(this.fromYearsInfo);
             if(res?.code == "1"){
                 this.yearsList = res.data.list;
@@ -308,11 +306,18 @@ export default{
             const res = await getWasteInfo({pageNum:0,pageSize:200});
             if(res?.code == "1"){
                 this.wasteList = res.data.list;
+                this.wasteList.unshift({wasteCode:"请选择"})
             }
         },
         //选择日期
+        selectYearsTime(){
+            console.log(this.fromYearsInfo.preTime)
+            if(this.fromYearsInfo.preTime == null){
+                this.fromYearsInfo.preTime = "";
+            }
+        },
         selectTime(){
-            console.log(this.attachmentInfo.preTime)
+            console.log(123);
         },
         //下载附件
         async downFile(type){

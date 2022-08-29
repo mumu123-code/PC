@@ -5,6 +5,14 @@
             <div class="card-title">标签信息填写</div>
             <div class="info-list">
                 <el-row class="info-detail">
+                    <el-col :span="3" class="info-title">电子秤类型：</el-col>
+                    <el-col :span="10">
+                        <el-select v-model="addInfoForm.scalesType" placeholder="请选择" size="small" style="width:100%">
+                            <el-option v-for="item in scalesData" :key="item.value" :label="item.label" :value="item.value"></el-option>
+                    </el-select>
+                    </el-col>
+                </el-row>
+                <el-row class="info-detail">
                     <el-col :span="3" class="info-title">废物代码和废物名称：</el-col>
                     <el-col :span="10">
                         <el-input size="small" v-model="addInfoForm.wasteCode"></el-input>
@@ -47,6 +55,11 @@
             <div class="info-list">
                 <el-row class="table">
                     <el-table :data="addInfoTableData" style="width: 100%" :header-cell-style="{ background: '#F5F3F2' }">
+                        <el-table-column prop="scalesType" label="电子秤类型" width="230">
+                            <template slot-scope="scope">
+                                {{ scope.row.scalesType == 0 ? "标准秤" : scope.row.scalesType == 1 ? "累加秤" : "液位秤"  }}
+                            </template>
+                        </el-table-column>
                         <el-table-column prop="wasteCode" label="废物代码和废物名称" width="230"></el-table-column>
                         <el-table-column prop="companyName" label="企业名称" width="300"></el-table-column>
                         <el-table-column prop="effectiveTime" label="危废协议生效时间" width="200"></el-table-column>
@@ -71,6 +84,14 @@
         <!-- 编辑弹框 -->
         <el-dialog title="修改标签信息" :visible.sync="showModel" width="50%" :before-close="hideModel">
             <div class="model-con">
+                <el-row class="model-list">
+                    <el-col :span="4" class="info-title">电子秤类型：</el-col>
+                    <el-col :span="18">
+                        <el-select v-model="editInfoForm.scalesType" placeholder="请选择" size="small" style="width:100%">
+                            <el-option v-for="item in scalesData" :key="item.value" :label="item.label" :value="item.value"></el-option>
+                        </el-select>
+                    </el-col>
+                </el-row>
                 <el-row class="model-list">
                     <el-col :span="4" class="info-title">废物代码和废物名称：</el-col>
                     <el-col :span="18"><el-input size="small" v-model="editInfoForm.wasteCode"></el-input></el-col>
@@ -113,6 +134,7 @@ export default {
     data() {
         return {
             addInfoForm: {
+                scalesType:0,
                 wasteCode:"",
                 effectiveTime:"",
                 mainComponents:"",
@@ -129,6 +151,11 @@ export default {
                 pageNum:1,
                 pageSize:10,
             },
+            scalesData:[
+                { value: 0, label: "标准秤" },
+                { value: 1, label: "累加秤" },
+                { value: 2, label: "液位秤" },
+            ],
             dangerousSituation:[], //选中危险情况
             multData:[              //危险情况类型
                 {val:"爆炸性",text:"爆炸性"},
@@ -168,6 +195,7 @@ export default {
             if(res?.code == "1"){
                 this.$message.success("添加成功");
                 this.addInfoForm = {
+                    scalesType:0,
                     wasteCode:"",
                     effectiveTime:"",
                     mainComponents:"",
