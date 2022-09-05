@@ -484,7 +484,8 @@ export default {
     }
   },
   async mounted(){
-    this.time = moment(new Date()).subtract(1, 'd').format('YYYY-MM-DD');
+    this.time = moment(new Date()).subtract(1, 'd').format('yyyy-MM-DD');
+    
     // 获取id
     this.formInfo.deviceId = this.$route.query.id;
     await this.getListSecond('day');
@@ -572,6 +573,8 @@ export default {
       } else {
         this.formInfo.startDate = `${this.time} 00:00:00`;
         this.formInfo.endDate = `${this.time} 23:59:59`;
+        const tomorrow = moment(new Date()).format('YYYY-MM-DD');
+        this.time = [`${this.time} 00`, `${tomorrow} 00`];
       }
       
       // 清空数据

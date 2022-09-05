@@ -26,7 +26,7 @@
 
 <script>
 import NavMenu from "../components/Navmenu/NavMenu.vue";
-import { loginGetOut } from "../assets/js/Login";
+// import { loginGetOut } from "../assets/js/Login";
 
 export default {
   name: "AboutView",
@@ -42,12 +42,9 @@ export default {
     NavMenu,
   },
   methods:{
-    async loginOut(){
-      const res = await loginGetOut();
-      if (res.code == "1") {
-        sessionStorage.removeItem("userInfo", JSON.stringify(res.data))
-        this.$router.push('/')
-      }
+    loginOut(){
+      sessionStorage.removeItem("userInfo");
+      this.$router.push('/');
     },
     loginHome() {
       // 登录成功跳转到首页
