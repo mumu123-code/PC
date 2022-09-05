@@ -19,9 +19,25 @@
                     </el-col>
                 </el-row>
                 <el-row class="info-detail">
-                    <el-col :md="4" :lg="3" :xl="2" class="info-title">危废代码和名称：</el-col>
+                    <el-col :md="4" :lg="3" :xl="2" class="info-title">危废代码：</el-col>
+                    <el-col :span="8" class="con">
+                        <el-input size="small" v-model="fromInfo.hwDictCode" @input="searchCode"></el-input>
+                        <div class="select-list" v-if="isShowSelect">
+                            <div class="lists" v-for="(item,i) in retrieveCodeData" :key="i" @click="selectCode(item.code)">
+                                {{item.code}}
+                            </div>
+                        </div>
+                    </el-col>
+                </el-row>
+                <el-row class="info-detail">
+                    <el-col :md="4" :lg="3" :xl="2" class="info-title">危废名称：</el-col>
                     <el-col :span="8">
-                        <el-input size="small" v-model="fromInfo.wasteCode"></el-input>
+                     <!-- @input="searchCode" -->
+                        <el-input size="small" v-model="fromInfo.wasteName"></el-input>
+                        
+                        <!-- <el-select v-model="fromInfo.wasteCode" placeholder="请选择" class="w-100" size="small">
+                            <el-option v-for="(item,i) in wasteList" :key="i" :label="item.wasteCode" :value="item.wasteCode"></el-option>
+                        </el-select> -->
                     </el-col>
                 </el-row>
                 <el-row class="info-detail">
@@ -90,9 +106,21 @@
                 <el-row class="model-list">
                     <el-col :md="11" :lg="10" :xl="8" class="info-title">危废代码和名称：</el-col>
                     <el-col :span="8">
-                        <el-input size="small" v-model="editFromInfo.wasteCode"></el-input>
+                        <el-input size="small" v-model="editFromInfo.wasteCode" readonly></el-input>
                     </el-col>
                 </el-row>
+                <!-- <el-row class="model-list">
+                    <el-col :md="11" :lg="10" :xl="8" class="info-title">危废代码：</el-col>
+                    <el-col :span="8">
+                        <el-input size="small" v-model="editFromInfo.hwDictCode"></el-input>
+                    </el-col>
+                </el-row>
+                <el-row class="model-list">
+                    <el-col :md="11" :lg="10" :xl="8" class="info-title">危废名称：</el-col>
+                    <el-col :span="8">
+                        <el-input size="small" v-model="editFromInfo.wasteName"></el-input>
+                    </el-col>
+                </el-row> -->
                  <el-row class="model-list">
                     <el-col :md="11" :lg="10" :xl="8" class="info-title">储罐底面积：</el-col>
                     <el-col :span="8">
@@ -119,7 +147,7 @@
 </template>
 
 <script>
-import { getStorageDeviceList,addAndEditStorageInfo,getStorageInfoList } from '../../../assets/js/common'
+import { getStorageDeviceList,addAndEditStorageInfo,getStorageInfoList,getWasteInfo,getHwDictList } from '../../../assets/js/common'
 export default {
   name: "storageTankCon",
   data() {
@@ -127,7 +155,9 @@ export default {
         fromInfo:{
             deviceId:"",
             storageTankNumber:"",
-            wasteCode:"",
+            // wasteCode:"",
+            hwDictCode:"",
+            wasteName:"",
             density:"",
             baseArea:""
         },
@@ -139,14 +169,71 @@ export default {
         },
         emptySearchBtn:false,
         deviceData:[],
-        editFromInfo:{}
+        editFromInfo:{},
+        isShowSelect:false,
+        wasteList:[],
+        retrieveCodeData:[],
     }
   },
   mounted(){
     this.getDeviceList();
     this.getList();
+    this.getCodeList();
+    // this.getWasteList();
   },
   methods: {
+    //选择代码和名称
+    selectCode(val){
+        this.fromInfo.hwDictCode = val;
+        this.isShowSelect = false;
+    },
+
+    //搜索代码和名称
+    searchCode(){
+        // const res = await getNotConfiguredStorageTankCode({wasteCode:this.fromInfo.wasteCode});
+        // if(res?.code == "1"){
+        //     if(res.data.length != 0){
+        //         this.wasteList = res.data;
+        //         this.isShowSelect = true;
+        //         return;
+        //     }
+        //     this.isShowSelect = false;
+        // }
+        if(this.fromInfo.hwDictCode.length <= 3){
+            this.isShowSelect = false;
+        }
+        if(this.fromInfo.hwDictCode.length >= 3){
+            this.retrieveCodeData.length = 0;
+            this.retrieveCode();
+        }
+    },
+
+    //查询用户输入code数据
+    retrieveCode(){
+        this.wasteList.forEach(item => {
+            if(item.code.indexOf(this.fromInfo.hwDictCode) != -1){
+                this.isShowSelect = true;
+                this.retrieveCodeData.push(item)
+            }
+        })
+    },
+
+    // 获取国标危废代码字典
+    async getCodeList(){
+        const res = await getHwDictList();
+        if(res?.code == "1"){
+            this.wasteList = res.data;
+        }
+    },
+
+     //获取危废列表
+    async getWasteList(){
+        const res = await getWasteInfo({pageNum:0,pageSize:200});
+        if(res?.code == "1"){
+            this.wasteList = res.data.list;
+        }
+    },
+
     //添加储罐信息
     async submitFunc(){
         if(this.fromInfo.baseArea == ""){
@@ -162,9 +249,11 @@ export default {
             this.$message.success("添加成功");
             this.fromInfo.deviceId = "";
             this.fromInfo.storageTankNumber = "";
-            this.fromInfo.wasteCode = "";
+            // this.fromInfo.wasteCode = "";
             this.fromInfo.density = ""; 
             this.fromInfo.baseArea = ""; 
+            this.fromInfo.hwDictCode = "";
+            this.fromInfo.wasteName = "";
             this.getList();
         }else{
             this.$message.error("添加失败");
@@ -252,6 +341,28 @@ export default {
 }
 .info-detail{
     margin-top: 20px;
+    .con{
+        position: relative;
+        .select-list{
+            position: absolute;
+            top: 30px;
+            width: 100%;
+            border: 1px solid #eee;
+            z-index: 100;
+            background: #fff;
+            max-height: 200px;
+            overflow: hidden;
+            overflow-y: auto;
+            .lists{
+                line-height: 28px;
+                padding: 3px 15px;
+                font-size: 14px;
+            }
+            .lists:nth-child(even){
+                background-color: #eee;
+            }
+        }
+    }
 }
 .info-title{
     line-height: 30px;

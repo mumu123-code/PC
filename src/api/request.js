@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const instance = axios.create({
-  baseURL: "https://api.elianwei.com/company/",
+  baseURL: "https://api.elianwei.com/company/", //https://api.elianwei.com/company/ http://192.168.2.62:8994/company/
   timeout: 50000,
 });
 
@@ -21,7 +21,7 @@ instance.interceptors.request.use((config) => {
 
 // 响应拦截
 instance.interceptors.response.use((config) => {
-  return config.data;
+  return config.data; 
   // if(config.status === 200 && config.data.code === '1') {
   //   return config.data;
   // }
