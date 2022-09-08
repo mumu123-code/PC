@@ -36,7 +36,7 @@
                             <el-option v-for="item in unitData" :key="item.value" :label="item.label" :value="item.value"></el-option>
                         </el-select>
                     </el-col>
-                    <el-col :span="3" class="info-title">危废协议生效时间：</el-col>
+                    <el-col :span="3" class="info-title">危废协议到期时间：</el-col>
                     <el-col :span="9">
                         <el-date-picker v-model="addInfoForm.effectiveTime" size="small" style="width:100%" type="date" value-format="yyyy-MM-dd 00:00:00" placeholder="选择日期"></el-date-picker>
                         <!-- <el-input size="small" v-model="addInfoForm.chemicalComposition"></el-input> -->
@@ -102,7 +102,7 @@
                             </template>
                         </el-table-column>
                         <el-table-column prop="companyName" label="企业名称" width="300"></el-table-column>
-                        <el-table-column prop="effectiveTime" label="危废协议生效时间" width="200"></el-table-column>
+                        <el-table-column prop="effectiveTime" label="危废协议到期时间" width="200"></el-table-column>
                         <el-table-column prop="mainComponents" label="主要成分" width="200"></el-table-column>
                         <el-table-column prop="wasteCode" label="化学成分" width="200"></el-table-column>
                         <el-table-column prop="dangerousSituation" label="危险情况" width="300"></el-table-column>
@@ -148,7 +148,7 @@
                     </el-col>
                 </el-row>
                 <el-row class="model-list">
-                    <el-col :span="4" class="info-title">危废协议生效时间：</el-col>
+                    <el-col :span="4" class="info-title">危废协议到期时间：</el-col>
                     <el-col :span="18">
                         <el-date-picker v-model="editInfoForm.effectiveTime" size="small" style="width:100%" type="date" value-format="yyyy-MM-dd 00:00:00" placeholder="选择日期"></el-date-picker>
                     </el-col>
@@ -412,7 +412,7 @@ export default {
                 return false;
             }
             if(state.effectiveTime == ""){
-                this.$message.error("危废协议生效时间不能为空");
+                this.$message.error("危废协议到期时间不能为空");
                 return false;
             }
             if(state.mainComponents == ""){
