@@ -49,7 +49,9 @@
                     </el-col>
                     <el-col :span="3" class="info-title">安全措施：</el-col>
                     <el-col :span="9">
-                        <el-input size="small" v-model="addInfoForm.safetyMeasures"></el-input>
+                        <el-select v-model="addInfoForm.safetyMeasures" placeholder="请选择" size="small" style="width:100%">
+                            <el-option v-for="item in securityMeasuresData" :key="item.value" :label="item.label" :value="item.value"></el-option>
+                        </el-select>
                     </el-col>
                 </el-row>
                 <el-row class="info-detail">
@@ -109,7 +111,7 @@
                         <el-table-column prop="safetyMeasures" label="安全措施" width="200"></el-table-column>
                         <el-table-column prop="managerName" label="联系人" width="100"></el-table-column>
                         <el-table-column prop="phone" label="电话" width="200"></el-table-column>
-                        <el-table-column prop="recoverAmount" label="修改" width="80">
+                        <el-table-column prop="recoverAmount" label="修改" width="80" fixed="right">
                             <template slot-scope="scope">
                                 <el-button type="primary" size="small" @click.native="editInfo(scope.row)">修改</el-button>
                             </template>
@@ -136,8 +138,19 @@
                     </el-col>
                 </el-row>
                 <el-row class="model-list">
-                    <el-col :span="4" class="info-title">危废代码和名称：</el-col>
-                    <el-col :span="18"><el-input size="small" v-model="editInfoForm.wasteCode" readonly></el-input></el-col>
+                    <el-col :span="4" class="info-title">危废代码：</el-col>
+                    <el-col :span="18" class="con">
+                        <el-input size="small" v-model="editInfoForm.hwDictCode" @input="editSearchCode"></el-input>
+                        <div class="select-list" v-if="isShowEditSelect">
+                            <div class="lists" v-for="(item,i) in retrieveCodeData" :key="i" @click="editSelectCode(item.code)">
+                                {{item.code}}
+                            </div>
+                        </div>
+                    </el-col>
+                </el-row>
+                <el-row class="model-list">
+                    <el-col :span="4" class="info-title">危废名称：</el-col>
+                    <el-col :span="18"><el-input size="small" v-model="editInfoForm.wasteName"></el-input></el-col>
                 </el-row>
                 <el-row class="model-list">
                     <el-col :span="4" class="info-title">包装方式：</el-col>
@@ -159,7 +172,11 @@
                 </el-row>
                 <el-row class="model-list">
                     <el-col :span="4" class="info-title">安全措施：</el-col>
-                    <el-col :span="18"><el-input size="small" v-model="editInfoForm.safetyMeasures"></el-input></el-col>
+                    <el-col :span="18">
+                        <el-select v-model="editInfoForm.safetyMeasures" placeholder="请选择" size="small" style="width:100%">
+                            <el-option v-for="item in securityMeasuresData" :key="item.value" :label="item.label" :value="item.value"></el-option>
+                        </el-select>
+                    </el-col>
                 </el-row>
                 <el-row class="model-list">
                     <el-col :span="4" class="info-title">危险情况：</el-col>
@@ -243,12 +260,22 @@ export default {
                 {val:"刺激性",text:"刺激性"},
                 {val:"石棉",text:"石棉"},
             ],
+            securityMeasuresData:[
+                {value:"放置在阴凉通风处，远离明火，密封保存",label:"放置在阴凉通风处，远离明火，密封保存"},
+                {value:"防腐、防渗吨袋",label:"防腐、防渗吨袋"},
+                {value:"防腐、防渗密闭容器",label:"防腐、防渗密闭容器"},
+                {value:"防腐、防渗密闭吨桶",label:"防腐、防渗密闭吨桶"},
+                {value:"不锈钢储罐",label:"不锈钢储罐"},
+                {value:"PP储罐",label:"PP储罐"},
+                {value:"切勿放近易燃物质",label:"切勿放近易燃物质"},
+            ],
             storage:[],
             storageList:[],
             editStorage:[],
             isShowSelect:false,
             wasteList:[],
             retrieveCodeData:[],
+            isShowEditSelect:false,
         };
     },
     mounted(){
@@ -261,7 +288,10 @@ export default {
             this.isShowSelect = false;
             this.addInfoForm.hwDictCode = val;
         },
-
+        editSelectCode(val){
+            this.isShowEditSelect = false;
+            this.editInfoForm.hwDictCode = val;
+        },
         //搜索代码和名称
         searchCode(){
             if(this.addInfoForm.hwDictCode.length <= 3){
@@ -269,15 +299,32 @@ export default {
             }
             if(this.addInfoForm.hwDictCode.length >= 3){
                 this.retrieveCodeData.length = 0;
-                this.retrieveCode();
+                this.retrieveCode("add");
+            }
+        },
+        editSearchCode(){
+            if(this.editInfoForm.hwDictCode.length <= 3){
+                this.isShowEditSelect = false;
+            }
+            if(this.editInfoForm.hwDictCode.length >= 3){
+                this.retrieveCodeData.length = 0;
+                this.retrieveCode("model");
             }
         },
 
+        
         //查询用户输入code数据
-        retrieveCode(){
+        retrieveCode(type){
             this.wasteList.forEach(item => {
-                if(item.code.indexOf(this.addInfoForm.hwDictCode) != -1){
-                    this.isShowSelect = true;
+                if(type == "add"){
+                    if(item.code.indexOf(this.addInfoForm.hwDictCode) != -1){
+                        this.isShowSelect = true;
+                        this.retrieveCodeData.push(item)
+                    }
+                    return
+                }
+                if(item.code.indexOf(this.editInfoForm.hwDictCode) != -1){
+                    this.isShowEditSelect = true;
                     this.retrieveCodeData.push(item)
                 }
             })
@@ -369,6 +416,7 @@ export default {
 
         //修改信息
         editInfo(val) {
+            console.log(val)
             this.editInfoForm = val;
             this.editDangerousSituation = val.dangerousSituation.split(",");
             val.warehouses.forEach(item =>{
@@ -407,8 +455,16 @@ export default {
 
         //判断属性值是否为空
         isFormValNull(state){
-            if(state.wasteCode == ""){
-                this.$message.error("废物代码和废物名称不能为空");
+            // if(state.wasteCode == ""){
+            //     this.$message.error("废物代码和废物名称不能为空");
+            //     return false;
+            // }
+            if(state.hwDictCode == ""){
+                this.$message.error("废物代码不能为空");
+                return false;
+            }
+            if(state.wasteName == ""){
+                this.$message.error("废物名称不能为空");
                 return false;
             }
             if(state.effectiveTime == ""){
@@ -503,28 +559,7 @@ export default {
             text-align: right;
             font-size: 14px;
         }
-        .con{
-            position: relative;
-            .select-list{
-                position: absolute;
-                top: 30px;
-                width: 100%;
-                border: 1px solid #eee;
-                z-index: 100;
-                background: #fff;
-                max-height: 200px;
-                overflow: hidden;
-                overflow-y: auto;
-                .lists{
-                    line-height: 28px;
-                    padding: 3px 15px;
-                    font-size: 14px;
-                }
-                .lists:nth-child(even){
-                    background-color: #eee;
-                }
-            }
-        }
+       
     }
     .info-title{
         line-height: 30px;
@@ -541,6 +576,28 @@ export default {
         .el-button{
             width: 100px;
             font-size: 14px;
+        }
+    }
+}
+.con{
+    position: relative;
+    .select-list{
+        position: absolute;
+        top: 30px;
+        width: 100%;
+        border: 1px solid #eee;
+        z-index: 100;
+        background: #fff;
+        max-height: 200px;
+        overflow: hidden;
+        overflow-y: auto;
+        .lists{
+            line-height: 28px;
+            padding: 3px 15px;
+            font-size: 14px;
+        }
+        .lists:nth-child(even){
+            background-color: #eee;
         }
     }
 }
