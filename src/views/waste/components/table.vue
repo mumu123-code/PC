@@ -25,7 +25,7 @@
                         <!-- </el-form> -->
                         <el-col :span="2" class="write-title">选择月份：</el-col>
                         <el-col :md="5" :xl="4">
-                            <el-date-picker v-model="fromInfo.preTime" type="month" size="small" placeholder="选择月" value-format="yyyy-MM-dd HH:mm:ss" :clearable="false"></el-date-picker>
+                            <el-date-picker v-model="fromInfo.startTime" type="month" size="small" placeholder="选择月" value-format="yyyy-MM-dd HH:mm:ss" :clearable="false"></el-date-picker>
                         </el-col>
                         <el-col :md="3" :xl="2" style="padding-top:3px;">
                             <el-button type="primary" @click="selectTable" size="small">查询</el-button>    
@@ -41,12 +41,12 @@
                         </el-col> -->
                     </el-row>
                     <div class="table" style="margin-top:20px">
-                        <el-table :data="data" style="width: 100%;" height="550" :header-cell-style="{'background':'#F5F3F2'}">
+                        <el-table :data="data" style="width: 100%;" height="550" maxHeight="550" :header-cell-style="{'background':'#F5F3F2'}">
                             <el-table-column prop="companyName" label="企业名称" width="350"></el-table-column>
-                            <el-table-column prop="time" label="台账时间" width="200"></el-table-column>
-                            <el-table-column prop="wasteCode" label="废物代码" width="200"></el-table-column>
-                            <el-table-column prop="inQuantity" label="入库数量(kg)" width="200"></el-table-column>
-                            <el-table-column prop="outQuantity" label="出库数量(kg)" width="200"></el-table-column>
+                            <el-table-column prop="operationTime" label="台账时间" width="200"></el-table-column>
+                            <el-table-column prop="codeName" label="废物代码和名称" width="200"></el-table-column>
+                            <el-table-column prop="inboundWeight" label="入库数量(kg)" width="200"></el-table-column>
+                            <el-table-column prop="outboundWeight" label="出库数量(kg)" width="200"></el-table-column>
                             <el-table-column prop="disposalDestination" label="危废处置类型" width="200">
                                 <template slot-scope="scope">
                                     {{ isType(scope.row.disposalDestination) }}
@@ -58,12 +58,12 @@
                                 </template>
                             </el-table-column>
                             <el-table-column prop="destinationUnit" label="危废处置去向单位" width="350"></el-table-column>
-                            <el-table-column prop="storageQuantity" label="累计贮存数量(kg)" width="200"></el-table-column>
-                            <el-table-column prop="preparerOut" label="出库人"></el-table-column>
+                            <el-table-column prop="cumulativeWeight" label="累计贮存数量(kg)" width="200"></el-table-column>
+                            <el-table-column prop="personnelName" label="出库人"></el-table-column>
                             <el-table-column prop="remarks" label="备注" width="400"></el-table-column>
                         </el-table>
                     </div>
-                    <el-pagination background layout="prev, pager, next" :total="total" @current-change="selectPage"></el-pagination>
+                    <!-- <el-pagination background layout="prev, pager, next" :total="total" @current-change="selectPage"></el-pagination> -->
                 </el-tab-pane>
                 <el-tab-pane label="历史台账下载" name="years">
                     <div style="min-height:650px">
@@ -72,9 +72,9 @@
                             <el-row class="m-top">
                                 <el-col :span="24" :offset="1">
                                     <template>
-                                        <download-excel class="export-excel-wrapper" :data="exportYearsList" :fields="parameterYsersXLS" name="全部危废台账.xls" >
-                                            <el-button type="primary" style="width:200px;" size="small">导出全部危废台账</el-button>
-                                        </download-excel>
+                                        <!-- <download-excel class="export-excel-wrapper" :data="allDetailData" :fields="parameterYsersXLS" name="全部危废台账.xls" > -->
+                                            <el-button type="primary" style="width:200px;" size="small" @click.native="getAllParameter">导出全部危废台账</el-button>
+                                        <!-- </download-excel> -->
                                     </template>
                                 </el-col>
                             </el-row>
@@ -123,14 +123,15 @@
     </div>
 </template>
 <script>
-import { getMonthWasteParameter,getYearsWasteParameter,getWasteInfo,getFileParameter,getFileRecord } from '../../../assets/js/common'
+// getYearsWasteParameter,
+import { getMonthWasteParameter,getWasteInfo,getFileParameter,getFileRecord,getWasteAllDetail } from '../../../assets/js/common'
 export default{
     name:"parameterTable",
     data(){
         return{ 
             data:[],
             yearsList:[],
-            exportYearsList:[],
+            allDetailData:[],
             exportMonthList:[],
             numData:[],
             parameterXLS:{
@@ -149,31 +150,33 @@ export default{
             },
             parameterYsersXLS:{
                 "企业名称":'companyName',
-                "台账时间":'timeStr',
-                "废物代码":'wasteCode',
+                "台账时间":'operationTime',
+                "废物代码":'codeName',
                 // "危废类别":'hazardousWasteCategory',
-                "入库数量(kg)":'inSumQuantity',
-                "出库数量(kg)":'outSumQuantity',
+                "入库数量(kg)":'inboundWeight',
+                "出库数量(kg)":'outboundWeight',
                 "危废处置类型":'disposalDestination', 
                 "危废处置去向":'destination',
                 "危废处置去向单位":'destinationUnit',
-                "累计贮存数量(kg)":'storageSumQuantity',
+                "累计贮存数量(kg)":'cumulativeWeight',
                 // "入库人":'preparerIn',
                 // "出库人":'preparerOut',
                 //  "备注":'remarks',
             },
             fromInfo:{ 
-                preTime:"",
-                pageNum:0,
-                pageSize:20,
+                // preTime:"",
+                // pageNum:0,
+                // pageSize:20,
                 wasteCode:"",
+                startTime:"",
+                endTime:"",
             },
             yearsTime:[],
             fromYearsInfo:{
                 startDate:"",
                 endDate:"",
-                pageNum:0,
-                pageSize:20,
+                // pageNum:0,
+                // pageSize:20,
                 wasteCode:"",
             },
             preMonthTime:"",
@@ -192,22 +195,22 @@ export default{
     },
     created(){
         let time = new Date();
-        this.preMonthTime =  time.getFullYear() + "-" + (time.getMonth() + 1) +"-01 00:00:00";
-        this.fromInfo.preTime = this.preMonthTime;
+        let month = (time.getMonth() + 1) >= 10 ? (time.getMonth()+1) : "0" + (time.getMonth()+1);
+        this.preMonthTime =  time.getFullYear() + "-" + month +"-01 00:00:00";
+        this.fromInfo.startTime = this.preMonthTime;
         this.preYearTime =  time.getFullYear() +"-01-01 00:00:00";
         // this.fromYearsInfo.preTime = this.preYearTime;
-        this.getExportMonthList();
-        this.getExportYearsList();
+        // this.getExportMonthList();
+        // this.getExportYearsList();
         this.getList();
-        this.getWasteList();
+        this.getWasteList("");
     },
     methods:{
         selectTable(){ 
             this.fromYearsInfo.pageNum = 0;
             this.fromInfo.pageNum = 0;
              if(this.activeTab == "years"){
-                
-                this.getYearsList();
+                this.getAllParameter();
                 return;
             };
             if(this.fromInfo.wasteCode == "请选择"){
@@ -248,7 +251,7 @@ export default{
         selectPage(val){
              if(this.activeTab == "years"){
                 this.fromYearsInfo.pageNum = val - 1;
-                this.getYearsList();
+                this.getAllParameter();
                 return;
             };
             this.fromInfo.pageNum = val - 1;
@@ -262,56 +265,70 @@ export default{
             this.fromInfo.preTime = "";
             this.fromInfo.wasteCode = "";
             if(this.activeTab == "years"){
-                this.getYearsList();
+                // this.getAllParameter();
                 return;
             };
             this.getList();
         },
-        //获取年数据
-        async getYearsList(){
-           
-            if(this.yearsTime.length != 0){
-                this.fromYearsInfo.startDate = this.yearsTime[0];
-                this.fromYearsInfo.endDate = this.yearsTime[1];
-            }
-            const res = await getYearsWasteParameter(this.fromYearsInfo);
+        //获取全部危废台账
+        async getAllParameter(){
+            const res = await getWasteAllDetail({wasteCode:""});
             if(res?.code == "1"){
-                this.yearsList = res.data.list;
+                // this.allDetailData = res.data;
+                this.downWordFile(res.data,"all");
             }
         },
-        //获取导出年台账数据
-        async getExportYearsList(){
-            const res = await getYearsWasteParameter({pageNum:0,pageSize:100000,preTime:this.preYearTime});
-            if(res?.code == "1"){
-                this.exportYearsList = res.data.list;
-            }
-        },
+
+        // //获取年数据
+        // async getYearsList(){
+        //     if(this.yearsTime.length != 0){
+        //         this.fromYearsInfo.startDate = this.yearsTime[0];
+        //         this.fromYearsInfo.endDate = this.yearsTime[1];
+        //     }
+        //     const res = await getYearsWasteParameter(this.fromYearsInfo);
+        //     if(res?.code == "1"){
+        //         this.yearsList = res.data.list;
+        //     }
+        // },
+        // //获取导出年台账数据
+        // async getExportYearsList(){
+        //     const res = await getYearsWasteParameter({pageNum:0,pageSize:100000,preTime:this.preYearTime});
+        //     if(res?.code == "1"){
+        //         this.exportYearsList = res.data.list;
+        //     }
+        // },
         //获取月数据
         async getList(){
+            this.fromInfo.endTime = this.fromInfo.startTime;
             const res = await getMonthWasteParameter(this.fromInfo);
             if(res?.code=="1"){
-                this.data = res.data.list;
-                this.total = res.data.total;
+                this.data = res.data;
+                // this.total = res.data.total;
             }
         },
         //获取导出月台账数据
-        async getExportMonthList(){
-            const res = await getMonthWasteParameter({pageNum:0,pageSize:100000,preTime:this.preMonthTime});
-            if(res?.code == "1"){
-                this.exportMonthList = res.data.list;
-            }
-        },
+        // async getExportMonthList(){
+        //     const res = await getMonthWasteParameter({pageNum:0,pageSize:100000,preTime:this.preMonthTime});
+        //     if(res?.code == "1"){
+        //         this.exportMonthList = res.data.list;
+        //     }
+        // },
         //获取危废列表
-        async getWasteList(){
-            const res = await getWasteInfo({pageNum:0,pageSize:200});
+        async getWasteList(val){
+            const res = await getWasteInfo(val);
             if(res?.code == "1"){
-                this.wasteList = res.data.list;
+                this.wasteList = res.data;
                 this.wasteList.unshift({wasteCode:"请选择"})
+                // if(res.data.length != 0){
+                //     res.data.forEach(item => {
+                //         this.wasteList.push({value:item.wasteCode,text:item.wasteCode})
+                //     })
+                // }
             }
         },
         //选择日期
         selectYearsTime(){
-            console.log(this.fromYearsInfo.preTime)
+            // console.log(this.fromYearsInfo.preTime)
             if(this.fromYearsInfo.preTime == null){
                 this.fromYearsInfo.preTime = "";
             }
@@ -358,18 +375,20 @@ export default{
             }
         },
         //下载Word文件
-        downWordFile(url,type){
-            console.log(type)
-            let link = document.createElement("a");
-            link.href = url;
-            if(type == "num"){
-               link.download = "浙江省工业危险废物管理台帐附件.doc" //下载的文件名
-            } else {
-               link.download = "浙江省工业危险废物管理记录附件.doc" //下载的文件名
-            } 
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
+        downWordFile(url){
+            window.open(url);
+            // let link = document.createElement("a");
+            // link.href = url;
+            // if(type == "num"){
+            //    link.download = "导出所选危废年汇总台账记录.doc" //下载的文件名
+            // } else if(type == "all"){
+            //     link.download = "导出全部台账.doc" //下载的文件名
+            // } else {
+            //    link.download = "导出所选危废月台账记录.doc" //下载的文件名
+            // } 
+            // document.body.appendChild(link);
+            // link.click();
+            // document.body.removeChild(link);
         },
     }
 }
