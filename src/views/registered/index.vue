@@ -94,7 +94,6 @@ export default {
   methods: {
     //判断密码和确认密码
     isPassWord(){
-        console.log()
         if(this.form.password != this.form.comfirmPossWord){
             this.$message.error("密码和确认密码不同！");
             return false;
@@ -137,6 +136,7 @@ export default {
     async user(){
         const res = await registeredUser(this.form);
         if(res?.code == "1"){
+            this.$message.success("注册成功！");
             if(this.waste == "1"){
                 this.$router.push('/')
             }else{
