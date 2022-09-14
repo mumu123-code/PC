@@ -24,10 +24,10 @@
         <el-button type="primary" size="small" @click.native="getCode" :disabled="countdownNum!=='获取验证码'">{{countdownNum}}</el-button>
       </el-form-item>
       <el-form-item label="密码" label-width="100px" prop="password" size="small">
-        <el-input v-model="form.password"></el-input>
+        <el-input v-model="form.password" type="password"></el-input>
       </el-form-item>
       <el-form-item label="确认密码" label-width="100px" prop="comfirmPossWord" size="small">
-        <el-input v-model="form.comfirmPossWord" @blur="isPassWord"></el-input>
+        <el-input v-model="form.comfirmPossWord" type="password" @blur="isPassWord"></el-input>
       </el-form-item>
       <el-form-item label="激活码" label-width="100px" prop="registerCode" size="small">
         <el-input v-model="form.registerCode"></el-input>
