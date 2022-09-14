@@ -7,7 +7,7 @@ import HomeView from "../views/HomeView.vue";
 Vue.use(VueRouter);
 
 const routes = [
-  {
+  { //登录页面
     path: "/",
     name: "login",
     component: () => import("../views/Login/Login.vue"),
@@ -16,6 +16,11 @@ const routes = [
     path: "/home",
     name: "home",
     component: HomeView,
+  },
+  { //注册页面
+    path: "/registered",
+    name: "registered",
+    component: () => import("../views/registered/index.vue"),
   },
   {
     path: "/about",
@@ -179,7 +184,7 @@ router.beforeEach((to,from,next) => {
   const user = sessionStorage.getItem('userInfo');
 
   let isLogin = user ? true : false;
-  if(to.path == '/login' || to.path == '/') {
+  if(to.path == '/login' || to.path == '/' || to.path == "/registered") {
     next();
   } else {
     isLogin ? next() : next('/');

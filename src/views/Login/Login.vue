@@ -16,7 +16,10 @@
       <el-form-item label="密码" label-width="50px" prop="passWord">
         <el-input v-model="loginForm.passWord"></el-input>
       </el-form-item>
-      <el-button type="primary" @click="login">登录</el-button>
+      <div class="btn-con">
+        <el-button type="primary" class="btn" @click.native="login">登录</el-button>
+        <el-button type="success" class="btn" @click.native="jumpPage">注册</el-button>
+      </div>
     </el-form>
   </div>
 </template>
@@ -59,6 +62,9 @@ export default {
       }else{
         this.$message.error('账号或密码错误');
       }
+    },
+    jumpPage(){
+      this.$router.push({ path: "/registered"});
     },
   },
 };
@@ -114,4 +120,14 @@ export default {
     }
   }
 }
+.btn-con{
+  width: 100%;
+  padding-left: 20%;
+  .btn{
+    width: 100px;
+    float: left;
+    display: inline-block;
+  }
+}
+
 </style>
