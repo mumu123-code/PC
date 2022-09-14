@@ -36,6 +36,7 @@
         <el-radio v-model="waste" v-for="(item,i) in radioTypeData" :key="i" :label="item.val">{{item.text}}</el-radio>
       </el-form-item>
       <div class="btn-con">
+        <el-button type="primary" class="btn" size="small" @click.native="jumpLogin">去登录</el-button>
         <el-button type="success" class="btn" size="small" @click.native="submitFunc">注册</el-button>
       </div>
     </el-form>
@@ -145,6 +146,9 @@ export default {
                 this.$router.push({path:'/waste'});
             }
         }
+    },
+    jumpLogin(){
+        this.$router.push('/');
     },
   }
 }

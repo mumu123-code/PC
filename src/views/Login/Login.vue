@@ -17,8 +17,8 @@
         <el-input v-model="loginForm.passWord"></el-input>
       </el-form-item>
       <div class="btn-con">
-        <el-button type="primary" class="btn" @click.native="login">登录</el-button>
         <el-button type="success" class="btn" @click.native="jumpPage">注册</el-button>
+        <el-button type="primary" class="btn" @click.native="login">登录</el-button>
       </div>
     </el-form>
   </div>
