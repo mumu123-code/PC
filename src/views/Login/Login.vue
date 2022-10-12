@@ -32,8 +32,8 @@ export default {
   data() {
     return {
       loginForm: {
-        userName: "杭州德奥汽车有限公司",
-        passWord: "123456",
+        userName: "",//杭州德奥汽车有限公司
+        passWord: "",//123456
         systemId: 3,
       },
       rules: {
