@@ -1,10 +1,12 @@
 <template>
     <div class="wasteList">
           <el-container>
-            <el-header>VOCs数智哨兵系统(企业版)</el-header>
+            <el-header>
+                
+            </el-header>
             <!-- <div class="title">( {{ companyName }} )</div> -->
             <div class="title-exit">
-                <div class="title">( {{companyName}} )</div>
+                <!-- <div class="title">( {{companyName}} )</div> -->
                 <!-- <el-button class="exit" type="primary" icon="el-icon-user" size="mini" @click.native="loginOut">退出</el-button> -->
                 <div class="exit">
                     <el-button type="primary" size="mini" @click.native="loginHome">首页</el-button>
@@ -24,8 +26,11 @@
                         <el-menu-item index="/companyInfo">
                             <span slot="title">企业信息</span>
                         </el-menu-item>
+                        <el-menu-item index="/disposalUnit">
+                            <span slot="title">处置单位信息</span>
+                        </el-menu-item>
                         <el-menu-item index="/storage">
-                            <span slot="title">仓库信息</span>
+                            <span slot="title">贮存设施信息</span>
                         </el-menu-item>
                         <el-menu-item index="/addInfo">
                             <span slot="title">标签配置信息</span>

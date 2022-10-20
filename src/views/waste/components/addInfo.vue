@@ -36,21 +36,60 @@
                             <el-option v-for="item in unitData" :key="item.value" :label="item.label" :value="item.value"></el-option>
                         </el-select>
                     </el-col>
-                    <el-col :span="3" class="info-title">危废协议到期时间：</el-col>
+                    <el-col :span="3" class="info-title">主要成分：</el-col>
                     <el-col :span="9">
-                        <el-date-picker v-model="addInfoForm.effectiveTime" size="small" style="width:100%" type="date" value-format="yyyy-MM-dd 00:00:00" placeholder="选择日期"></el-date-picker>
-                        <!-- <el-input size="small" v-model="addInfoForm.chemicalComposition"></el-input> -->
-                    </el-col>
-                </el-row>
-                <el-row class="info-detail">
-                    <el-col :span="2" class="info-title">主要成分：</el-col>
-                    <el-col :span="10">
                         <el-input size="small" v-model="addInfoForm.mainComponents"></el-input>
                     </el-col>
-                    <el-col :span="3" class="info-title">安全措施：</el-col>
+                    <!-- <el-col :span="3" class="info-title">危废协议到期时间：</el-col>
                     <el-col :span="9">
+                        <el-date-picker v-model="addInfoForm.effectiveTime" size="small" style="width:100%" type="date" value-format="yyyy-MM-dd 00:00:00" placeholder="选择日期"></el-date-picker>
+                    </el-col> -->
+                </el-row>
+                <el-row class="info-detail">
+                    <el-col :span="2" class="info-title">安全措施：</el-col>
+                    <el-col :span="10">
                         <el-select v-model="addInfoForm.safetyMeasures" placeholder="请选择" size="small" style="width:100%">
                             <el-option v-for="item in securityMeasuresData" :key="item.value" :label="item.label" :value="item.value"></el-option>
+                        </el-select>
+                    </el-col>
+                    <el-col :span="3" class="info-title">去向：</el-col>
+                    <el-col :span="9">
+                        <el-select v-model="addInfoForm.where" placeholder="请选择" size="small" style="width:100%">
+                            <el-option v-for="item in whereData" :key="item.value" :label="item.label" :value="item.value"></el-option>
+                        </el-select>
+                    </el-col>
+                </el-row>
+                <el-row class="info-detail" v-if="addInfoForm.where == '自行处置' || addInfoForm.where == '自行利用'">
+                    <el-col :span="2" class="info-title">部门经办人：</el-col>
+                    <el-col :span="6">
+                        <el-input size="small" v-model="addInfoForm.ren"></el-input>
+                    </el-col>
+                    <el-col :span="2" class="info-title">设施编码：</el-col>
+                    <el-col :span="6">
+                        <el-input size="small" v-model="addInfoForm.code"></el-input>
+                    </el-col>
+                    <el-col :span="2" class="info-title">自行处置方式：</el-col>
+                    <el-col :span="6">
+                        <el-select v-model="addInfoForm.using" placeholder="请选择" size="small" style="width:100%">
+                            <el-option v-for="item in usingData" :key="item.value" :label="item.label" :value="item.value"></el-option>
+                        </el-select>
+                    </el-col>
+                </el-row>
+                <el-row class="info-detail" v-if="addInfoForm.where == '委外处置' || addInfoForm.where == '委外利用'">
+                    <el-col :span="2" class="info-title">委外单位：</el-col>
+                    <el-col :span="6">
+                        <el-select v-model="addInfoForm.companyUnit" placeholder="请选择" size="small" style="width:100%">
+                            <el-option v-for="item in companyData" :key="item.value" :label="item.label" :value="item.value"></el-option>
+                        </el-select>
+                    </el-col>
+                    <el-col :span="2" class="info-title">利用/处置费用：</el-col>
+                    <el-col :span="6">
+                        <el-input size="small" v-model="addInfoForm.code"></el-input>
+                    </el-col>
+                    <el-col :span="2" class="info-title">委外处置方式：</el-col>
+                    <el-col :span="6">
+                        <el-select v-model="addInfoForm.disposa" placeholder="请选择" size="small" style="width:100%">
+                            <el-option v-for="item in disposalData" :key="item.value" :label="item.label" :value="item.value"></el-option>
                         </el-select>
                     </el-col>
                 </el-row>
@@ -160,12 +199,12 @@
                         </el-select>
                     </el-col>
                 </el-row>
-                <el-row class="model-list">
+                <!-- <el-row class="model-list">
                     <el-col :span="4" class="info-title">危废协议到期时间：</el-col>
                     <el-col :span="18">
                         <el-date-picker v-model="editInfoForm.effectiveTime" size="small" style="width:100%" type="date" value-format="yyyy-MM-dd 00:00:00" placeholder="选择日期"></el-date-picker>
                     </el-col>
-                </el-row>
+                </el-row> -->
                 <el-row class="model-list">
                     <el-col :span="4" class="info-title">主要成分：</el-col>
                     <el-col :span="18"><el-input size="small" v-model="editInfoForm.mainComponents"></el-input></el-col> 
@@ -221,6 +260,11 @@ export default {
                 dangerousSituation:"",
                 safetyMeasures:"",
                 warehouses:[],
+                where:'',
+                using:'',
+                code:"",
+                ren:"",
+                disposa:"",
             }, //提交信息
             idx: 0,
             addInfoTableData: [], //信息列表
@@ -269,6 +313,39 @@ export default {
                 {value:"PP储罐",label:"PP储罐"},
                 {value:"切勿放近易燃物质",label:"切勿放近易燃物质"},
             ],
+            whereData:[
+                {value:"委外处置",label:"委外处置"},
+                {value:"委外利用",label:"委外利用"},
+                {value:"自行处置",label:"自行处置"},
+                {value:"自行利用",label:"自行利用"},
+            ],
+            disposalData:[
+                {value:"D1",label:"填埋"},
+                {value:"D9",label:"物理化学处理（如蒸发，干燥、中和、沉淀等），不包括填埋或焚烧前的预处理"},
+                {value:"D10",label:"焚烧"},
+                {value:"C1",label:"水泥窑共处置（水泥窑协同处置)"},
+                {value:"Y10",label:"医疗废物焚烧"},
+                {value:"Y11",label:"医疗废物高温蒸汽处理"},
+                {value:"Y12",label:"医疗废物化学消毒处理"},
+                {value:"Y13",label:"医疗废物微波消毒处理"},
+                {value:"Y16",label:"医疗废物其他处置方式"},
+                {value:"D16",label:"其他"},
+            ],
+            usingData:[
+                {value:"R1",label:"作为燃料（直接燃烧除外）或以其他方式产生能量"},
+                {value:"R2",label:"溶剂回收/再生（如蒸馏、萃取等)"},
+                {value:"R3",label:"再循环/再利用不是用作溶剂的有机物"},
+                {value:"R4",label:"再循环/再利用金属和金属化合物)"},
+                {value:"R5",label:"再循环/再利用其他无机物"},
+                {value:"R6",label:"再生酸或碱"},
+                {value:"R7",label:"回收污染减除剂的组分"},
+                {value:"R8",label:"回收催化剂组份"},
+                {value:"R9",label:"废油再提炼或其他废油的再利用"},
+                {value:"C2",label:"生产建筑材料"},
+                {value:"C3",label:"清洗（包装容器)"},
+                {value:"R15",label:"其他"},
+            ],
+            companyData:[],//委外处置委外单位
             storage:[],
             storageList:[],
             editStorage:[],

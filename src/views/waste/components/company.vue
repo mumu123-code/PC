@@ -14,6 +14,30 @@
                     </el-col>
                 </el-row>
                 <el-row class="list">
+                    <el-col :span="4" class="info-title">产生部门经办人：</el-col>
+                    <el-col :span="18" class="info-detail">
+                        {{ companyInfo.socialCredit }}
+                    </el-col>
+                </el-row>
+                <el-row class="list">
+                    <el-col :span="4" class="info-title">运送部门经办人：</el-col>
+                    <el-col :span="18" class="info-detail">
+                        {{ companyInfo.socialCredit }}
+                    </el-col>
+                </el-row>
+                <el-row class="list">
+                    <el-col :span="4" class="info-title">贮存部门经办人：</el-col>
+                    <el-col :span="18" class="info-detail">
+                        {{ companyInfo.socialCredit }}
+                    </el-col>
+                </el-row>
+                <el-row class="list">
+                    <el-col :span="4" class="info-title">贮存部门经办人电话：</el-col>
+                    <el-col :span="18" class="info-detail">
+                        {{ companyInfo.socialCredit }}
+                    </el-col>
+                </el-row>
+                <el-row class="list">
                     <el-col :span="4" class="info-title">全国固体废物管理信息系统账号：</el-col>
                     <el-col :span="18" class="info-detail">
                         {{ companyInfo.wasteAccount }}
@@ -59,6 +83,30 @@
             <div class="main" v-if="!showDetail">
                 <el-row class="list">
                     <el-col :span="4" class="info-title">社会信用代码：</el-col>
+                    <el-col :span="8">
+                        <el-input size="small" v-model="companyInfo.socialCredit"></el-input>
+                    </el-col>
+                </el-row>
+                <el-row class="list">
+                    <el-col :span="4" class="info-title">产生部门经办人：</el-col><!--字段名没改-->
+                    <el-col :span="8">
+                        <el-input size="small" v-model="companyInfo.socialCredit"></el-input>
+                    </el-col>
+                </el-row>
+                <el-row class="list">
+                    <el-col :span="4" class="info-title">运送部门经办人：</el-col><!--字段名没改-->
+                    <el-col :span="8">
+                        <el-input size="small" v-model="companyInfo.socialCredit"></el-input>
+                    </el-col>
+                </el-row>
+                <el-row class="list">
+                    <el-col :span="4" class="info-title">贮存部门经办人：</el-col><!--字段名没改-->
+                    <el-col :span="8">
+                        <el-input size="small" v-model="companyInfo.socialCredit"></el-input>
+                    </el-col>
+                </el-row>
+                <el-row class="list">
+                    <el-col :span="4" class="info-title">贮存部门经办人电话：</el-col><!--字段名没改-->
                     <el-col :span="8">
                         <el-input size="small" v-model="companyInfo.socialCredit"></el-input>
                     </el-col>

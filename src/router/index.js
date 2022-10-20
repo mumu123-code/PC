@@ -155,6 +155,11 @@ const routes = [
         name:"storage",
         component:()=>import("../views/waste/components/storage.vue"),
       },
+      {
+        path:"/disposalUnit",
+        name:"disposalUnit",
+        component:()=>import("../views/waste/components/disposalUnit.vue"),
+      },
     ]
   },
  
