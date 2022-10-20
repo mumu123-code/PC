@@ -180,9 +180,9 @@ export default {
     },
     // 获取台账累计时间
     async loadCumulativeTime() {
-      const res = loadCumulativeTime(this.activeId);
-      if(res?.code == '1' && res.data) {
-        this.cumulativeTime = res.data;
+      const res = await loadCumulativeTime(this.activeId);
+      if(res?.code == '1') {
+        this.cumulativeTime = res.data / 60;
       }
     },
     //获取活性炭状态和寿命
