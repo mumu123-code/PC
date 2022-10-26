@@ -36,8 +36,8 @@
                     </div>
                     <div class="list" style="margin-left:14px">
                         <el-button type="primary" @click="selectTable" size="mini">查询</el-button>
-                        <el-button type="primary" @click="downWordFile" size="mini">导出查询数据</el-button>
-                        <el-button type="primary" @click="downWordFile('all')" size="mini">导出所有</el-button>    
+                        <el-button type="primary" @click="downWordFile(true)" size="mini">导出查询数据</el-button>
+                        <el-button type="primary" @click="downWordFile(false)" size="mini">导出所有</el-button>    
                     </div>
                 </div>
                 <div class="tableList" style="margin-top:14px">
@@ -748,7 +748,7 @@ export default{
                 'https://zjlianweihoss.oss-cn-hangzhou.aliyuncs.com/file/1666600289328-委外处置环节.xlsx'
             ];
 
-            if (!type){
+            if (type){
                 window.open(urlArr[arr1.indexOf(this.from.wasteType)]);
             } else {
                 window.open('https://zjlianweihoss.oss-cn-hangzhou.aliyuncs.com/file/1666600200686-产生环节.xlsx');
