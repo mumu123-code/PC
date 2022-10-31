@@ -137,9 +137,9 @@
       <div class="left"></div>
       <label>闲置</label>
       <div class="left"></div>
-      <label>烤漆</label>
-      <div class="left"></div>
-      <label>喷漆</label>
+      <label>工作</label>
+      <!-- <div class="left"></div>
+      <label>喷漆</label> -->
     </div>
     <!-- 颜色提示 e -->
     <div class="mainBg">
@@ -194,146 +194,146 @@ export default {
             show: false
           }
         },
-          { ///大表盘时针
-            name: '小时',
-            type: 'gauge',
-            radius: '70%', //仪表盘半径
-            min: 0,
-            max: 24,
-            startAngle: 90,
-            endAngle: -269.9999,
-            splitNumber: 24,
-            animation: 0,
-            pointer: { //仪表盘指针
-              length: '0%',
-              width: '0%'
-            },
-            itemStyle: { //仪表盘指针样式
-              normal: {
-                color: '#fff',
-                shadowColor: 'rgba(0, 0, 0, 0.5)',
-                shadowBlur: 10,
-                shadowOffsetX: 2,
-                shadowOffsetY: 2
-              }
-            },
-            axisLine: { //仪表盘轴线样式
-              lineStyle: {
-                width: 1,
-              }
-            },
-            axisTick: { //仪表盘刻度样式
-              distance: 0,
-              length: '3%',
-              splitNumber: 4, //分隔线之间分割的刻度数
-              lineStyle: {
-                color: '#ccc',
-                width: 1
-              }
-            },
-            splitLine: { //分割线样式
-              distance: 0,
-              length: '5%',
-              lineStyle: {
-                color: '#ccc',
-                width: 5
-              }
-            },
-            axisLabel: {
-              show: true,
-              formatter: function(param) {
-                if (param !== 0) {
-                  return param
-                } else {
-                  return null
-                }
-              },
-              color: '#333',
-              fontSize: 18,
-              distance: 5,
-            },
-            title: {
-              show: 0
-            }, //仪表盘标题
-            detail: {
-              show: 0
-            }, //仪表盘显示数据
-            data: [{
-              value: null
-            }]
-          }, { ///大表盘分针
-            name: '分钟',
-            type: 'gauge',
-            radius: '0%', //仪表盘半径
-            min: 0,
-            max: 60,
-            startAngle: 90,
-            endAngle: -269.9999,
-            splitNumber: 12,
-            animation: 0,
-            pointer: { //仪表盘指针
-              length: '85%',
-              width: '3%'
-            },
-            itemStyle: { //仪表盘指针样式
-              normal: {
-                color: '#fff',
-                shadowColor: 'rgba(0, 0, 0, 0.5)',
-                shadowBlur: 10,
-                shadowOffsetX: 2,
-                shadowOffsetY: 2
-              }
-            },
-            axisLine: { //仪表盘轴线样式
-              lineStyle: {
-                width: 1,
-              }
-            },
-            splitLine: { //分割线样式
-              show: false,
-            },
-            axisTick: { //仪表盘刻度样式
-              show: false,
- 
-            },
-            axisLabel: {
-              show: false,
-            }, //刻度标签
-            title: {
-              show: 0
-            }, //仪表盘标题
-            detail: {
-              show: 0
-            }, //仪表盘显示数据
-            data: [{
-              value: null
-            }]
+        { ///大表盘时针
+          name: '小时',
+          type: 'gauge',
+          radius: '70%', //仪表盘半径
+          min: 0,
+          max: 24,
+          startAngle: 90,
+          endAngle: -269.9999,
+          splitNumber: 24,
+          animation: 0,
+          pointer: { //仪表盘指针
+            length: '0%',
+            width: '0%'
           },
-          { //指针内环
-            type: 'pie',
-            hoverAnimation: false,
-            legendHoverLink: false,
-            radius: ['0%', '5%'],
-            z: 10,
-            label: {
-              normal: {
-                show: false
+          itemStyle: { //仪表盘指针样式
+            normal: {
+              color: '#fff',
+              shadowColor: 'rgba(0, 0, 0, 0.5)',
+              shadowBlur: 10,
+              shadowOffsetX: 2,
+              shadowOffsetY: 2
+            }
+          },
+          axisLine: { //仪表盘轴线样式
+            lineStyle: {
+              width: 1,
+            }
+          },
+          axisTick: { //仪表盘刻度样式
+            distance: 0,
+            length: '3%',
+            splitNumber: 4, //分隔线之间分割的刻度数
+            lineStyle: {
+              color: '#ccc',
+              width: 1
+            }
+          },
+          splitLine: { //分割线样式
+            distance: 0,
+            length: '5%',
+            lineStyle: {
+              color: '#ccc',
+              width: 5
+            }
+          },
+          axisLabel: {
+            show: true,
+            formatter: function(param) {
+              if (param !== 0) {
+                return param
+              } else {
+                return null
               }
             },
-            labelLine: {
+            color: '#333',
+            fontSize: 18,
+            distance: 5,
+          },
+          title: {
+            show: 0
+          }, //仪表盘标题
+          detail: {
+            show: 0
+          }, //仪表盘显示数据
+          data: [{
+            value: null
+          }]
+        }, { ///大表盘分针
+          name: '分钟',
+          type: 'gauge',
+          radius: '0%', //仪表盘半径
+          min: 0,
+          max: 60,
+          startAngle: 90,
+          endAngle: -269.9999,
+          splitNumber: 12,
+          animation: 0,
+          pointer: { //仪表盘指针
+            length: '85%',
+            width: '3%'
+          },
+          itemStyle: { //仪表盘指针样式
+            normal: {
+              color: '#fff',
+              shadowColor: 'rgba(0, 0, 0, 0.5)',
+              shadowBlur: 10,
+              shadowOffsetX: 2,
+              shadowOffsetY: 2
+            }
+          },
+          axisLine: { //仪表盘轴线样式
+            lineStyle: {
+              width: 1,
+            }
+          },
+          splitLine: { //分割线样式
+            show: false,
+          },
+          axisTick: { //仪表盘刻度样式
+            show: false,
+
+          },
+          axisLabel: {
+            show: false,
+          }, //刻度标签
+          title: {
+            show: 0
+          }, //仪表盘标题
+          detail: {
+            show: 0
+          }, //仪表盘显示数据
+          data: [{
+            value: null
+          }]
+        },
+        { //指针内环
+          type: 'pie',
+          hoverAnimation: false,
+          legendHoverLink: false,
+          radius: ['0%', '5%'],
+          z: 10,
+          label: {
+            normal: {
+              show: false
+            }
+          },
+          labelLine: {
+            normal: {
+              show: false
+            }
+          },
+          data: [{
+            value: 10,
+            itemStyle: {
               normal: {
-                show: false
+                color: "#FFFFFF"
               }
-            },
-            data: [{
-              value: 10,
-              itemStyle: {
-                normal: {
-                  color: "#FFFFFF"
-                }
-              }
-            }]
-          }
+            }
+          }]
+        }
         ]
       }
     };
@@ -408,7 +408,7 @@ export default {
     },
     // echarts 初始化
     init() {
-      const arr = ['#ccc', '#18bc37', '#1890ff', 'red'];
+      const arr = ['#ccc', '#18bc37', '#18bc37', 'red'];
       this.productionStatusArr.forEach(item => {
         const { startTime } = item;
         const timeArr = startTime.split(' ')[1].split(':');
@@ -449,7 +449,7 @@ export default {
       var gethour = (hours_12).toFixed(2);
       var getminutes = (minutes).toFixed(2);
       var dataType = []
-      const arr = ['#ccc', '#18bc37', '#1890ff', 'red', '#fff'];
+      const arr = ['#ccc', '#18bc37', '#18bc37', 'red', '#fff'];
 
       for (let i = 0; i < 96; i++) {
         if(this.productionStatusArr[i] === undefined) {
@@ -555,10 +555,10 @@ export default {
       // 烤漆
       background-color: #18bc37;
     }
-    .left:nth-of-type(4) {
-      // 喷漆
-      background-color: #1890ff;
-    }
+    // .left:nth-of-type(4) {
+    //   // 喷漆
+    //   background-color: #1890ff;
+    // }
     label {
       font-size: 14px;
       color: #333333;
