@@ -1,28 +1,29 @@
-# test_vue
+# VOCs数智哨兵系统(企业版)
 
-## Project setup
-```
-npm install
-```
+## Vue2.x + echart 
 
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
+## 账号、密码
 
-### Compiles and minifies for production
-```
-npm run build
-```
+杭州德奥汽车有限公司
+123456
 
-### Lints and fixes files
-```
-npm run lint
-```
+## 总设备、异常行为、诊断报告、台账报表、电子档案
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+所有的功能都与小程序大气模块类似
 
+## 项目结构
 
-### 项目详情
-vue2.x、element-ui的按需引入、Moment.js日期格式化js库
+自己看吧，都不是很麻烦。
+
+## 接口
+
+https://api.elianwei.com/company/
+
+## 线上地址
+
+http://qy.elianwei.com/
+
+## 小坑
+
+历史数据巨量数据展示成图表。
+
