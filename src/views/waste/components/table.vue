@@ -8,11 +8,11 @@
             <div class="con-list">
                 <div class="searchList">
                     <div class="list">
-                        <div class="list-left write-title">废物代码：</div>
+                        <div class="list-left write-title">贮存设施：</div>
                         <div class="list-right">
-                            <el-select v-model="from.wasteCode" placeholder="请选择" size="mini" class="w-100">
+                            <el-select v-model="from.hwStorageFacilityInfoId" placeholder="请选择" size="mini" class="w-100">
                                 <el-option v-for="(item,i) in wasteList" :key="i"
-                                :label="item.wasteCode" :value="item.wasteCode">
+                                :label="item.name" :value="item.id">
                                 </el-option>
                             </el-select>
                         </div>
@@ -20,7 +20,7 @@
                     <div class="list">
                         <div class="list-left write-title">台账类型：</div>
                         <div class="list-right">
-                            <el-select v-model="from.wasteType" placeholder="请选择" size="mini" class="w-100">
+                            <el-select v-model="from.ledgerType" placeholder="请选择" size="mini" class="w-100" @change="selectTables">
                                 <el-option v-for="(item,i) in wasteTypeList" :key="i"
                                 :label="item.label" :value="item.value">
                                 </el-option>
@@ -30,7 +30,7 @@
                     <div class="dateSelect">
                         <div class="list-left write-title">选择日期：</div>
                         <div class="list-right">
-                            <el-date-picker v-model="rangeTime" type="daterange" range-separator="至"
+                            <el-date-picker v-model="rangeTime" type="daterange" range-separator="至" value-format="yyyy-MM-dd hh:mm:ss"
                                 start-placeholder="开始日期" end-placeholder="结束日期" size="mini"></el-date-picker>
                         </div>
                     </div>
@@ -41,10 +41,10 @@
                     </div>
                 </div>
                 <div class="tableList" style="margin-top:14px">
-                    <TablePackage :dataArr="productionData" :tableArr="productionArr" v-if="from.wasteType == '危废产生环节记录表'"></TablePackage>
-                    <TablePackage :dataArr="inStorageData" :tableArr="inStorageArr" v-else-if="from.wasteType == '危险废物入库环节记录表'"></TablePackage>
-                    <TablePackage :dataArr="outboundData" :tableArr="outboundArr" v-else-if="from.wasteType == '危险废物出库环节记录表'"></TablePackage>
-                    <TablePackage :dataArr="useData" :tableArr="useArr" v-else-if="from.wasteType == '危险废物自行利用/处置环节记录表'"></TablePackage>
+                    <TablePackage :dataArr="productionData" :tableArr="productionArr" v-if="from.ledgerType == 1"></TablePackage>
+                    <TablePackage :dataArr="inStorageData" :tableArr="inStorageArr" v-else-if="from.ledgerType == 2"></TablePackage>
+                    <TablePackage :dataArr="outboundData" :tableArr="outboundArr" v-else-if="from.ledgerType == 3"></TablePackage>
+                    <TablePackage :dataArr="useData" :tableArr="useArr" v-else-if="from.ledgerType == 4"></TablePackage>
                     <TablePackage :dataArr="outsourcingData" :tableArr="outsourcingArr" v-else></TablePackage>
                 </div>
                 <!-- <el-tabs type="border-card" v-model="activeTab" @tab-click="switchTab">
@@ -70,12 +70,12 @@
                                 <el-form-item label="废物代码：">
                                     <el-input v-model="fromInfo.wasteCode" size="small"></el-input>
                                 </el-form-item>
-                                <el-select v-model="fromInfo.wasteType" placeholder="请选择"  size="mini" class="w-100">
+                                <el-select v-model="fromInfo.ledgerType" placeholder="请选择"  size="mini" class="w-100">
                                     <el-option
                                     v-for="(item,i) in wasteTypeList"
                                     :key="i"
-                                    :label="item.wasteType"
-                                    :value="item.wasteType">
+                                    :label="item.ledgerType"
+                                    :value="item.ledgerType">
                                     </el-option>
                                 </el-select>
                             </el-col>
@@ -192,54 +192,22 @@
 // getYearsWasteParameter,
 // import { getMonthWasteParameter,getWasteInfo,getFileParameter,getFileRecord,getWasteAllDetail } from '../../../assets/js/common'
 import TablePackage from '../../../components/tablePackage.vue'
+import { getHwLedgerList,getStorageList,exportLedgerList } from '../../../assets/js/common'
 export default{
     name: "ParameterTable",
     components: { TablePackage },
     data() {
         return {
             from:{
-                wasteCode:'',
-                wasteType:'危废产生环节记录表',
+                hwStorageFacilityInfoId:'',
+                ledgerType:1,
+                endTime:"",
+                startTime:"",
             },
             //危废产生环节记录表
-            productionData: [
-                {
-                    index:1,
-                    batchCode:'HWCS20221024001',
-                    time:'2022/10/24 10:00:00',
-                    unitInternalName:'污泥',
-                    nationalListName:'表面处理废物',
-                    category:'HW17',
-                    code:'336-064-17',
-                    production:'0.5',
-                    unit:'吨',
-                    containerCode:'T1',
-                    containerNumber:'1',
-                    containerType:'桶',
-                    facilityCode:'MF0001',
-                    departmentHandlers:'李阳',
-                    whereabouts:'危废仓库1',
-                },
-                {
-                    index:2,
-                    batchCode:'HWCS20221024002',
-                    time:'2022/10/24 11:00:00',
-                    unitInternalName:'磷化槽脚',
-                    nationalListName:'表面处理废物',
-                    category:'HW17',
-                    code:'336-064-17',
-                    production:'0.6',
-                    unit:'吨',
-                    containerCode:'T2',
-                    containerNumber:'1',
-                    containerType:'桶',
-                    facilityCode:'MF0002',
-                    departmentHandlers:'李阳',
-                    whereabouts:'危废仓库1',
-                }
-            ],
+            productionData: [],
             productionArr:[
-                { name: "序号", prop: "index" },
+                { name: "序号", prop: "id" },
                 { name: "产生批次编码",width:'120px', prop: "batchCode" },
                 { name: "产生时间",width:'120px', prop: "time" },
                 { name: "危险废物名称",children:[
@@ -258,48 +226,9 @@ export default{
                 { name: "去向", prop: "whereabouts" },
             ],
             //危险废物入库环节记录表
-            inStorageData:[
-                {
-                    index:1,
-                    batchCode:'HWRK20221024001',
-                    time:'2022/10/24 13:00:00',
-                    unitInternalName:'污泥',
-                    nationalListName:'表面处理废物',
-                    category:'HW17',
-                    code:'336-064-17',
-                    production:'0.5',
-                    unit:'吨',
-                    containerCode:'T1',
-                    containerNumber:'1',
-                    containerType:'桶',
-                    facilityCode:'TS001',
-                    facilityType:'贮存库',
-                    transportDepartmentHandlers:'赵龙',
-                    departmentHandlers:'李阳',
-                    hwGenerationBatchCode:'HWCS20221024001'
-                },
-                {
-                    index:2,
-                    batchCode:'HWRK20221024002',
-                    time:'2022/10/24 14:00:00',
-                    unitInternalName:'磷化槽脚',
-                    nationalListName:'表面处理废物',
-                    category:'HW17',
-                    code:'336-064-17',
-                    production:'0.6',
-                    unit:'吨',
-                    containerCode:'T2',
-                    containerNumber:'1',
-                    containerType:'桶',
-                    facilityCode:'TS001',
-                    facilityType:'贮存库',
-                    transportDepartmentHandlers:'赵龙',
-                    departmentHandlers:'李阳',
-                    hwGenerationBatchCode:'HWCS20221024002'
-                },
-            ],
+            inStorageData:[],
             inStorageArr:[
-                { name: "序号", prop: "index" },
+                { name: "序号", prop: "id" },
                 { name: "入库批次编码",width:'120px', prop: "batchCode" },
                 { name: "入库时间",width:'120px', prop: "time" },
                 { name: "容器/包装编码", prop: "containerCode",width:"120px" },
@@ -311,7 +240,7 @@ export default{
                 ] },
                 { name: "危险废物类别", prop: "category",width:"150px" },
                 { name: "危险废物代码", prop: "code",width:"150px" },
-                { name: "入库量", prop: "production" },
+                { name: "入库量", prop: "weight" },
                 { name: "计量单位", prop: "unit" },
                 { name: "贮存设施编码", prop: "facilityCode",width:"150px" },
                 { name: "贮存设施类型", prop: "facilityType",width:"150px" },
@@ -320,50 +249,9 @@ export default{
                 { name: "产生批次编码",width:'120px', prop: "hwGenerationBatchCode" },
             ],
             //危险废物出库环节记录表
-            outboundData:[
-                {
-                    index:1,
-                    batchCode:'HWRK20221024001',
-                    time:'2022/10/25 13:00:00',
-                    unitInternalName:'污泥',
-                    nationalListName:'表面处理废物',
-                    category:'HW17',
-                    code:'336-064-17',
-                    production:'0.5',
-                    unit:'吨',
-                    containerCode:'T1',
-                    containerNumber:'1',
-                    containerType:'桶',
-                    facilityCode:'TS001',
-                    facilityType:'贮存库',
-                    transportDepartmentHandlers:'赵龙',
-                    departmentHandlers:'李阳',
-                    hwStorageInBatchCode:'HWRK20221024001',
-                    whereabouts:'委外处置',
-                },
-                {
-                    index:1,
-                    batchCode:'HWCK20221025002',
-                    time:'2022/10/25 15:00:00',
-                    unitInternalName:'磷化槽脚',
-                    nationalListName:'表面处理废物',
-                    category:'HW17',
-                    code:'336-064-17',
-                    production:'0.6',
-                    unit:'吨',
-                    containerCode:'T2',
-                    containerNumber:'1',
-                    containerType:'桶',
-                    facilityCode:'TS001',
-                    facilityType:'贮存库',
-                    transportDepartmentHandlers:'赵龙',
-                    departmentHandlers:'李阳',
-                    hwStorageInBatchCode:'HWRK20221024002',
-                    whereabouts:'自行处置',
-                }
-            ],
+            outboundData:[],
             outboundArr:[
-                { name: "序号", prop: "index" },
+                { name: "序号", prop: "id" },
                 { name: "出库批次编码",width:'120px', prop: "batchCode" },
                 { name: "出库时间",width:'120px', prop: "time" },
                 { name: "容器/包装编码", prop: "containerCode",width:"120px" },
@@ -375,39 +263,19 @@ export default{
                 ] },
                 { name: "危险废物类别", prop: "category",width:"150px" },
                 { name: "危险废物代码", prop: "code",width:"150px" },
-                { name: "出库量", prop: "production" },
+                { name: "出库量", prop: "weight" },
                 { name: "计量单位", prop: "unit" },
                 { name: "贮存设施编码", prop: "facilityCode",width:"150px" },
                 { name: "贮存设施类型", prop: "facilityType",width:"150px" },
-                { name: "出库部门经办人", prop: "transportDepartmentHandlers",width:"120px" },
-                { name: "运送部门经办人", prop: "departmentHandlers",width:"120px" },
+                { name: "出库部门经办人", prop: "departmentHandlers",width:"120px" },
+                { name: "运送部门经办人", prop: "transportDepartmentHandlers",width:"120px" },
                 { name: "入库批次编码",width:'120px', prop: "hwStorageInBatchCode" },
                 { name: "去向",prop: "whereabouts" },
             ],
             //危险废物自行利用/处置环节记录表
-            useData:[
-                {
-                    index:1,
-                    batchCode:'HWZXCZ20221024001',
-                    time:'2022/10/25 17:00:00',
-                    unitInternalName:'磷化槽脚',
-                    nationalListName:'表面处理废物',
-                    category:'HW17',
-                    code:'336-064-17',
-                    production:'0.6',
-                    unit:'吨',
-                    containerCode:'T2',
-                    containerNumber:'1',
-                    containerType:'桶',
-                    facilityCode:'TS002',
-                    way:'填埋',
-                    completionTime:'2022/10/25 17:00:00',
-                    departmentHandlers:'李阳立',
-                    hwStorageOutBatchCode:'HWCK20221025002'
-                },
-            ],
+            useData:[],
             useArr:[
-                { name: "序号", prop: "index" },
+                { name: "序号", prop: "id" },
                 { name: "自行利用/处置批次编码", prop: "batchCode",width:'180px' },
                 { name: "自行利用/处置时间", prop: "time",width:'160px' },
                 { name: "容器/包装编码", prop: "containerCode",width:"120px" },
@@ -419,7 +287,7 @@ export default{
                 ] },
                 { name: "危险废物类别", prop: "category",width:"150px" },
                 { name: "危险废物代码", prop: "code",width:"150px" },
-                { name: "自行利用/处置量", prop: "production",width:"150px" },
+                { name: "自行利用/处置量", prop: "weight",width:"150px" },
                 { name: "计量单位", prop: "unit" },
                 { name: "自行利用/处置设施编码", prop: "facilityCode",width:"180px" },
                 { name: "自行利用/处置方式", prop: "way",width:"150px" },
@@ -428,32 +296,9 @@ export default{
                 { name: "产生批次编码/出库批次编码", prop: "hwStorageOutBatchCode",width:"200px" },
             ],
             //危险废物委外利用/处置记录表
-            outsourcingData:[
-                {
-                    index: 1,
-                    batchCode:'HWWWCZ20221024001',
-                    time:'2022/10/25 14:00:00',
-                    unitInternalName:'污泥',
-                    nationalListName:'表面处理废物',
-                    category:'HW17',
-                    code:'336-064-17',
-                    production:'0.5',
-                    unit:'吨',
-                    containerCode:'T1',
-                    containerNumber:'1',
-                    containerType:'桶',
-                    way:'填埋',
-                    receivingUnitType:'危险废物经营许可证持有单位',
-                    unitName:'杭州赐翔环保科技有限公司',
-                    licenseCode:'3301000210',
-                    exemptManagementUnitName:'',
-                    overseasUnitName:'',
-                    overseasUnitExportApprovalNoticeNumber:'',
-                    hwStorageOutBatchCode:'HWCK20221025001'
-                }
-            ],
+            outsourcingData:[],
             outsourcingArr:[
-                { name: "序号", prop: "index" },
+                { name: "序号", prop: "id" },
                 { name: "委外利用/处置批次编码", prop: "batchCode",width:'180px' },
                 { name: "出厂时间", prop: "time",width:'160px' },
                 { name: "容器/包装编码", prop: "containerCode",width:"120px" },
@@ -465,7 +310,7 @@ export default{
                 ] },
                 { name: "危险废物类别", prop: "category",width:"150px" },
                 { name: "危险废物代码", prop: "code",width:"150px" },
-                { name: "委外利用/处置量", prop: "production",width:"150px" },
+                { name: "委外利用/处置量", prop: "weight",width:"150px" },
                 { name: "计量单位", prop: "unit" },
                 { name: "利用/处置方式", prop: "way",width:"150px" },
                 { name: "接收单位类型", prop: "receivingUnitType",width:"180px" },
@@ -521,7 +366,7 @@ export default{
                 // wasteCode: "",
                 // startTime: "",
                 // endTime: "",
-                // wasteType: "",
+                // ledgerType: "",
             // },
             yearsTime: [],
             fromYearsInfo: {
@@ -544,11 +389,11 @@ export default{
             },
             wasteList: [],
             wasteTypeList: [
-                { value: "危废产生环节记录表", label: "危废产生环节记录表" },
-                { value: "危险废物入库环节记录表", label: "危险废物入库环节记录表" },
-                { value: "危险废物出库环节记录表", label: "危险废物出库环节记录表" },
-                { value: "危险废物自行利用/处置环节记录表", label: "危险废物自行利用/处置环节记录表" },
-                { value: "危险废物委外利用/处置记录表", label: "危险废物委外利用/处置记录表" },
+                { value: 1, label: "危废产生环节记录表" },
+                { value: 2, label: "危险废物入库环节记录表" },
+                { value: 3, label: "危险废物出库环节记录表" },
+                { value: 4, label: "危险废物自行利用/处置环节记录表" },
+                { value: 5, label: "危险废物委外利用/处置记录表" },
             ]
         };
     },
@@ -563,20 +408,85 @@ export default{
         // this.getExportYearsList();
         // this.getList();
         // this.getWasteList("");
+        this.getTablesLists();
+        this.getStorage();
     },
     methods: {
+        //获取贮存设施
+        async getStorage(){
+            this.wasteList.length = 0;
+            const res = await getStorageList();
+            if(res?.code == "1"){
+                this.wasteList = res.data;
+                // if(res.data.length != 0){
+                //     res.data.forEach(item => {
+                //         this.wasteList.push({value:item.id,label:item.name})
+                //     })
+                // }
+            }
+        },
+        //选择类型
+        selectTables(){
+            this.getTablesLists();
+        },
+        //获取列表
+        async getTablesLists(){
+            const res = await getHwLedgerList(this.from);
+            if(res?.code == "1"){
+                switch(this.from.ledgerType){
+                    case 1:
+                        res.data.hwGenerationPOs.map(item =>{
+                            item.unit = "吨"
+                        })
+                        this.productionData = res.data.hwGenerationPOs;
+                        break;
+                    case 2:
+                        res.data.hwStorageInPOs.map(item =>{
+                            item.unit = "吨"
+                        })
+                        this.inStorageData = res.data.hwStorageInPOs;
+                        break;
+                    case 3:
+                        res.data.hwStorageOutPOs.map(item =>{
+                            item.unit = "吨"
+                        })
+                        this.outboundData = res.data.hwStorageOutPOs;
+                        break;
+                    case 4:
+                        res.data.hwUseInternalPOs.map(item =>{
+                            item.unit = "吨"
+                        })
+                        this.useData = res.data.hwUseInternalPOs;
+                        break;
+                    case 5:
+                        res.data.hwUseExternalPOs.map(item =>{
+                            item.unit = "吨"
+                        })
+                        this.outsourcingData = res.data.hwUseExternalPOs;
+                        break;
+                }
+            }
+        },
+
+
         selectTable() {
-            this.fromYearsInfo.pageNum = 0;
-            this.from.pageNum = 0;
-            if (this.activeTab == "years") {
-                this.getAllParameter();
-                return;
+            // this.fromYearsInfo.pageNum = 0;
+            // this.from.pageNum = 0;
+            // if (this.activeTab == "years") {
+            //     this.getAllParameter();
+            //     return;
+            // }
+            // ;
+            // if (this.from.hwStorageFacilityInfoId == "请选择") {
+            //     this.from.hwStorageFacilityInfoId = "";
+            // }
+            this.from.startTime = "";
+            this.from.endTime = "";
+            if(this.rangeTime != null){
+                this.from.startTime = this.rangeTime[0];
+                this.from.endTime = this.rangeTime[1];
             }
-            ;
-            if (this.from.wasteCode == "请选择") {
-                this.from.wasteCode = "";
-            }
-            // this.getList();
+            this.getTablesLists();
         },
         isType(type) {
             let state = "";
@@ -738,54 +648,69 @@ export default{
         //     }
         // },
         //下载Word文件
-        downWordFile(type) {
-            const arr1 = ['危废产生环节记录表', '危险废物入库环节记录表', '危险废物出库环节记录表', '危险废物自行利用/处置环节记录表', '危险废物委外利用/处置记录表'];
-            const urlArr = [
-                'https://zjlianweihoss.oss-cn-hangzhou.aliyuncs.com/file/1666600200686-产生环节.xlsx',
-                'https://zjlianweihoss.oss-cn-hangzhou.aliyuncs.com/file/1666600239835-入库环节.xlsx',
-                'https://zjlianweihoss.oss-cn-hangzhou.aliyuncs.com/file/1666600260546-出库环节.xlsx',
-                'https://zjlianweihoss.oss-cn-hangzhou.aliyuncs.com/file/1666600314477-自行利用环节.xlsx',
-                'https://zjlianweihoss.oss-cn-hangzhou.aliyuncs.com/file/1666600289328-委外处置环节.xlsx'
-            ];
-
-            if (type){
-                window.open(urlArr[arr1.indexOf(this.from.wasteType)]);
-            } else {
-                window.open('https://zjlianweihoss.oss-cn-hangzhou.aliyuncs.com/file/1666600200686-产生环节.xlsx');
-                window.open('https://zjlianweihoss.oss-cn-hangzhou.aliyuncs.com/file/1666600239835-入库环节.xlsx');
-                window.open('https://zjlianweihoss.oss-cn-hangzhou.aliyuncs.com/file/1666600260546-出库环节.xlsx');
-                window.open('https://zjlianweihoss.oss-cn-hangzhou.aliyuncs.com/file/1666600314477-自行利用环节.xlsx');
-                window.open('https://zjlianweihoss.oss-cn-hangzhou.aliyuncs.com/file/1666600289328-委外处置环节.xlsx');
-                console.log('执行了')
-                urlArr.forEach(url => {
-                    const iframe = document.createElement("iframe");
-                    iframe.style.display = "none"; // 防止影响页面
-                    iframe.style.height = 0; // 防止影响页面
-                    iframe.src = url; 
-                    document.body.appendChild(iframe); // 这一行必须，iframe挂在到dom树上才会发请求
-                    // 5分钟之后删除（onload方法对于下载链接不起作用，就先抠脚一下吧）
-                    setTimeout(()=>{
-                        iframe.remove();
-                    }, 5 * 60 * 1000);
-                });
-            }
-
-            
-            
-            // console.log(arr1.indexOf(this.from.wasteType));
-            // let link = document.createElement("a");
-            // link.href = url;
-            // if(type == "num"){
-            //    link.download = "导出所选危废年汇总台账记录.doc" //下载的文件名
-            // } else if(type == "all"){
-            //     link.download = "导出全部台账.doc" //下载的文件名
-            // } else {
-            //    link.download = "导出所选危废月台账记录.doc" //下载的文件名
-            // } 
-            // document.body.appendChild(link);
-            // link.click();
-            // document.body.removeChild(link);
+        async downWordFile(state){
+            let res = "";
+            state == true ? res = await exportLedgerList(this.from) : res = await exportLedgerList({ledgerType:0});
+            const blob = new Blob([res]); //res为后台返回的文件流
+            const href = URL.createObjectURL(blob); 
+            const link = window.document.createElement("a") //生成a标签用于模拟下载
+            state == true ? link.download = "查询台账.xlsx" : link.download = "所有台账.xlsx"; //自定义下载文件名称
+            link.href = href 
+            //link.setAttribute("href", href);
+            window.document.body.appendChild(link);
+            link.click();
+            //释放空间
+            // window.document.body.removeChild("link");
+            // URL.removeObjectURL(href);
         },
+        // downWordFile(type) {
+        //     const arr1 = ['危废产生环节记录表', '危险废物入库环节记录表', '危险废物出库环节记录表', '危险废物自行利用/处置环节记录表', '危险废物委外利用/处置记录表'];
+        //     const urlArr = [
+        //         'https://zjlianweihoss.oss-cn-hangzhou.aliyuncs.com/file/1666600200686-产生环节.xlsx',
+        //         'https://zjlianweihoss.oss-cn-hangzhou.aliyuncs.com/file/1666600239835-入库环节.xlsx',
+        //         'https://zjlianweihoss.oss-cn-hangzhou.aliyuncs.com/file/1666600260546-出库环节.xlsx',
+        //         'https://zjlianweihoss.oss-cn-hangzhou.aliyuncs.com/file/1666600314477-自行利用环节.xlsx',
+        //         'https://zjlianweihoss.oss-cn-hangzhou.aliyuncs.com/file/1666600289328-委外处置环节.xlsx'
+        //     ];
+
+        //     if (type){
+        //         window.open(urlArr[arr1.indexOf(this.from.ledgerType)]);
+        //     } else {
+        //         window.open('https://zjlianweihoss.oss-cn-hangzhou.aliyuncs.com/file/1666600200686-产生环节.xlsx');
+        //         window.open('https://zjlianweihoss.oss-cn-hangzhou.aliyuncs.com/file/1666600239835-入库环节.xlsx');
+        //         window.open('https://zjlianweihoss.oss-cn-hangzhou.aliyuncs.com/file/1666600260546-出库环节.xlsx');
+        //         window.open('https://zjlianweihoss.oss-cn-hangzhou.aliyuncs.com/file/1666600314477-自行利用环节.xlsx');
+        //         window.open('https://zjlianweihoss.oss-cn-hangzhou.aliyuncs.com/file/1666600289328-委外处置环节.xlsx');
+        //         // console.log('执行了')
+        //         urlArr.forEach(url => {
+        //             const iframe = document.createElement("iframe");
+        //             iframe.style.display = "none"; // 防止影响页面
+        //             iframe.style.height = 0; // 防止影响页面
+        //             iframe.src = url; 
+        //             document.body.appendChild(iframe); // 这一行必须，iframe挂在到dom树上才会发请求
+        //             // 5分钟之后删除（onload方法对于下载链接不起作用，就先抠脚一下吧）
+        //             setTimeout(()=>{
+        //                 iframe.remove();
+        //             }, 5 * 60 * 1000);
+        //         });
+        //     }
+
+            
+            
+        //     // console.log(arr1.indexOf(this.from.ledgerType));
+        //     // let link = document.createElement("a");
+        //     // link.href = url;
+        //     // if(type == "num"){
+        //     //    link.download = "导出所选危废年汇总台账记录.doc" //下载的文件名
+        //     // } else if(type == "all"){
+        //     //     link.download = "导出全部台账.doc" //下载的文件名
+        //     // } else {
+        //     //    link.download = "导出所选危废月台账记录.doc" //下载的文件名
+        //     // } 
+        //     // document.body.appendChild(link);
+        //     // link.click();
+        //     // document.body.removeChild(link);
+        // },
     },
     
 }

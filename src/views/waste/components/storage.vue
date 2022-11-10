@@ -1,29 +1,24 @@
 <template>
   <div class="storageContainer">
-    <div class="title">仓库信息</div>
+    <div class="title">贮存设施信息</div>
     <el-card>
-        <div class="card-title">仓库信息填写</div>
+        <div class="card-title">设施信息填写</div>
         <div class="main">
             <el-row class="list">
-                <el-col :span="2" class="main-title">仓库名称：</el-col>
+                <!-- <el-col :span="2" class="main-title">仓库名称：</el-col>
                 <el-col :span="10">
                     <el-input size="small" style="width:100%" v-model="fromInfo.name"></el-input>    
-                </el-col>
+                </el-col> -->
                 <el-col :span="2" class="main-title">仓库面积：</el-col>
                 <el-col :span="10">
-                    <el-input size="small" style="width:100%" v-model="fromInfo.area"  @keyup.native="oninput()"></el-input>    
+                    <el-input size="small" style="width:100%" v-model="fromInfo.storageArea"  @keyup.native="oninput()"></el-input>    
                 </el-col>
             </el-row>
-            <el-row class="list">
-                <el-col :span="2" class="main-title">仓库地址：</el-col>
-                <el-col :span="22">
-                    <el-input size="small" type="textarea" style="width:100%" v-model="fromInfo.address"></el-input>    
-                </el-col>
-            </el-row>
+            
             <el-row class="list">
                 <el-col :span="2" class="main-title">贮存设施序号：</el-col>
                 <el-col :span="10">
-                    <el-select v-model="fromInfo.num" placeholder="请选择" size="small" style="width:100%">
+                    <el-select v-model="fromInfo.serialNumber" placeholder="请选择" size="small" style="width:100%">
                         <el-option v-for="item in facilitiesData" :key="item.value" :label="item.label" :value="item.value"></el-option>
                     </el-select> 
                 </el-col>
@@ -40,6 +35,12 @@
                     </el-select> 
                 </el-col>
             </el-row>
+            <el-row class="list">
+                <el-col :span="2" class="main-title">仓库地址：</el-col>
+                <el-col :span="22">
+                    <el-input size="small" type="textarea" style="width:100%" v-model="fromInfo.address"></el-input>    
+                </el-col>
+            </el-row>
             <el-row class="m-top">
                 <el-col :span="2" :offset="11">
                     <el-button type="primary" style="width:100%" size="small" @click.native="addStorage">添加</el-button>
@@ -49,14 +50,16 @@
         
     </el-card>
     <el-card>
-        <div class="card-title">仓库信息列表</div>
+        <div class="card-title">设施信息列表</div>
         <div class="table">
             <el-table :data="list" style="width: 100%" :header-cell-style="{ background: '#F5F3F2' }">
-                <el-table-column prop="name" label="仓库名称"></el-table-column>
-                <el-table-column prop="name" label="仓库面积"></el-table-column>
-                <el-table-column prop="name" label="贮存设施序号"></el-table-column>
+                <!-- <el-table-column prop="name" label="仓库名称"></el-table-column> -->
+                <el-table-column prop="serialNumber" label="贮存设施序号"></el-table-column>
                 <el-table-column prop="name" label="贮存设施名称"></el-table-column>
-                <el-table-column prop="name" label="仓库地址"></el-table-column>
+                <el-table-column prop="code" label="贮存设施编码"></el-table-column>
+                <el-table-column prop="type" label="贮存设施类型"></el-table-column>
+                <el-table-column prop="storageArea" label="仓库面积"></el-table-column>
+                <el-table-column prop="address" label="仓库地址"></el-table-column>
                 <el-table-column prop="recoverAmount" label="修改" width="80">
                     <template slot-scope="scope">
                         <el-button type="primary" size="small" @click.native="editInfo(scope.row)">修改</el-button>
@@ -69,40 +72,40 @@
     <!-- 修改仓库信息 -->
     <el-dialog title="修改仓库信息" :visible.sync="showModel" width="50%" :before-close="hideModel">
         <div class="model-con">
-            <el-row class="model-list">
-                <el-col :span="4" class="info-title">仓库名称：</el-col>
-                <el-col :span="8">
-                   <el-input size="small" style="width:100%" v-model="editForm.name"></el-input>    
-                </el-col>
-                <el-col :span="4" class="info-title">仓库面积：</el-col>
-                <el-col :span="8">
-                    <el-input size="small" style="width:100%" v-model="fromInfo.area"></el-input>    
-                </el-col>
-            </el-row>
-            <el-row class="list">
-                <el-col :span="4" class="info-title">仓库地址：</el-col>
-                <el-col :span="20">
-                    <el-input size="small" style="width:100%" v-model="fromInfo.address"></el-input>    
-                </el-col>
-            </el-row>
             <el-row class="list">
                 <el-col :span="4" class="info-title">贮存设施序号：</el-col>
                 <el-col :span="8">
-                    <el-select v-model="fromInfo.num" placeholder="请选择" size="small" style="width:100%">
+                    <el-select v-model="editForm.serialNumber" placeholder="请选择" size="small" style="width:100%">
                         <el-option v-for="item in facilitiesData" :key="item.value" :label="item.label" :value="item.value"></el-option>
                     </el-select> 
                 </el-col>
                 <el-col :span="4" class="info-title">贮存设施名称：</el-col>
                 <el-col :span="8">
-                    <el-input size="small" style="width:100%" v-model="fromInfo.name"></el-input>    
+                    <el-input size="small" style="width:100%" v-model="editForm.name"></el-input>    
                 </el-col>
             </el-row>
             <el-row class="list">
                 <el-col :span="4" class="info-title">贮存设施类型：</el-col>
                 <el-col :span="8">
-                    <el-select v-model="fromInfo.type" placeholder="请选择" size="small" style="width:100%">
+                    <el-select v-model="editForm.type" placeholder="请选择" size="small" style="width:100%">
                         <el-option v-for="item in facilitiesType" :key="item.value" :label="item.label" :value="item.value"></el-option>
                     </el-select> 
+                </el-col>
+            </el-row>
+            <el-row class="model-list">
+                <!-- <el-col :span="4" class="info-title">仓库名称：</el-col>
+                <el-col :span="8">
+                   <el-input size="small" style="width:100%" v-model="editForm.name"></el-input>    
+                </el-col> -->
+                <el-col :span="4" class="info-title">仓库面积：</el-col>
+                <el-col :span="8">
+                    <el-input size="small" style="width:100%" v-model="editForm.storageArea"></el-input>    
+                </el-col>
+            </el-row>
+            <el-row class="list">
+                <el-col :span="4" class="info-title">仓库地址：</el-col>
+                <el-col :span="20">
+                    <el-input size="small" style="width:100%" v-model="editForm.address"></el-input>    
                 </el-col>
             </el-row>
         </div>
@@ -115,15 +118,15 @@
 </template>
 
 <script>
-import { addStorageInfo,getStorageList,editStorageInfo } from "../../../assets/js/common"
+import { addStorageInfo,getStorageList,editStorageInfo,getCompanyInfo } from "../../../assets/js/common"
 export default {
   name: "storageContainer",
   data() {
     return {
         fromInfo:{
             name:"",
-            area:'',
-            num:'',
+            storageArea:'',
+            serialNumber:'',
             address:"",
             type:"",
         },
@@ -140,18 +143,33 @@ export default {
     }
   },
   created(){
-    this.getList();
     for(let i = 1;i <= 20; i++){
         this.facilitiesData.push({value:i,label:i});
     }
   },
+  mounted(){
+    this.getList();
+    this.getCompanyAddressInfo();
+  },
   methods: {
+    //获取企业信息中的地址
+    async getCompanyAddressInfo(){
+        const res = await getCompanyInfo();
+        if(res?.code == "1"){
+            this.fromInfo.address = res.data.address;
+        }
+    },
     //添加仓库
     async addStorage(){
         const res = await addStorageInfo(this.fromInfo);
         if(res?.code == "1"){
             this.$message.success("添加成功")
-            this.fromInfo.name = "";
+            this.fromInfo ={
+                name:"",
+                storageArea:'',
+                serialNumber:'',
+                type:"",
+            };
             this.getList();
         }else{
             this.$message.error("添加失败")
@@ -181,11 +199,11 @@ export default {
     },
     //小数点校验
     oninput() {
-       let v =  this.fromInfo.area;
+       let v =  this.fromInfo.storageArea;
        let o = v.split(".");
        if(o.length == 2){
         let p = o[1].slice(0,4);
-        this.fromInfo.area = o[0]+"."+p;
+        this.fromInfo.storageArea = o[0]+"."+p;
        }
     },
     //隐藏模态框

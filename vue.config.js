@@ -9,7 +9,7 @@ module.exports = {
     //   host: "localhost",
     proxy: { //配置跨域
       '/api': {
-        target: "https://api.elianwei.com/company",//这里后台的地址
+        target: "https://api.elianwei.com/company1",//这里后台的地址https://api.elianwei.com/company
         changOrigin: true,//允许跨域
         pathRewrite: { //对请求路径进行重定向匹配到请求地址，
           '^/api': ''//请求的时候使用这个api

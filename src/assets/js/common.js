@@ -76,54 +76,73 @@ export function addActivatedCarbon(data){
 //     })
 // }
 
-
- 
-export function getMonthWasteParameter(data){
+// 台账
+export function getHwLedgerList(data){
     return request({
         method:"get",
-        // url:"/waste/detailQuery",
-        url:"/company-waste/waste/detailQuery/withMonth",
+        url:"/company-waste/hwLedger/read",
         data
     })
 }
-
-//获取全部明细(word文档导出)
-export function getWasteAllDetail(){
+//导出台账
+export function exportLedgerList(data){
+    // return window.location.href = "/api"+"/company-waste/hwLedger/readExcel?"+data;
     return request({
         method:"get",
-        // url:"/company-waste/waste/detailQuery",
-        url:"/company-waste/waste/detailQuery/withMonth/exportWord",
-        // data
-    })
-}
-
-
-//固废月台账导出数据    
-export function getExportMonthWasteParameter(data){
-    return request({
-        method:"post",
-        url:"/company-waste/waste/listToXSSF",
+        url:"/company-waste/hwLedger/readExcel",
+        responseType:'blob',      //重点重点，，位置要写对，
         data
     })
 }
+//导出所有台账
 
-//固废台账列表(年)
-export function getYearsWasteParameter(data){
-    return request({
-        method:"post",
-        url:"/company-waste/waste/pageMonthList",
-        data
-    })
-}
 
-//固废年台账导出数据
-export function getExportYearsWasteParameter(data){
-    return request({
-        method:"post",
-        url:"/company-waste/waste/monthListToXSSF",
-        data
-    })
-}
+// export function getMonthWasteParameter(data){
+//     return request({
+//         method:"get",
+//         // url:"/waste/detailQuery",
+//         url:"/company-waste/waste/detailQuery/withMonth",
+//         data
+//     })
+// }
+
+// //获取全部明细(word文档导出)
+// export function getWasteAllDetail(){
+//     return request({
+//         method:"get",
+//         // url:"/company-waste/waste/detailQuery",
+//         url:"/company-waste/waste/detailQuery/withMonth/exportWord",
+//         // data
+//     })
+// }
+
+
+// //固废月台账导出数据    
+// export function getExportMonthWasteParameter(data){
+//     return request({
+//         method:"post",
+//         url:"/company-waste/waste/listToXSSF",
+//         data
+//     })
+// }
+
+// //固废台账列表(年)
+// export function getYearsWasteParameter(data){
+//     return request({
+//         method:"post",
+//         url:"/company-waste/waste/pageMonthList",
+//         data
+//     })
+// }
+
+// //固废年台账导出数据
+// export function getExportYearsWasteParameter(data){
+//     return request({
+//         method:"post",
+//         url:"/company-waste/waste/monthListToXSSF",
+//         data
+//     })
+// }
 
 //获取设备列表
 export function getDeviceList(){
@@ -182,7 +201,7 @@ export function getStatistical(data){
     })
 }
 
-//获取配置信息列表
+//获取标签配置信息列表
 export function getConfigurationInfoList(data){
     return request({
         method:"get",
@@ -205,9 +224,18 @@ export function addConfigurationInfo(data){
 //修改标签配置信息
 export function editConfigurationInfo(data){
     return request({
-        method:"put",
+        method:"post",
         url:"/company-waste/code/update",
         // url:"/waste/saveOrUpdateWasteCompanyInit",
+        data
+    })
+}
+
+//获取自行利用处置方式
+export function getVoluntarilyDisposal(data){
+    return request({
+        method:"get",
+        url:"/company-waste/hwWayDict/read",
         data
     })
 }
@@ -242,7 +270,7 @@ export function getStorageInfoList(data){
 export function getCompanyInfo(){
     return request({
         method:"get",
-        url:"/company-waste/user/getBasic"
+        url:"/company-waste/companyInfoUpdate/read"
     })
 }
 
@@ -250,11 +278,35 @@ export function getCompanyInfo(){
 export function editCompanyInfo(data){
     return request({
         method:"post",
-        url:"/company-waste/user/update",
+        url:"/company-waste/companyInfoUpdate/update",
         data
     })
 }
 
+/*处置单位*/
+//列表
+export function getDisposalUnit(){
+    return request({
+        method:"post",
+        url:"/company-waste/hwExternalUnit/read",
+    })
+}
+//添加
+export function addDisposalUnit(data){
+    return request({
+        method:"post",
+        url:"/company-waste/hwExternalUnit/create",
+        data
+    })
+}
+//修改
+export function editDisposalUnit(data){
+    return request({
+        method:"post",
+        url:"/company-waste/hwExternalUnit/update",
+        data
+    })
+}
 //获取仓库列表
 export function getStorageList(){
     return request({

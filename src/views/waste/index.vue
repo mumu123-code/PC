@@ -2,11 +2,11 @@
     <div class="wasteList">
           <el-container>
             <el-header>
-                
+                连微数智哨兵系统
             </el-header>
             <!-- <div class="title">( {{ companyName }} )</div> -->
             <div class="title-exit">
-                <!-- <div class="title">( {{companyName}} )</div> -->
+                <div class="title">( {{companyName}} )</div>
                 <!-- <el-button class="exit" type="primary" icon="el-icon-user" size="mini" @click.native="loginOut">退出</el-button> -->
                 <div class="exit">
                     <el-button type="primary" size="mini" @click.native="loginHome">首页</el-button>
@@ -108,6 +108,7 @@ export default{
 }
 .wasteList{
     color: #333;
+    min-width: 1200px;
     .el-header {
         // background-color: #fff;
         // text-align: center;
@@ -146,7 +147,7 @@ export default{
     }
     .el-aside {
         background-color: #324158;
-        height: 92vh;
+        height: 94.5vh;
     }
     .el-menu{
         background: #324158;
@@ -161,7 +162,7 @@ export default{
     }
     .el-main {
         background-color: #fff;
-        height: 92vh;
+        height: 94.5vh;
     }
 }
 

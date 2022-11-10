@@ -1,21 +1,20 @@
 import axios from "axios";
 
 const instance = axios.create({
-  baseURL: "https://api.elianwei.com/company/", //https://api.elianwei.com/company/ http://192.168.2.62:8994/company/
+  baseURL: "/api", //https://api.elianwei.com/company/ http://192.168.2.62:8994/company/
   timeout: 50000,
 });
 
 // 请求拦截
 instance.interceptors.request.use((config) => {
-  let token;
+  let Token;
   if (sessionStorage.getItem('userInfo')) {
-    token = JSON.parse(sessionStorage.getItem('userInfo')).token;
+    Token = JSON.parse(sessionStorage.getItem('userInfo')).token;
   }
-
-
-  const headers = config.headers;
-  // if(!headers.Authorization)
-  headers.Token = token;
+  let headers = config.headers;
+  // let Token = token;//sessionStorage.getItem('Token');
+  // Token == undefined ?
+  Token && (headers.Token = Token);
   return config;
 });
 
