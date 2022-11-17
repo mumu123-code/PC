@@ -87,7 +87,7 @@
                             <el-option v-for="item in companyData" :key="item.value" :label="item.label" :value="item.value"></el-option>
                         </el-select>
                     </el-col>
-                    <el-col :span="2" class="info-title">利用/处置费用：</el-col>
+                    <el-col :span="2" class="info-title">利用/处置费用(万元/吨)：</el-col>
                     <el-col :span="6">
                         <el-input size="small" v-model="addInfoForm.externalCost"></el-input>
                     </el-col>
@@ -175,7 +175,7 @@
                                 </div>
                             </template>
                         </el-table-column>
-                        <el-table-column prop="externalCost" label="利用/处置费用" width="200"></el-table-column>
+                        <el-table-column prop="externalCost" label="利用/处置费用(万元/吨)" width="200"></el-table-column>
                         <el-table-column prop="externalWayCode" label="委外处置方式" width="200">
                             <template slot-scope="scope">
                                 <div>
@@ -285,7 +285,7 @@
                         </el-col>
                     </el-row>
                     <el-row class="model-list">
-                        <el-col :span="4" class="info-title">利用/处置费用：</el-col>
+                        <el-col :span="4" class="info-title">利用/处置费用(万元/吨)：</el-col>
                         <el-col :span="18">
                             <el-input size="small" v-model="editInfoForm.externalCost"></el-input>
                         </el-col>
