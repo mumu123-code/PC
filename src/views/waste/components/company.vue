@@ -82,7 +82,7 @@
                 <el-row class="list">
                     <el-col :span="7" class="info-title">固废管理联系人电话：</el-col>
                     <el-col :span="13" class="info-detail">
-                        {{ companyInfo.wastePhone }}
+                        {{ companyInfo.wastePhone }} 
                     </el-col>
                 </el-row>
                 <el-row class="list">
