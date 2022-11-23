@@ -69,8 +69,13 @@
                         <el-input size="small" v-model="addInfoForm.internalFacilityCode"></el-input>
                     </el-col>
                     <el-col :span="2" class="info-title">自行利用处置方式：</el-col>
-                    <el-col :span="6">
-                        <el-select v-model="addInfoForm.internalWayCode" placeholder="请选择" size="small" style="width:100%">
+                    <el-col :span="6" v-if="addInfoForm.type == '自行处置' || addInfoForm.type == '委外处置'">
+                        <el-select v-model="addInfoForm.externalWayCode" placeholder="请选择" size="small" style="width:100%">
+                            <el-option v-for="item in disposalData" :key="item.value" :label="item.label" :value="item.value"></el-option>
+                        </el-select>
+                    </el-col>
+                    <el-col :span="6" v-if="addInfoForm.type == '自行利用' || addInfoForm.type == '委外利用'">
+                        <el-select v-model="addInfoForm.externalWayCode" placeholder="请选择" size="small" style="width:100%">
                             <el-option v-for="item in disposalList" :key="item.value" :label="item.label" :value="item.value"></el-option>
                         </el-select>
                     </el-col>
@@ -82,14 +87,19 @@
                             <el-option v-for="item in companyData" :key="item.value" :label="item.label" :value="item.value"></el-option>
                         </el-select>
                     </el-col>
-                    <el-col :span="2" class="info-title">利用/处置费用：</el-col>
+                    <el-col :span="2" class="info-title">利用/处置费用(万元/吨)：</el-col>
                     <el-col :span="6">
                         <el-input size="small" v-model="addInfoForm.externalCost"></el-input>
                     </el-col>
                     <el-col :span="2" class="info-title">委外处置方式：</el-col>
-                    <el-col :span="6">
+                    <el-col :span="6" v-if="addInfoForm.type == '自行处置' || addInfoForm.type == '委外处置'">
                         <el-select v-model="addInfoForm.externalWayCode" placeholder="请选择" size="small" style="width:100%">
                             <el-option v-for="item in disposalData" :key="item.value" :label="item.label" :value="item.value"></el-option>
+                        </el-select>
+                    </el-col>
+                    <el-col :span="6" v-if="addInfoForm.type == '自行利用' || addInfoForm.type == '委外利用'">
+                        <el-select v-model="addInfoForm.externalWayCode" placeholder="请选择" size="small" style="width:100%">
+                            <el-option v-for="item in disposalList" :key="item.value" :label="item.label" :value="item.value"></el-option>
                         </el-select>
                     </el-col>
                 </el-row>
@@ -151,7 +161,13 @@
                         <el-table-column prop="type" label="去向" width="200"></el-table-column>
                         <el-table-column prop="internalDepartmentHandlers" label="自行利用/处置部门经办人" width="200"></el-table-column>
                         <el-table-column prop="internalFacilityCode" label="设施编码" width="200"></el-table-column>
-                        <el-table-column prop="internalWayCode" label="自行处置方式" width="200"></el-table-column>
+                        <el-table-column prop="internalWayCode" label="自行处置方式" width="200">
+                            <template slot-scope="scope">
+                                <div>
+                                    {{disposeInternalWayCode(scope.row.internalWayCode)}}
+                                </div>
+                            </template>
+                        </el-table-column>
                         <el-table-column prop="externalCost" label="委外单位" width="200">
                             <template slot-scope="scope">
                                 <div>
@@ -159,7 +175,7 @@
                                 </div>
                             </template>
                         </el-table-column>
-                        <el-table-column prop="externalCost" label="利用/处置费用" width="200"></el-table-column>
+                        <el-table-column prop="externalCost" label="利用/处置费用(万元/吨)" width="200"></el-table-column>
                         <el-table-column prop="externalWayCode" label="委外处置方式" width="200">
                             <template slot-scope="scope">
                                 <div>
@@ -247,7 +263,12 @@
                     </el-row>
                     <el-row class="model-list">
                         <el-col :span="4" class="info-title">自行利用处置方式：</el-col>
-                        <el-col :span="18">
+                        <el-col :span="18" v-if="editInfoForm.type == '自行处置' || editInfoForm.type == '委外处置'">
+                            <el-select v-model="editInfoForm.internalWayCode" placeholder="请选择" size="small" style="width:100%">
+                                <el-option v-for="item in disposalData" :key="item.value" :label="item.label" :value="item.value"></el-option>
+                            </el-select>
+                        </el-col>
+                        <el-col :span="18" v-if="editInfoForm.type == '自行利用' || editInfoForm.type == '委外利用'">
                             <el-select v-model="editInfoForm.internalWayCode" placeholder="请选择" size="small" style="width:100%">
                                 <el-option v-for="item in disposalList" :key="item.value" :label="item.label" :value="item.value"></el-option>
                             </el-select>
@@ -264,16 +285,21 @@
                         </el-col>
                     </el-row>
                     <el-row class="model-list">
-                        <el-col :span="4" class="info-title">利用/处置费用：</el-col>
+                        <el-col :span="4" class="info-title">利用/处置费用(万元/吨)：</el-col>
                         <el-col :span="18">
                             <el-input size="small" v-model="editInfoForm.externalCost"></el-input>
                         </el-col>
                     </el-row>
                     <el-row class="model-list">
                         <el-col :span="4" class="info-title">委外处置方式：</el-col>
-                        <el-col :span="18">
+                        <el-col :span="18" v-if="editInfoForm.type == '自行处置' || editInfoForm.type == '委外处置'">
                             <el-select v-model="editInfoForm.externalWayCode" placeholder="请选择" size="small" style="width:100%">
                                 <el-option v-for="item in disposalData" :key="item.value" :label="item.label" :value="item.value"></el-option>
+                            </el-select>
+                        </el-col>
+                        <el-col :span="18" v-if="editInfoForm.type == '自行利用' || editInfoForm.type == '委外利用'">
+                            <el-select v-model="editInfoForm.externalWayCode" placeholder="请选择" size="small" style="width:100%">
+                                <el-option v-for="item in disposalList" :key="item.value" :label="item.label" :value="item.value"></el-option>
                             </el-select>
                         </el-col>
                     </el-row>
@@ -449,6 +475,16 @@ export default {
             }
             return str;
         },
+        disposeInternalWayCode(val){
+            let str = "";
+            let list = this.disposalData.concat(this.disposalList);
+            list.forEach(item =>{
+                if(item.value == val){
+                    str = item.label;
+                }
+            })
+            return str;
+        },
         disposeExternalWayCode(val){
             let str = "";
             let list = this.disposalData.concat(this.disposalList);
@@ -598,6 +634,7 @@ export default {
         //修改信息
         editInfo(val) {
             this.editInfoForm = val;
+            console.log(val,'val');
             this.editDangerousSituation = val.dangerousSituation.split(",");
             console.log(val.hwStorageFacilityInfoIds)
             if(val.hwStorageFacilityInfoIds.length!=0){
@@ -685,14 +722,12 @@ export default {
                 this.$message.error("请选择仓库");
                 return false;
             }
-            console.log(1)
             // console.log(this.editInfoForm.hwStorageFacilityInfoPOS)
             this.editInfoForm.hwStorageFacilityInfoPOS = [];
             this.editStorage.forEach((item)=>{
                 this.editInfoForm.hwStorageFacilityInfoPOS.push({id:item});
                 console.log( this.editInfoForm.hwStorageFacilityInfoPOS)
             })
-            console.log(2)
             if(this.editDangerousSituation.length != 0){
                 let str = "";
                 this.editDangerousSituation.forEach((item) => {
@@ -700,11 +735,19 @@ export default {
                 })
                 this.editInfoForm.dangerousSituation = str.substring(0, str.length - 1);;
             }
-            console.log(3)
             if(!this.isFormValNull(this.editInfoForm)){
                 return;
             };
-            console.log(4)
+            if (this.editInfoForm.type == '自行处置' || this.editInfoForm.type == '自行利用'){
+                this.editInfoForm.externalUnitInfoIds = [];
+                this.editInfoForm.externalWayCode = '';
+                this.editInfoForm.externalCost = "";
+            }
+            if (this.editInfoForm.type == '委外处置' || this.editInfoForm.type == '委外利用'){
+                this.editInfoForm.internalDepartmentHandlers = '';
+                this.editInfoForm.internalFacilityCode = '';
+                this.editInfoForm.internalWayCode = '';
+            }
             const res = await editConfigurationInfo(this.editInfoForm);
             if(res?.code == "1"){
                 this.$message.success("修改成功");
